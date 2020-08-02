@@ -1,0 +1,14 @@
+name: Commitsar Conventional Commits
+
+on: [pull_request]
+
+jobs:
+  commitsar:
+    name: Validate for conventional commits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+      - name: Run commitsar
+        uses: docker://aevea/commitsar
