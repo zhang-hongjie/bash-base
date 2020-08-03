@@ -1,13 +1,13 @@
-name: Shellcheck check shell script
+name: Shellcheck
 
 on: [pull_request]
 
 jobs:
   shellcheck:
-    name: Shellcheck
+    name: check shell scripts
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        run: ./shellcheck-check-shell-script.sh

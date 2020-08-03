@@ -1,10 +1,10 @@
-name: Commitsar Conventional Commits
+name: Commitsar
 
 on: [pull_request]
 
 jobs:
   commitsar:
-    name: Validate for conventional commits
+    name: validate conventional commits
     runs-on: ubuntu-latest
 
     steps:

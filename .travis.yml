@@ -1,0 +1,9 @@
+sudo: required
+
+language: shell
+
+services:
+  - docker
+
+script:
+  - ./shellcheck-check-shell-script.sh
