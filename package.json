@@ -4,11 +4,10 @@
   "description": "A common lib for creating bash script easily.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/renault-digital/bash-base.git"
+    "url": "git+https://github.com/zhang-hongjie/bash-base.git"
   },
   "keywords": [
     "bash"
@@ -16,9 +15,9 @@
   "author": "Hongjie ZHANG (hongjie.zhang@renault.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/renault-digital/bash-base/issues"
+    "url": "https://github.com/zhang-hongjie/bash-base/issues"
   },
-  "homepage": "https://github.com/renault-digital/bash-base#readme",
+  "homepage": "https://github.com/zhang-hongjie/bash-base#readme",
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^9.1.1",

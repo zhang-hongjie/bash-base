@@ -1,9 +1,22 @@
-sudo: required
+language: node_js
 
-language: shell
+node_js:
+  - 8
 
-services:
-  - docker
-
-script:
-  - ./shellcheck-check-shell-script.sh
+jobs:
+  include:
+    # Define the release stage that runs semantic-release
+    - stage: release
+      node_js: lts/*
+      # Advanced: optionally overwrite your default `script` step to skip the tests
+      # script: skip
+#      on:
+#        branch: tech/config-dev-cicd-env
+      deploy:
+        provider: script
+        skip_cleanup: true
+        on:
+          tags: false
+          all_branches: true
+        script:
+          - npx semantic-release
