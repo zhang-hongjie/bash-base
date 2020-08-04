@@ -4,4 +4,6 @@ echo "abc"
 echo "def"
 echo "add"
 echo "aaaa"
+echo ddd
+echo fff
 ech ddd
