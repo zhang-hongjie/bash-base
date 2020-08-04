@@ -1,12 +1,10 @@
-name: Commitsar
+name: commitsar
 
 on: [pull_request]
 
 jobs:
   commitsar:
-    name: validate conventional commits
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v1
