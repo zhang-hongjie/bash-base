@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/zhang-hongjie/bash-base/compare/v2.1.0...v2.1.1) (2020-08-04)
+
+
+### Bug Fixes
+
+* this is for patch release ([#10](https://github.com/zhang-hongjie/bash-base/issues/10)) ([a5330df](https://github.com/zhang-hongjie/bash-base/commit/a5330df14baf55730c1fe256e160b57084c398a6))
+
 # [2.1.0](https://github.com/zhang-hongjie/bash-base/compare/v2.0.0...v2.1.0) (2020-08-04)
 
 
