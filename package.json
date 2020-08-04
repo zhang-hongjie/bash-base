@@ -11,9 +11,7 @@
     "bash-base": "./bash-base.sh",
     "bash-base.test.sh": "./bash-base.test.sh"
   },
-  "scripts": {
-
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zhang-hongjie/bash-base.git"
