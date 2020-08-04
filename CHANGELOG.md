@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/zhang-hongjie/bash-base/compare/v2.0.0...v2.1.0) (2020-08-04)
+
+
+### Features
+
+* this is for minor release ([#9](https://github.com/zhang-hongjie/bash-base/issues/9)) ([c1c9d35](https://github.com/zhang-hongjie/bash-base/commit/c1c9d35344ac1bd55272532056699eaf44869b23))
+
 # [2.0.0](https://github.com/zhang-hongjie/bash-base/compare/v1.0.0...v2.0.0) (2020-08-04)
 
 
