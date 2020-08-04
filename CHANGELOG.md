@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/zhang-hongjie/bash-base/compare/v1.0.0...v2.0.0) (2020-08-04)
+
+
+### Features
+
+* clean bash-base.sh ([#8](https://github.com/zhang-hongjie/bash-base/issues/8)) ([e2fa4f9](https://github.com/zhang-hongjie/bash-base/commit/e2fa4f950d8b49cbf879d5aa6c1198c8fdad7aab))
+
+
+### BREAKING CHANGES
+
+* clean unused echo
+
 # 1.0.0 (2020-08-04)
 
 
