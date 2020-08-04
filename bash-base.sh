@@ -6,4 +6,4 @@ echo "add"
 echo "aaaa"
 echo ddd
 echo fff
-ech ddd
+echo dddddd
