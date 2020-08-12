@@ -38,7 +38,6 @@ jobs:
 
       # Run tests
       - name: shellspec-kcov
-#        run: docker run -i --rm -v "$(pwd)":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options "--coveralls-id=${{ secrets.COVERALLS_TOKEN }} --limits=99,99 --include-path=src" -f t test/*.sh
         run: docker run -i --rm -v "$(pwd)":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options "--include-path=src" -f t test/*.sh
 
       - name: codecov.io
@@ -70,7 +69,13 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: semantic-release
-        run: npx semantic-release
+      - name: semantic-release dry run to preview of the pending release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release --dry-run
+
+      - name: semantic-release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
