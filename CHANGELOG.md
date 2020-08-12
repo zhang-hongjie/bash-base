@@ -1,3 +1,20 @@
+# [2.2.0](https://github.com/zhang-hongjie/bash-base/compare/v2.1.2...v2.2.0) (2020-08-12)
+
+
+### Bug Fixes
+
+* replace bats to shellspec ([360e692](https://github.com/zhang-hongjie/bash-base/commit/360e6921476278b66339501ff5bf546423ea1d4c))
+* replace bats to shellspec ([d683afd](https://github.com/zhang-hongjie/bash-base/commit/d683afd3712f63405c2ba8a494db3f65098a53ea))
+* replace bats to shellspec ([0af5aa8](https://github.com/zhang-hongjie/bash-base/commit/0af5aa87fd6b9de1f6819390acc823c1da2582eb))
+* replace bats to shellspec ([07414e4](https://github.com/zhang-hongjie/bash-base/commit/07414e4e3dabf35bc6718fd7d9accb1cbd8eafad))
+* replace bats to shellspec ([#18](https://github.com/zhang-hongjie/bash-base/issues/18)) ([0c3bd9d](https://github.com/zhang-hongjie/bash-base/commit/0c3bd9dd48e3a7942a8686d8eeaa5440bee291ce))
+* replace bats to shellspec ([#20](https://github.com/zhang-hongjie/bash-base/issues/20)) ([d6cf961](https://github.com/zhang-hongjie/bash-base/commit/d6cf961466084323b9ea9430c43fe9fb4fac639f))
+
+
+### Features
+
+* clean travis.yml ([#15](https://github.com/zhang-hongjie/bash-base/issues/15)) ([84e5cff](https://github.com/zhang-hongjie/bash-base/commit/84e5cff024ddba8213cae42fca0e3aa9cb7d35df))
+
 ## [2.1.2](https://github.com/zhang-hongjie/bash-base/compare/v2.1.1...v2.1.2) (2020-08-04)
 
 
