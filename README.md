@@ -6,6 +6,15 @@
 
 [![License](https://img.shields.io/github/license/zhang-hongjie/bash-base.svg)](https://github.com/zhang-hongjie/bash-base/blob/master/LICENSE)
 
+
+[![GitHub Actions Status](https://img.shields.io/github/workflow/status/zhang-hongjie/bash-base/cicd?label=GithubActions)](https://github.com/zhang-hongjie/bash-base/actions)
+
+
+[![GitHub top language](https://img.shields.io/github/languages/top/zhang-hongjie/bash-base.svg)](https://github.com/zhang-hongjie/bash-base/search?l=Shell)
+
+[![GitHub release](https://img.shields.io/github/release/zhang-hongjie/bash-base.svg)](https://github.com/zhang-hongjie/bash-base/releases/latest)
+
+
 ## 1. Semantic Versioning
 
 
