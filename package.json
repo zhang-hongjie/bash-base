@@ -43,6 +43,7 @@
   "dependencies": {},
   "resolutions": {
     "dot-prop": "5.2.0",
+    "is-obj": "^2.0.0",
     "lodash": "4.17.19"
   }
 }
