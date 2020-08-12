@@ -52,8 +52,6 @@ jobs:
           fi
 
   semantic-release:
-    # Only release on push to master
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     # Waits for test jobs to complete
     needs: [lint-commit,lint,test]
@@ -75,6 +73,7 @@ jobs:
         run: npx semantic-release --dry-run
 
       - name: semantic-release
+        # Only release on push to master
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
