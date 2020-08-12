@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/zhang-hongjie/bash-base/compare/v2.2.1...v2.2.2) (2020-08-12)
+
+
+### Bug Fixes
+
+* replace bats to shellspec ([ea6d2cf](https://github.com/zhang-hongjie/bash-base/commit/ea6d2cfbacaa1546dd03023dcb2efd7bda5ba68d))
+
 ## [2.2.1](https://github.com/zhang-hongjie/bash-base/compare/v2.2.0...v2.2.1) (2020-08-12)
 
 
