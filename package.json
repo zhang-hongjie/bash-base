@@ -4,14 +4,19 @@
   "description": "A common lib for creating bash script easily.",
   "private": true,
   "files": [
-    "bash-base.sh",
-    "bash-base.test.sh"
+    "src/bash-base.sh"
   ],
   "bin": {
-    "bash-base": "./bash-base.sh",
-    "bash-base.test.sh": "./bash-base.test.sh"
+    "bash-base": "src/bash-base.sh"
   },
-  "scripts": {},
+  "scripts": {
+    "preinstall": "npx npm-force-resolutions",
+    "shellcheck": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base koalaman/shellcheck:latest src/*.sh",
+    "shfmt": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base jamesmstone/shfmt -l -w src",
+    "lint": "npm run shellcheck && npm run shfmt",
+    "test": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --jobs 4 --shell bash -f t test/*.sh",
+    "test:coverage": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options \"--include-path=src\" -f t test/*.sh"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zhang-hongjie/bash-base.git"
@@ -32,18 +37,12 @@
     "@semantic-release/git": "^9.0.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.2.0",
-    "husky": "^4.2.5"
+    "husky": "^4.2.5",
+    "semantic-release": "^17.1.1"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "prepare-commit-msg": "exec < /dev/tty && node_modules/.bin/git-cz --hook || true"
-    }
-  },
-  "dependencies": {}
+  "dependencies": {},
+  "resolutions": {
+    "dot-prop": "5.1.1",
+    "lodash": "4.17.19"
+  }
 }
