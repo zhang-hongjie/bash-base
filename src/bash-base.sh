@@ -28,9 +28,9 @@ function string_length() {
 }
 
 # Usage:
-#   string_substr " as fd " 2
-#   string_substr < logfile
-#   echo " add " | string_substr
+#   string_sub " as fd " 2
+#   string_sub < logfile
+#   echo " add " | string_sub
 function string_sub() {
 	local start=$1
 	local length=$2
@@ -62,11 +62,13 @@ function string_after_first() {
 #   string_index_first " as fd " "s f"
 #   string_index_first "token" < logfile
 #   echo " add " | string_index_first "token"
+# Return:
+#   the positive index of first place of token in string, -1 if not existed
 function string_index_first() {
 	local tokenString=$1
 	local string="${2:-$(cat)}"
 	prefix="${string%%${tokenString}*}"
-	echo ${#prefix}
+	[ "${string}" == "${prefix}" ] && echo -1 || echo ${#prefix}
 }
 
 # Usage:

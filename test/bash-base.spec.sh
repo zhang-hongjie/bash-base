@@ -166,6 +166,21 @@ Describe 'string_sub'
         The output should eq "s fd"
     End
 
+    It 'negative start'
+        When call string_sub -5 4 " as fd "
+        The output should eq "s fd"
+    End
+
+    It 'negative length'
+        When call string_sub 2 -1 " as fd "
+        The output should eq "s fd"
+    End
+
+    It 'negative start & length'
+        When call string_sub -5 -1 " as fd "
+        The output should eq "s fd"
+    End
+
     It 'with pipe'
         When call eval "echo ' as fd ' | string_sub 2 4"
         The output should eq "s fd"
@@ -190,29 +205,9 @@ Describe 'string_before_first'
         The output should eq "111"
     End
 
-    It 'with pipe'
-        When call eval "echo ' as fd ' | string_before_first 's f'"
-        The output should eq " a"
-    End
-
-    It 'with file'
-        cat > temp_file.txt <<-EOF
-ABCD
-EFGH
-IJKL
-EOF
-        func() { actual=$(string_before_first 'FGH' < temp_file.txt); }
-        When run func
-        The variable actual should eq $'ABCD\nE'
-        rm -fr temp_file.txt
-    End
-End
-
-
-Describe 'string_before_first'
-    It 'with value'
-        When call string_before_first "asd" "111asd222"
-        The output should eq "111"
+    It 'token not existed'
+        When call string_before_first "abd" "111asd222"
+        The output should eq "111asd222"
     End
 
     It 'with pipe'
@@ -240,6 +235,11 @@ Describe 'string_after_first'
         The output should eq "222"
     End
 
+    It 'token not existed'
+        When call string_after_first "abd" "111asd222"
+        The output should eq "111asd222"
+    End
+
     It 'with pipe'
         When call eval "echo ' as fd ' | string_after_first 's f'"
         The output should eq "d "
@@ -260,9 +260,24 @@ End
 
 
 Describe 'string_index_first'
+    It 'start with token'
+        When call string_index_first "111as" "111asd222"
+        The output should eq 0
+    End
+
+    It 'token existed multi position'
+        When call string_index_first "as" "111asd222as333"
+        The output should eq 3
+    End
+
     It 'with value'
         When call string_index_first "asd22" "111asd222"
         The output should eq "3"
+    End
+
+    It 'token not found'
+        When call string_index_first "abd22" "111asd222"
+        The output should eq "-1"
     End
 
     It 'with pipe'
@@ -578,7 +593,7 @@ Describe 'print_header'
 End
 
 
-fDescribe 'stop_if_failed'
+Describe 'stop_if_failed'
     It 'no error'
         func() { eval "echo 'message normal'; stop_if_failed 'error occurred'"; }
         When run func

@@ -14,7 +14,7 @@
     "shellcheck": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base koalaman/shellcheck:latest src/*.sh",
     "shfmt": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base jamesmstone/shfmt -l -w src",
     "lint": "npm run shellcheck && npm run shfmt",
-    "test": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --jobs 4 --shell bash -f t test/*.sh",
+    "test": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash test/*.sh",
     "test:coverage": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options \"--include-path=src\" -f t test/*.sh"
   },
   "repository": {
