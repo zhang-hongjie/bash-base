@@ -2,7 +2,7 @@
   "name": "bash-base",
   "version": "2.2.3",
   "description": "A common lib for creating bash script easily.",
-  "private": true,
+  "private": false,
   "files": [
     "src/bash-base.sh"
   ],
