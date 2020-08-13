@@ -1,6 +1,6 @@
 {
   "name": "bash-base",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "A common lib for creating bash script easily.",
   "private": false,
   "files": [
