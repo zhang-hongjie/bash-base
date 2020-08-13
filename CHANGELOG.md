@@ -1,3 +1,20 @@
+## [2.2.4](https://github.com/zhang-hongjie/bash-base/compare/v2.2.3...v2.2.4) (2020-08-13)
+
+
+### Bug Fixes
+
+* replace bats to shellspec ([1d8694d](https://github.com/zhang-hongjie/bash-base/commit/1d8694d155c76f8deb28c0cc0b71b82f141dd993))
+* replace bats to shellspec ([30ca88a](https://github.com/zhang-hongjie/bash-base/commit/30ca88ae6bb65701bf3ef7fea10bfbe2836d4132))
+* replace bats to shellspec ([fc51e8a](https://github.com/zhang-hongjie/bash-base/commit/fc51e8a1e2e07fc8ca88c7172976bab5363721f7))
+* replace bats to shellspec ([6d89383](https://github.com/zhang-hongjie/bash-base/commit/6d893831ab1f2a64f374ff458115b51890e77e14))
+* replace bats to shellspec ([3e9b444](https://github.com/zhang-hongjie/bash-base/commit/3e9b444b4a0e216988a0c93043b9cf507c589ddc))
+* replace bats to shellspec ([017ab48](https://github.com/zhang-hongjie/bash-base/commit/017ab4893b26af32ba51d97d8b9f1d3bd8a27823))
+* replace bats to shellspec ([2841763](https://github.com/zhang-hongjie/bash-base/commit/2841763c99cc74870e3385bc0d97b4693946bef3))
+* replace bats to shellspec ([16d36d7](https://github.com/zhang-hongjie/bash-base/commit/16d36d707a0f921102ab66a40447a7d46db6ddf8))
+* replace bats to shellspec ([93dbb4f](https://github.com/zhang-hongjie/bash-base/commit/93dbb4f0737b46c6690af97a7a26c7cdb9aa59b0))
+* replace bats to shellspec ([3f9b0fc](https://github.com/zhang-hongjie/bash-base/commit/3f9b0fc3a4978577df7f3b5884a6ba0a0e13ba86))
+* replace bats to shellspec ([d91612d](https://github.com/zhang-hongjie/bash-base/commit/d91612dc50efe99177a00ea821694bfab028e5d4))
+
 ## [2.2.3](https://github.com/zhang-hongjie/bash-base/compare/v2.2.2...v2.2.3) (2020-08-12)
 
 
