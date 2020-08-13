@@ -12,3 +12,9 @@ A common lib for creating bash script easily.
 [![npm package](https://img.shields.io/npm/v/bash-base.svg)](https://www.npmjs.com/package/bash-base)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/zhj2074/bash-base)](https://hub.docker.com/r/zhj2074/bash-base)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/zhang-hongjie/bash-base/latest)
+
+## Impressive features <!-- omit in toc -->
+
+- Works with bash
+- BDD test with ShellSpec
+- Code coverage with ([Kcov](http://simonkagstrom.github.io/kcov/index.html))
