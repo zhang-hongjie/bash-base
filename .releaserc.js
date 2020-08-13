@@ -5,6 +5,12 @@ module.exports = {
     "@semantic-release/changelog",
     "@semantic-release/npm",
     "@semantic-release/github",
-    "@semantic-release/git"
+    "@semantic-release/git",
+    ["@semantic-release/exec", {
+      "prepareCmd": "docker build -t zhj2074/bash-base ."
+    }],
+    ["semantic-release-docker", {
+      "name": "zhj2074/bash-base"
+    }]
   ]
 }
