@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 ### Constants
 THIS_SCRIPT_NAME="$(basename "$0")"
 export THIS_SCRIPT_NAME
@@ -11,10 +9,6 @@ COLOR_END=$'\e[0m'                  #Others: reset to default
 
 ### Functions string_xxx
 
-# Usage:
-#   string_trim " as fd "
-#   string_trim < logfile
-#   echo " add " | string_trim
 function string_trim() {
 	echo "${1:-$(cat)}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' #trim ' '
 }
@@ -370,4 +364,101 @@ function stop_if_failed() {
 #   EOF
 function declare_heredoc() {
 	eval "$1='$(cat)'"
+}
+
+function functions_list() {
+	grep "^[[:space:]]*function " "$0" | cut -d'(' -f1 | sed -e "s/function//"
+}
+
+function functions_list2() {
+	declare -f
+	#	declare -F
+}
+
+: '=pod
+=head1 string_trim
+
+=head4 NAME
+
+    string_trim -- Remove the white chars from prefix and suffix
+
+=head4 SYNOPSIS
+
+    string_trim string_to_trim
+
+=head4 EXAMPLES
+
+    string_trim " as fd "
+    string_trim < logfile
+    echo " add " | string_trim
+=cut'
+function functions_list1() {
+	declare -f
+	#	declare -F
+}
+
+: '=pod
+=head1 string_trim
+
+=head4 NAME
+
+    string_trim -- Remove the white chars from prefix and suffix
+
+=head4 SYNOPSIS
+
+    string_trim string_to_trim
+
+=head4 EXAMPLES
+
+    string_trim " as fd "
+    string_trim < logfile
+    echo " add " | string_trim
+=cut'
+function functions_list1() {
+	declare -f
+	#	declare -F
+}
+
+: '=pod
+=head1 string_trim
+
+NAME
+
+    string_trim -- Remove the white chars from prefix and suffix
+
+SYNOPSIS
+
+    string_trim string_to_trim
+
+EXAMPLES
+
+    string_trim " as fd "
+    string_trim < logfile
+    echo " add " | string_trim
+=cut'
+function functions_list1() {
+	declare -f
+	#	declare -F
+}
+
+: '=pod
+=head1 string_trim
+
+NAME
+
+    string_trim -- Remove the white chars from prefix and suffix
+
+SYNOPSIS
+
+    string_trim string_to_trim
+
+EXAMPLES
+
+    string_trim " as fd "
+    string_trim < logfile
+    echo " add " | string_trim
+=cut'
+function functions_list1() {
+	declare -f
+	#	declare -F
 }

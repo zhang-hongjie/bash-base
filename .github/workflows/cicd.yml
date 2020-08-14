@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           sh_checker_comment: true
-          sh_checker_exclude: "^test/"
+          sh_checker_exclude: "^spec/"
 
   test:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
 
       # Run tests
       - name: shellspec-kcov
-        run: docker run -i --rm -v "$(pwd)":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options "--include-path=src" -f t test/*.sh
+        run: docker run -i --rm -v "$(pwd)":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options "--include-path=src" -f t spec/*.sh
 
       - name: codecov.io
         run: bash <(curl -s https://codecov.io/bash)
@@ -77,7 +77,7 @@ jobs:
 
       - name: semantic-release
         # Only release on push to master
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+#        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

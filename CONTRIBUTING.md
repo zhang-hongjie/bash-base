@@ -1,66 +1,89 @@
----
-menu: Development
----
+# How to contribute
 
-## Contributing
+## Welcome!
+:+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
+## Code of Conduct
 
-The issue tracker is the preferred channel for bug reports, features requests and submitting merge requests.
+This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-### bug reports
+## Submit an issue
 
-A bug is a demonstrable problem that is caused by the code in the repository. Good bug reports are extremely helpful.
+For bug report or enhancement suggestion, you can submit a  [GitHub issue](https://guides.github.com/features/issues/). 
 
-Before create a bug report, search if it is not already created by others.<br>
-Prepare a description containing the steps to reproduce the bug.
+Before propose a feature, a good understanding of the requested feature may be crucial for the acceptance of the proposal.
 
-### feature requests
+Firstly, search if your idea is not already created by others, then fill the information on the [issues page](https://github.com/atom/atom/issues/new/choose).
 
-Feature requests are welcome.<br>
-Before propose a feature, find out whether your idea fits with the scope of the project.<br>
-If a proposal is pertinent, try to explain the main idea, it's requirements, it's users and it's context as much as possible.<br>
-A good understanding of the requested feature may be crucial for the acceptance of the proposal by the community around this project.
+## Code Contribution
 
-### merge requests
+If you want, aside from submitting a github issue, a good pull request is a fantastic help.
 
-Good merge requests are a fantastic help.<br>
-It is the step where you submit patches to this repository.<br>
-To prevent any frustration, you should make sure to open an issue to discuss any new features before working on it.<br>
-This will prevent you from wasting time on a feature the maintainers doesn't see fit for the project scope.<br>
-In any case, a merge request should remain focused in scope and avoid containing unrelated commits.
+A pull request should remain focused in scope and avoid containing unrelated commits.
+ 
+#### Understand the technology stack
 
-How to do it ?
+- Works with bash, docker, git
+- BDD test with [ShellSpec](https://shellspec.info)
+- Code coverage with [Kcov](http://simonkagstrom.github.io/kcov/index.html) and [codecov]()
+- Audit shell script with [shellcheck](https://www.shellcheck.net/)
+- Format shell script with [shfmt](https://github.com/mvdan/sh)
+- Respect [Semantic Versioning 2.0.0](https://semver.org/) and [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/)
+- Help input commit message 
+    - CLI: with [Husky](https://github.com/typicode/husky) and [Commitizen](http://commitizen.github.io/cz-cli)
+    - IntelliJ IDEA: plugin [Git Commit Template](https://plugins.jetbrains.com/plugin/9861-git-commit-template)
+- Audit commit message with [Commitlint](https://commitlint.js.org) and [Commitsar](https://commitsar.tech)
+- Automatically release a new version with [semantic release](https://semantic-release.gitbook.io/) if need:
+    - Analyser the commit message to decide the new version
+    - Generate release note
+    - Generate CHANGELOG.md
+    - Tag and Release on Github
+    - Push new release to [npm Registry](https://www.npmjs.com)
+    - Push new release to [docker hub](https://hub.docker.com)
+- CICD Workflow config with [NPM](https://docs.npmjs.com/about-npm/) and [Github actions](https://docs.github.com/en/actions)
+    
 
-1. Clone the repository
+#### How to do it ?
 
-```
-git clone https://gitlabee.dt.renault.com/shared/boilerplate/api-nodejs.git .
-```
+1. Submit an issue, get the issue number, and assign it to you.
 
-2. If you clone a while ago, get the latest changes from upstream.
+1. Clone the repository branch `master`. If you clone a while ago, get the latest changes from upstream.
 
-```
-git checkout develop
-git pull origin develop
-```
+1. Create your branch:
 
-3. Create a fixture (fix), refactoring (refact) or feature (feat) :
+    ```
+    git checkout -b dev/<issue-number>-<issue-name>
+    ```
+   
+1. Setup dev environement
 
-```
-git checkout -b fix|refact|feat-name
-```
+    ```
+    npm ci
+    ```
 
-4. Commit your changes in logical chunks. Please see the (commit message guidelines). Don't forget to write/update tests concerning the evolution proposed.
+1. Modify the code. Remember to write / update the tests for the proposed evolution, 100% test coverage is required, as every function will be used by users, we need to ensure its accuracy.
 
-```
-git commit -m '✨ (module) message'
-```
+1. Verify the result in local:
 
-5. Push your changes
+    ```
+    npm test
+    npm run lint
+    npm run test:coverage
+    ```
 
-```
-git push origin <your-branch-name>
-```
+1. Commit your changes in logical chunks. Please see the [commit message guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines).
 
-6. Open a merge request with a clear title and description.
+    ```
+    git commit
+    ```
+    Fill the info (including the issue number) for each step of wizard.
+    
+    If you prefer IntelliJ IDEA, the plugin [Git Commit Template](https://plugins.jetbrains.com/plugin/9861-git-commit-template) is proposed.
+    
+    ![intellij_plugin_icon](docs/intellij_plugin_icon.png)
+    
+    ![intellij_plugin_icon](docs/intellij_plugin_dialog.png)
+    
+1. Push your changes
+    
+1. Open a pull request with a clear title and description.
