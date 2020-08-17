@@ -41,6 +41,7 @@ curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version [version]
 
 ```bash
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+curl -o- https://raw.githubusercontent.com/zhang-hongjie/bash-base/v2.2.12/bash-base.sh | bash
 ```
 
 ### Install from NPM
@@ -67,6 +68,8 @@ docker run -it zhj2074/bash-base:latest
 ### Example
 See [example](example) folder
 
+### Reference
+See [reference](docs/reference.html)
 
 ## Contributing
 
