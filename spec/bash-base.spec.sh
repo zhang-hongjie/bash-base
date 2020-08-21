@@ -421,6 +421,20 @@ Describe 'array_describe'
     End
 End
 
+Describe 'array_from_describe'
+    strDescribe="([1]=' as' [5]='fd ')"
+    It 'with value'
+        When call array_from_describe actual "${strDescribe}"
+        The value "$(declare -p actual)" should eq "declare -a actual=([1]=\" as\" [5]=\"fd \")"
+    End
+
+    It 'with file'
+        echo "${strDescribe}" > temp_file.txt
+        When call eval "array_from_describe actual < temp_file.txt"
+        The value "$(declare -p actual)" should eq "declare -a actual=([1]=\" as\" [5]=\"fd \")"
+        rm -fr temp_file.txt
+    End
+End
 
 Describe args_valid_or_select_pipe {
     It 'init value valid'
