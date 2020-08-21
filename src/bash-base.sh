@@ -1,14 +1,28 @@
+#!/usr/bin/env bash
+
 ### Constants
+#- THIS_SCRIPT_NAME: the main script name
 THIS_SCRIPT_NAME="$(basename "$0")"
-export THIS_SCRIPT_NAME
-COLOR_BOLD_BLACK=$'\e[1;30m'        #Header
-COLOR_BOLD_RED=$'\e[1;91m'          #Error, KO
-export COLOR_BOLD_GREEN=$'\e[1;32m' #OK
-COLOR_BLUE=$'\e[0;34m'              #Value
-COLOR_END=$'\e[0m'                  #Others: reset to default
+#- SED_NEW_LINE: return and new line, used with sed
+SED_NEW_LINE="\\$(echo -e '\r\n')"
+#- COLOR_BOLD_BLACK: Header
+COLOR_BOLD_BLACK=$'\e[1;30m'
+#- COLOR_BOLD_RED: Error, KO
+COLOR_BOLD_RED=$'\e[1;91m'
+#- COLOR_BOLD_GREEN: OK
+COLOR_BOLD_GREEN=$'\e[1;32m'
+#- COLOR_BLUE: Value
+COLOR_BLUE=$'\e[0;34m'
+#- COLOR_END: for others, reset to default
+COLOR_END=$'\e[0m'
+export THIS_SCRIPT_NAME SED_NEW_LINE COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_GREEN COLOR_BLUE COLOR_END
 
 ### Functions string_xxx
 
+# Usage:
+#   string_trim " as fd "
+#   string_trim < logfile
+#   echo " add " | string_trim
 function string_trim() {
 	echo "${1:-$(cat)}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' #trim ' '
 }
@@ -69,7 +83,7 @@ function string_index_first() {
 #   escape preserved char of regex, normally for preprocess of sed token
 #   escape_sed 'a$'
 function escape_sed() {
-	echo "${1}" | sed 's/\//\\\//g' | sed 's/\&/\\\&/g' | sed 's/\./\\\./g' | sed 's/\^/\\\^/g' | sed 's/\[/\\\[/g' | sed 's/\$/\\\$/g'
+	echo "${1}" | sed -e 's/\//\\\//g' -e 's/\&/\\\&/g' -e 's/\./\\\./g' -e 's/\^/\\\^/g' -e 's/\[/\\\[/g' -e 's/\$/\\\$/g'
 }
 export -f escape_sed
 
@@ -89,7 +103,7 @@ function string_replace() {
 #   string_replace_regex 'a*' 'b' "aaa" ==> 'b'
 #   string_replace_regex '*' 'b' 'a*a'  ==> 'aba'
 function string_replace_regex() {
-	echo "${3:-$(cat)}" | sed -e "s/$1/$2/g"
+	echo "${3:-$(cat)}" | sed -E -e "s/$1/$2/g"
 }
 
 # Usage:

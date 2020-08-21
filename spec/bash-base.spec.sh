@@ -71,7 +71,9 @@ Describe 'string_replace'
 
         "%" "b" "a%a" "aba"
         "!" "b" "a!a" "aba"
+        "#" "b" "a#a" "aba"
 
+        "#" "" "a#a" "aa"
         '\*\*' 'b' 'a***a' "ab*a"
         'a\*' 'b' 'a***a' "b**a"
     End
@@ -93,13 +95,48 @@ End
 
 Describe 'string_replace_regex'
     Parameters
-        '**' 'b' 'a***a' "babab"
-        'a*' 'b' 'a***a' "b*b*b*b"
-        '*' 'b' 'a*a' "aba"
-
-        'a*' 'b' 'a*a' "b*b"
-        'a*' 'b' 'aaa' "b"
+        'ad' 'b' 'aaad' "aab"
+        'ac' 'b' 'acacad' "bbad"
+        '\*\*' 'b' 'a***a' "ab*a"
+        '\*' 'b' 'a*a' "aba"
         '\$' 'b' 'a$a' "aba"
+
+        'a?' 'b' 'aaad' "bbbdb"
+        'a+' 'b' 'aaad' "bd"
+        'a*' 'b' 'aaad' "bdb"
+        'a{2}' 'b' 'aaad' "bad"
+
+        '(ac)+' 'b' 'acacad' "bad"
+        '(ac)?' 'b' 'acacad' "bbabdb"
+        '(ac)*' 'b' 'acacad' "babdb"
+        '(ac){2}' 'b' 'acacad' "bad"
+
+        '(ca)+' 'b' 'acacad' "abd"
+        '(ca)?' 'b' 'acacad' "babbdb"
+        '(ca)*' 'b' 'acacad' "babdb"
+        '(ca){2}' 'b' 'acacad' "abd"
+
+        '[ac]+' 'b' 'acacad' "bd"
+        '[ac]?' 'b' 'acacad' "bbbbbdb"
+        '[ac]*' 'b' 'acacad' "bdb"
+        '[ac]{2}' 'b' 'acacad' "bbad"
+
+        '[ca]+' 'b' 'acacad' "bd"
+        '[ca]?' 'b' 'acacad' "bbbbbdb"
+        '[ca]*' 'b' 'acacad' "bdb"
+        '[ca]{2}' 'b' 'acacad' "bbad"
+
+        '(ac){1,2}' 'b' 'acacacd' "bbd"
+        '[ac]{1,2}' 'b' 'acacacd' "bbbd"
+
+        'ac|ae' 'b' 'acaed' "bbd"
+        '(ac|ae)' 'b' 'acaed' "bbd"
+        '(ac|ae){1}' 'b' 'acaed' "bbd"
+        '(ac|ae){1,}' 'b' 'acaed' "bd"
+        '(ac|ae)+' 'b' 'acaed' "bd"
+
+        '\s+' '' 'a   b' "ab"
+        '^\s+' '' '   a   b' "a   b"
     End
 
     Example "replace $1 to $2 in $3"
