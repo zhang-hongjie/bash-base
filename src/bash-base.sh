@@ -1,37 +1,37 @@
-#!/usr/bin/env bash
+#     !/usr/bin/env bash
 
-### Constants
-#- THIS_SCRIPT_NAME: the main script name
+# ## Constants
+#     - **THIS_SCRIPT_NAME:** the main script name
 THIS_SCRIPT_NAME="$(basename "$0")"
-#- SED_NEW_LINE: return and new line, used with sed
+#     - **SED_NEW_LINE:** return and new line, used with sed
 SED_NEW_LINE="\\$(echo -e '\r\n')"
-#- COLOR_BOLD_BLACK: Header
+#     - **COLOR_BOLD_BLACK:** Header
 COLOR_BOLD_BLACK=$'\e[1;30m'
-#- COLOR_BOLD_RED: Error, KO
+#     - **COLOR_BOLD_RED:** Error, KO
 COLOR_BOLD_RED=$'\e[1;91m'
-#- COLOR_BOLD_GREEN: OK
+#     - **COLOR_BOLD_GREEN:** OK
 COLOR_BOLD_GREEN=$'\e[1;32m'
-#- COLOR_BLUE: Value
+#     - **COLOR_BLUE:** Value
 COLOR_BLUE=$'\e[0;34m'
-#- COLOR_END: for others, reset to default
+#     - **COLOR_END:** for others, reset to default
 COLOR_END=$'\e[0m'
 export THIS_SCRIPT_NAME SED_NEW_LINE COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_GREEN COLOR_BLUE COLOR_END
 
-### Functions string_xxx
+# ## Functions string_xxx
 
 # @NAME
 #     string_trim -- remove the white chars from prefix and suffix
 # @SYNOPSIS
 #     string_trim [string]
 # @DESCRIPTION
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_trim " as fd "
 #     string_trim < logfile
 #     echo " add " | string_trim
 # @SEE_ALSO
 function string_trim() {
-  echo "${1:-$(cat)}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' #trim ' '
+	echo "${1-$(cat)}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' #trim ' '
 }
 
 # @NAME
@@ -39,14 +39,24 @@ function string_trim() {
 # @SYNOPSIS
 #     string_length [string]
 # @DESCRIPTION
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_length " as fd "
 #     string_length < logfile
 #     echo " add " | string_length
 # @SEE_ALSO
 function string_length() {
-  expr "${1:-$(cat)}" : '.*'
+	local string="${1-$(cat)}"
+
+	index=$(string_index_first $'\n' "${string}")
+
+	[[ "${index}" -ge 0 ]] && expr "${string}" : '.*' || echo "${#string}"
+}
+
+function string_is_empty() {
+  local string="${1-$(cat)}"
+
+  [[ $(string_length "$string") -eq 0 ]]
 }
 
 # @NAME
@@ -56,17 +66,17 @@ function string_length() {
 # @DESCRIPTION
 #     **startIndex** the index of first character in string, 0 based, may negative
 #     **subStringLength** the length of sub string, 0 based, may negative
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_sub -5 -1 " as fd "
 #     string_sub 3 5 < temp_file.txt
 #     echo ' as fd ' | string_sub 2 4
 # @SEE_ALSO
 function string_sub() {
-  local startIndex=$1
-  local subStringLength=$2
-  local string="${3:-$(cat)}"
-  echo "${string:$startIndex:$subStringLength}"
+	local startIndex=$1
+	local subStringLength=$2
+	local string="${3-$(cat)}"
+	echo "${string:$startIndex:$subStringLength}"
 }
 
 # @NAME
@@ -75,7 +85,7 @@ function string_sub() {
 #     string_index_first tokenString [string]
 # @DESCRIPTION
 #     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_index_first " as fd " "s f"
 #     string_index_first "token" < logfile
@@ -83,10 +93,10 @@ function string_sub() {
 # @SEE_ALSO
 #     string_before_first, string_after_first
 function string_index_first() {
-  local tokenString=$1
-  local string="${2:-$(cat)}"
-  prefix="${string%%${tokenString}*}"
-  [ "${string}" == "${prefix}" ] && echo -1 || echo ${#prefix}
+	local tokenString=$1
+	local string="${2-$(cat)}"
+	prefix="${string%%${tokenString}*}"
+	[ "${string}" == "${prefix}" ] && echo -1 || echo ${#prefix}
 }
 
 # @NAME
@@ -95,7 +105,7 @@ function string_index_first() {
 #     string_before_first tokenString [string]
 # @DESCRIPTION
 #     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_before_first " as fd " "s f"
 #     string_before_first "str" < logfile
@@ -103,9 +113,9 @@ function string_index_first() {
 # @SEE_ALSO
 #     string_index_first, string_after_first
 function string_before_first() {
-  local tokenString=$1
-  local string="${2:-$(cat)}"
-  echo "${string%%${tokenString}*}" # Remove the first - and everything following it
+	local tokenString=$1
+	local string="${2-$(cat)}"
+	echo "${string%%${tokenString}*}" # Remove the first - and everything following it
 }
 
 # @NAME
@@ -114,7 +124,7 @@ function string_before_first() {
 #     string_after_first tokenString [string]
 # @DESCRIPTION
 #     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_after_first " as fd " "s f"
 #     string_after_first "str" < logfile
@@ -122,9 +132,9 @@ function string_before_first() {
 # @SEE_ALSO
 #     string_index_first, string_before_first
 function string_after_first() {
-  local tokenString=$1
-  local string="${2:-$(cat)}"
-  echo "${string#*${tokenString}}" # Remove everything up to and including first -
+	local tokenString=$1
+	local string="${2-$(cat)}"
+	echo "${string#*${tokenString}}" # Remove everything up to and including first -
 }
 
 # @NAME
@@ -138,7 +148,7 @@ function string_after_first() {
 # @SEE_ALSO
 #     string_replace
 function escape_sed() {
-  echo "${1}" | sed -e 's/\//\\\//g' -e 's/\&/\\\&/g' -e 's/\./\\\./g' -e 's/\^/\\\^/g' -e 's/\[/\\\[/g' -e 's/\$/\\\$/g'
+	echo "${1}" | sed -e 's/\//\\\//g' -e 's/\&/\\\&/g' -e 's/\./\\\./g' -e 's/\^/\\\^/g' -e 's/\[/\\\[/g' -e 's/\$/\\\$/g'
 }
 export -f escape_sed
 
@@ -149,7 +159,7 @@ export -f escape_sed
 # @DESCRIPTION
 #     **tokenString** the string to search, the preserved character of regular expression will be escaped
 #     **newString** the new value of replacing to, the preserved character of regular expression will be escaped
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_replace 'a' 'b' 'aaa'   ==> 'bbb'
 #     string_replace '$' 'b' 'a$a'   ==> 'aba'
@@ -157,10 +167,10 @@ export -f escape_sed
 # @SEE_ALSO
 #     escape_sed, string_replace_regex
 function string_replace() {
-  local tokenString newString
-  tokenString=$(escape_sed "${1}")
-  newString=$(escape_sed "${2}")
-  echo "${3:-$(cat)}" | sed -e "s/${tokenString}/${newString}/g"
+	local tokenString newString
+	tokenString=$(escape_sed "${1}")
+	newString=$(escape_sed "${2}")
+	echo "${3-$(cat)}" | sed -e "s/${tokenString}/${newString}/g"
 }
 
 # @NAME
@@ -170,7 +180,7 @@ function string_replace() {
 # @DESCRIPTION
 #     **tokenString** the string to search, support regular expression and its modern extension
 #     **newString** the new value of replacing to, support [back-references](https://www.gnu.org/software/sed/manual/html_node/Back_002dreferences-and-Subexpressions.html)
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_replace_regex 'a*' 'b' 'a*a' ==> 'b*b'
 #     string_replace_regex 'a*' 'b' "aaa" ==> 'b'
@@ -178,9 +188,16 @@ function string_replace() {
 # @SEE_ALSO
 #     string_replace
 function string_replace_regex() {
-  echo "${3:-$(cat)}" | sed -E -e "s/$1/$2/g"
+	echo "${3-$(cat)}" | sed -E -e "s/$1/$2/g"
 }
 
+function string_match() {
+	local value regExp
+	value="$1"
+	regExp=${2}
+
+	[[ ${value} =~ ${regExp} ]]
+}
 # @NAME
 #     string_split_to_array -- split a string to array by a delimiter character, then assign the array to a new variable name
 # @SYNOPSIS
@@ -188,7 +205,7 @@ function string_replace_regex() {
 # @DESCRIPTION
 #     **IFS** the delimiter character
 #     **newArrayVarName** the new variable name which the array will be assigned to
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
@@ -198,18 +215,18 @@ function string_replace_regex() {
 # @SEE_ALSO
 #     array_join, array_describe, array_from_describe
 function string_split_to_array() {
-  local newArrayVarName="$2"
-  local string="${3:-$(cat)}"
+	local newArrayVarName="$2"
+	local string="${3-$(cat)}"
 
-  IFS=$1
-  tmp=("${string}")
+	IFS=$1
+	tmp=("${string}")
 
-  command="${newArrayVarName}=(\${tmp[@]})"
-  eval "${command}"
-  unset IFS
+	command="${newArrayVarName}=(\${tmp[@]})"
+	eval "${command}"
+	unset IFS
 }
 
-### Functions array_xxx
+# ## Functions array_xxx
 
 # @NAME
 #     array_join -- join an array to string using IFS
@@ -224,10 +241,15 @@ function string_split_to_array() {
 # @SEE_ALSO
 #     string_split_to_array, array_describe, array_from_describe
 function array_join() {
-  IFS=$1
-  shift
-  echo "$*"
-  unset IFS
+	local delimiter="$1"
+	local array="$2[@]"
+	local result delimiterLength
+	for element in "${!array}"; do
+		result="${result}${element}${delimiter}"
+	done
+
+	delimiterLength=$(string_length "${delimiter}")
+	string_is_empty "${result}" && echo '' || string_sub 0 $((0 - delimiterLength)) "${result}"
 }
 
 # @NAME
@@ -242,7 +264,7 @@ function array_join() {
 # @SEE_ALSO
 #     string_split_to_array, array_join, array_from_describe
 function array_describe() {
-  declare -p "$1" | string_after_first "=" | tr '"' "'"
+	declare -p "$1" | string_after_first "=" | tr '"' "'"
 }
 
 # @NAME
@@ -251,43 +273,162 @@ function array_describe() {
 #     array_from_describe newArrayVarName [string]
 # @DESCRIPTION
 #     **newArrayVarName** the new variable name which the array will be assigned to
-#     **[string]** the string of array describe, if absent, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string of array describe, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     array_from_describe myNewArray "([0]='a' [1]='b')"
 #     array_from_describe myNewArray < fileNameContentString
 # @SEE_ALSO
 #     string_split_to_array, array_join, array_describe
 function array_from_describe() {
-  local newArrayVarName="$1"
-  local string="${2:-$(cat)}"
+	local newArrayVarName="$1"
+	local string="${2-$(cat)}"
 
-  command="${newArrayVarName}=${string}"
-  eval "${command}"
+	command="${newArrayVarName}=${string}"
+	eval "${command}"
 }
 
 # @NAME
 #     array_contains -- exit success code 0 if array contains element, fail if not.
 # @SYNOPSIS
-#     array_contains arrayVarName seekingElement
+#     array_contains arrayVarName [seekingElement]
 # @DESCRIPTION
 #     **arrayVarName** the variable name of array to test
-#     **seekingElement** the element to search in array
+#     **[seekingElement]** the element to search in array, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     arr=("a" "b" "c" "ab" "f" "g")
 #     array_contains arr "ab"
+#     echo "ab" | array_contains arr
 # @SEE_ALSO
 #     array_remove
 function array_contains() {
-  local array="$1[@]"
-  local seeking="$2"
-  local exitCode=1
-  for element in "${!array}"; do
-    if [[ ${element} == "${seeking}" ]]; then
-      exitCode=0
-      break
-    fi
-  done
-  return $exitCode
+	local array="$1[@]"
+	local seeking="${2-$(cat)}"
+	local exitCode=1
+	for element in "${!array}"; do
+		if [[ ${element} == "${seeking}" ]]; then
+			exitCode=0
+			break
+		fi
+	done
+	return $exitCode
+}
+
+function array_sort() {
+	local arrayVarName="$1"
+
+	sorted=($(array_join $'\n' ${arrayVarName} | sort))
+
+	string="\${sorted[@]}"
+	command="${arrayVarName}=(\"${string}\")"
+	eval "${command}"
+}
+
+function array_sort_distinct() {
+	local arrayVarName="$1"
+
+	sorted=($(array_join $'\n' ${arrayVarName} | sort -u))
+
+	string="\${sorted[@]}"
+	command="${arrayVarName}=(\"${string}\")"
+	eval "${command}"
+}
+
+function array_length() {
+	local arrayVarName="$1"
+
+	eval "string='$'{${arrayVarName}[@]}"
+	command="tmp=(\"${string}\")"
+	eval "${command}"
+
+	echo "${#tmp[@]}"
+}
+
+function array_reset_index() {
+	local arrayVarName="$1"
+
+	eval "string='$'{${arrayVarName}[@]}"
+	command="tmp=(\"${string}\")"
+	eval "${command}"
+
+	string="\${tmp[@]}"
+	command="${arrayVarName}=(\"${string}\")"
+	eval "${command}"
+}
+
+function array_equals() {
+	local arrayVarName1="$1"
+	local arrayVarName2="$2"
+	local ignoreOrder=${3:-true}
+	local ignoreDuplicated=${4:-false}
+
+	array_clone "$arrayVarName1" tmp1
+	array_clone "$arrayVarName2" tmp2
+
+	if [ "${ignoreOrder}" = true ]; then
+		if [ "${ignoreDuplicated}" = true ]; then
+			array_sort_distinct tmp1
+			array_sort_distinct tmp2
+		else
+			array_sort tmp1
+			array_sort tmp2
+		fi
+	else
+		array_reset_index tmp1
+		array_reset_index tmp2
+	fi
+
+	[ "$(array_describe tmp1)" == "$(array_describe tmp2)" ]
+}
+
+function array_intersection_distinct() {
+	local array1="$1[@]"
+	local arrayVarName2="$2"
+	local newArrayVarName="$3"
+
+	local tmp=()
+	for element2 in "${!array1}"; do
+		array_contains "$arrayVarName2" "$element2" && array_append tmp "$element2"
+	done
+	array_sort_distinct tmp
+
+	string="\${tmp[@]}"
+	command="${newArrayVarName}=(\"${string}\")"
+	eval "${command}"
+}
+
+function array_subtract_distinct() {
+	local array1="$1[@]"
+	local arrayVarName2="$2"
+	local newArrayVarName="$3"
+
+	local tmp=()
+	for element2 in "${!array1}"; do
+		array_contains "$arrayVarName2" "$element2" || array_append tmp "$element2"
+	done
+	array_sort_distinct tmp
+
+	string="\${tmp[@]}"
+	command="${newArrayVarName}=(\"${string}\")"
+	eval "${command}"
+}
+
+function array_union_distinct() {
+	local array1="$1[@]"
+	local array2="$2[@]"
+	local newArrayVarName="$3"
+
+	local tmp=()
+	for element2 in "${!array1}"; do
+		array_append tmp "$element2"
+	done
+	for element2 in "${!array2}"; do
+		array_append tmp "$element2"
+	done
+	array_sort_distinct tmp
+
+	string="\${tmp[@]}"
+	command="${newArrayVarName}=(\"${string}\")"
+	eval "${command}"
 }
 
 # @NAME
@@ -303,12 +444,12 @@ function array_contains() {
 # @SEE_ALSO
 #     array_remove
 function array_append() {
-  local arrayVarName="$1"
-  shift
-  for elementToAppend in "$@"; do
-    command="$arrayVarName+=(\"${elementToAppend}\")"
-    eval "${command}"
-  done
+	local arrayVarName="$1"
+	shift
+	for elementToAppend in "$@"; do
+		command="$arrayVarName+=(\"${elementToAppend}\")"
+		eval "${command}"
+	done
 }
 
 # @NAME
@@ -324,22 +465,29 @@ function array_append() {
 # @SEE_ALSO
 #     array_contains, array_append
 function array_remove() {
-  local arrayVarName="$1"
-  local element="$2"
+	local arrayVarName="$1"
+	local element="$2"
 
-  eval "string='$'{${arrayVarName}[@]}"
-  command="tmp=(\"${string}\")"
-  eval "${command}"
+	eval "string='$'{${arrayVarName}[@]}"
+	command="tmp=(\"${string}\")"
+	eval "${command}"
 
-  for index in "${!tmp[@]}"; do
-    if [[ "${tmp[$index]}" == "${element}" ]]; then
-      unset tmp["${index}"]
-    fi
-  done
+	for index in "${!tmp[@]}"; do
+		if [[ "${tmp[$index]}" == "${element}" ]]; then
+			unset tmp["${index}"]
+		fi
+	done
 
-  string="\${tmp[@]}"
-  command="${arrayVarName}=(\"${string}\")"
-  eval "${command}"
+	string="\${tmp[@]}"
+	command="${arrayVarName}=(\"${string}\")"
+	eval "${command}"
+}
+
+function array_clone() {
+	local arrayVarName="$1"
+	local arrayVarName2="$2"
+
+	array_from_describe "$arrayVarName2" "$(array_describe "$arrayVarName")"
 }
 
 # @NAME
@@ -355,22 +503,39 @@ function array_remove() {
 #     array_map arr newArray "string_trim | wc -m | string_trim"
 # @SEE_ALSO
 function array_map() {
-  local array="$1[@]"
-  local newArrayVarName="$2"
-  local pipedOperators="$3"
+	local array="$1[@]"
+	local newArrayVarName="$2"
+	local pipedOperators="$3"
 
-  tmp=()
-  for element in "${!array}"; do
-    mapped_value=$(eval "echo '${element}' | ${pipedOperators}")
-    tmp+=("${mapped_value}")
-  done
+	tmp=()
+	for element in "${!array}"; do
+		mapped_value=$(eval "echo '${element}' | ${pipedOperators}")
+		tmp+=("${mapped_value}")
+	done
 
-  string="\${tmp[@]}"
-  command="${newArrayVarName}=(\"${string}\")"
-  eval "${command}"
+	string="\${tmp[@]}"
+	command="${newArrayVarName}=(\"${string}\")"
+	eval "${command}"
 }
 
-### Functions args_xxx
+function array_filter() {
+	local array="$1[@]"
+	local newArrayVarName="$2"
+	local regExp=$3
+
+	tmp=()
+	for element in "${!array}"; do
+		if [[ ${element} =~ ${regExp} ]]; then
+			array_append tmp "${element}"
+		fi
+	done
+
+	string="\${tmp[@]}"
+	command="${newArrayVarName}=(\"${string}\")"
+	eval "${command}"
+}
+
+# ## Functions args_xxx
 
 # @NAME
 #     args_parse -- parse the script argument values to positional variable names, process firstly the optional param help(-h) / quiet(-q) if existed
@@ -382,32 +547,32 @@ function array_map() {
 #     args_parse $# "$@" newVar1 newVar2 newVar3
 # @SEE_ALSO
 function args_parse() {
-  nbArgValues=$1
-  shift 1
-  nbPositionalVarNames=$(($# - nbArgValues))
+	nbArgValues=$1
+	shift 1
+	nbPositionalVarNames=$(($# - nbArgValues))
 
-  while getopts ":qh" option; do
-    case ${option} in
-    q)
-      modeQuiet="true"
-      ;;
-    h)
-      echo -e "${USAGE}"
-      exit 0
-      ;;
-    \?)
-      echo -e "${COLOR_BOLD_RED}Error: invalid option: -$OPTARG ${COLOR_END}" >&2
-      ;;
-    esac
-  done
-  shift $((OPTIND - 1))
+	while getopts ":qh" option; do
+		case ${option} in
+		q)
+			modeQuiet="true"
+			;;
+		h)
+			echo -e "${USAGE}"
+			exit 0
+			;;
+		\?)
+			echo -e "${COLOR_BOLD_RED}Error: invalid option: -$OPTARG ${COLOR_END}" >&2
+			;;
+		esac
+	done
+	shift $((OPTIND - 1))
 
-  nbPositionalArgValues=$((nbArgValues - OPTIND + 1))
-  positionalArgValues=("${@:1:nbPositionalArgValues}")
-  positionalVarNames=("${@:nbPositionalArgValues+1:nbPositionalVarNames}")
-  for i in $(seq 0 $((nbPositionalVarNames - 1))); do
-    eval "${positionalVarNames[i]}='${positionalArgValues[i]}'"
-  done
+	nbPositionalArgValues=$((nbArgValues - OPTIND + 1))
+	positionalArgValues=("${@:1:nbPositionalArgValues}")
+	positionalVarNames=("${@:nbPositionalArgValues+1:nbPositionalVarNames}")
+	for i in $(seq 0 $((nbPositionalVarNames - 1))); do
+		eval "${positionalVarNames[i]}='${positionalArgValues[i]}'"
+	done
 }
 
 # @NAME
@@ -427,25 +592,25 @@ function args_parse() {
 # @SEE_ALSO
 #     args_valid_or_select_pipe, args_valid_or_read
 function args_valid_or_select() {
-  local valueVarName validValuesVarName prompt value validValues
-  valueVarName="${1}"
-  validValuesVarName=$2
-  prompt="${3}"
+	local valueVarName validValuesVarName prompt value validValues
+	valueVarName="${1}"
+	validValuesVarName=$2
+	prompt="${3}"
 
-  value=$(eval eval "echo '$'${valueVarName}")
-  validValues=("${validValuesVarName[@]}")
+	value=$(eval eval "echo '$'${valueVarName}")
+	validValues=("${validValuesVarName[@]}")
 
-  while ! array_contains "${validValuesVarName}" "${value}"; do
-    echo -e "\n${prompt} ?"
-    [[ -n "${value}" ]] && echo -e "${COLOR_BOLD_RED}The input '${value}' is not valid.${COLOR_END}"
+	while ! array_contains "${validValuesVarName}" "${value}"; do
+		echo -e "\n${prompt} ?"
+		[[ -n "${value}" ]] && echo -e "${COLOR_BOLD_RED}The input '${value}' is not valid.${COLOR_END}"
 
-    PS3="choose one by ${COLOR_BOLD_BLACK}number${COLOR_END} [1|2|...] ? "
-    select value in "${!validValues}"; do
-      break
-    done
-  done
-  eval "${valueVarName}='${value}'"
-  printf "Selected value: ${COLOR_BLUE}'%s'${COLOR_END}\n" "$(eval echo '$'"${valueVarName}")"
+		PS3="choose one by ${COLOR_BOLD_BLACK}number${COLOR_END} [1|2|...] ? "
+		select value in "${!validValues}"; do
+			break
+		done
+	done
+	eval "${valueVarName}='${value}'"
+	printf "Selected value: ${COLOR_BLUE}'%s'${COLOR_END}\n" "$(eval echo '$'"${valueVarName}")"
 }
 
 # @NAME
@@ -462,13 +627,13 @@ function args_valid_or_select() {
 # @SEE_ALSO
 #     args_valid_or_select, args_valid_or_read
 function args_valid_or_select_pipe() {
-  local valueVarName validValues prompt
-  valueVarName="${1}"
-  validValues="${2}"
-  prompt="${3}"
+	local valueVarName validValues prompt
+	valueVarName="${1}"
+	validValues="${2}"
+	prompt="${3}"
 
-  string_split_to_array '|' newArray "$validValues"
-  args_valid_or_select "${valueVarName}" newArray "$prompt"
+	string_split_to_array '|' newArray "$validValues"
+	args_valid_or_select "${valueVarName}" newArray "$prompt"
 }
 
 # @NAME
@@ -487,27 +652,27 @@ function args_valid_or_select_pipe() {
 # @SEE_ALSO
 #     args_valid_or_select, args_valid_or_select_pipe
 function args_valid_or_read() {
-  local value regExp prompt proposedValue
-  value=$(eval eval "echo '$'$1")
-  regExp=${2}
-  prompt="${3}"
-  proposedValue="${4}"
+	local value regExp prompt proposedValue
+	value=$(eval eval "echo '$'$1")
+	regExp=${2}
+	prompt="${3}"
+	proposedValue="${4}"
 
-  if [[ -n "${proposedValue}" ]]; then
-    prompt="${prompt} [${proposedValue}]"
-    if [[ -z "${value}" && "${modeQuiet}" == "true" ]]; then
-      value="${proposedValue}"
-    fi
-  fi
-  while ! [[ ${value} =~ ${regExp} ]]; do
-    [[ -n "${value}" ]] && echo -e "${COLOR_BOLD_RED}The input '${value}' is not valid, please input again.${COLOR_END}"
-    read -r -p "${prompt}: " value
-    if [[ -z "${value}" ]]; then
-      value="${proposedValue}"
-    fi
-  done
-  eval "${1}='${value}'"
-  printf "Inputted value: ${COLOR_BLUE}'%s'${COLOR_END}\n" "$(eval echo '$'"${1}")"
+	if [[ -n "${proposedValue}" ]]; then
+		prompt="${prompt} [${proposedValue}]"
+		if [[ -z "${value}" && "${modeQuiet}" == "true" ]]; then
+			value="${proposedValue}"
+		fi
+	fi
+	while ! [[ ${value} =~ ${regExp} ]]; do
+		[[ -n "${value}" ]] && echo -e "${COLOR_BOLD_RED}The input '${value}' is not valid, please input again.${COLOR_END}"
+		read -r -p "${prompt}: " value
+		if [[ -z "${value}" ]]; then
+			value="${proposedValue}"
+		fi
+	done
+	eval "${1}='${value}'"
+	printf "Inputted value: ${COLOR_BLUE}'%s'${COLOR_END}\n" "$(eval echo '$'"${1}")"
 }
 
 # @NAME
@@ -523,11 +688,11 @@ function args_valid_or_read() {
 # @SEE_ALSO
 #     args_confirm
 function args_print() {
-  for varName in "$@"; do
-    varValue=$(eval echo '$'"${varName}")
-    varValueOutput=$([[ -z "${varValue}" ]] && echo "${COLOR_BOLD_RED}<NULL>${COLOR_END}" || echo "${COLOR_BLUE}${varValue}${COLOR_END}")
-    printf "%-30.30s%s\n" "${varName}:" "${varValueOutput}"
-  done
+	for varName in "$@"; do
+		varValue=$(eval echo '$'"${varName}")
+		varValueOutput=$([[ -z "${varValue}" ]] && echo "${COLOR_BOLD_RED}<NULL>${COLOR_END}" || echo "${COLOR_BLUE}${varValue}${COLOR_END}")
+		printf "%-30.30s%s\n" "${varName}:" "${varValueOutput}"
+	done
 }
 
 # @NAME
@@ -543,24 +708,24 @@ function args_print() {
 # @SEE_ALSO
 #     args_print
 function args_confirm() {
-  args_print "$@"
-  if ! [[ "${modeQuiet}" == "true" ]]; then
-    read -r -p "Continue ? [y/N] " response
+	args_print "$@"
+	if ! [[ "${modeQuiet}" == "true" ]]; then
+		read -r -p "Continue ? [y/N] " response
 
-    case "${response}" in
-    [yY][eE][sS] | [yY])
-      echo -e "Starting..."
-      sleep 3s
-      ;;
-    *)
-      echo -e "Exiting..."
-      exit 1
-      ;;
-    esac
-  fi
+		case "${response}" in
+		[yY][eE][sS] | [yY])
+			echo -e "Starting..."
+			sleep 3s
+			;;
+		*)
+			echo -e "Exiting..."
+			exit 1
+			;;
+		esac
+	fi
 }
 
-### Functions reflect_xxx
+# ## Functions reflect_xxx
 
 # @NAME
 #     reflect_function_definitions_of_bash_base -- print the definitions of functions in bash-base and its caller script
@@ -572,7 +737,7 @@ function args_confirm() {
 # @SEE_ALSO
 #     reflect_function_names_of_file
 function reflect_all_function_definitions() {
-  declare -f
+	declare -f
 }
 
 # @NAME
@@ -587,7 +752,7 @@ function reflect_all_function_definitions() {
 # @SEE_ALSO
 #     reflect_all_function_definitions
 function reflect_function_names_of_file() {
-  grep "^[[:space:]]*function " "$0" | cut -d'(' -f1 | sed -e "s/function//"
+	grep "^[[:space:]]*function " "$1" | cut -d'(' -f1 | sed -e "s/function//"
 }
 
 # @NAME
@@ -599,23 +764,55 @@ function reflect_function_names_of_file() {
 #     reflect_function_names_of_file
 # @SEE_ALSO
 function reflect_all_variables() {
-  declare -p
+	declare -p
 }
 
-### Functions doc_xxx
+# ## Functions doc_xxx
 
 # @NAME
-#     reflect_all_variables -- print all the variables
+# reflect_all_variables -- print all the variables
 # @SYNOPSIS
-#     reflect_function_names_of_file
+#  reflect_function_names_of_file
 # @DESCRIPTION
 # @EXAMPLES
 #     reflect_function_names_of_file
 # @SEE_ALSO
-function doc_check_script_comment() {
-  local fromShellFile="$1"
+function doc_lint_script_comment() {
+	local fromShellFile="$1"
 
-  sed -E -i '' "s|#\s*(@.*)|# \1|g" "${fromShellFile}"
+  local element
+  # shell format
+  docker run -it --rm -v "$(pwd)":/project -w /project jamesmstone/shfmt -l -w "${fromShellFile}"
+
+	# format the comment
+	sed -E -i '' \
+		-e "s/^#[[:space:]]*/#/g" \
+		-e "s/^#/#     /g" \
+		-e "s/^#[[:space:]]*@/# @/g" \
+		-e "s/^#[[:space:]]*(#+)/# \1/g" \
+		"${fromShellFile}"
+
+	# valid comment tags by man page convention
+	functionNames=( $( reflect_function_names_of_file "${fromShellFile}" ) )
+	nbFunctions=$(array_length functionNames)
+
+  functionComments=$(grep -e '^# @' -e '^function ' example/bash-base.test.sh | string_replace_regex '\(\)|#' '' | string_trim)
+  string_split_to_array "{" arrFunctions "${functionComments}"
+  minTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
+  for element3 in "${arrFunctions[@]}"; do
+    string_split_to_array $'\n' arrComments "${element3}"
+    array_intersection_distinct arrComments minTags result
+    array_equals minTags result
+    if [[ $? -ne 0 ]]; then
+      ((counter++))
+      echo "${COLOR_BOLD_RED}ERROR: The comments is not the same as template for ${arrComments[-1]} ${COLOR_END}"
+    fi
+  done
+
+  if (( counter > 0)); then
+    echo "there are ${counter} functions has invalid comments"
+    exit 1
+  fi
 }
 
 # @NAME
@@ -630,17 +827,17 @@ function doc_check_script_comment() {
 # @SEE_ALSO
 #     doc_markdown_to_manpage, doc_check_script_comment
 function doc_comment_to_markdown() {
-  local fromShellFile="$1"
-  local toMarkdownFile="$2"
+	local fromShellFile="$1"
+	local toMarkdownFile="$2"
 
-  grep '^\s*#' "${fromShellFile}" |
-  string_trim |
-  string_replace_regex '^#' '' |
-  string_replace_regex '!.*' '' |
-  string_trim |
-  string_replace_regex '@NAME' "${SED_NEW_LINE}---${SED_NEW_LINE}@NAME" |
-  string_replace_regex '@' "${SED_NEW_LINE}##### " |
-  cat > "${toMarkdownFile}"
+	grep '^\s*#' "${fromShellFile}" |
+		string_trim |
+		string_replace_regex '^#' '' |
+		string_replace_regex '!.*' '' |
+		string_trim |
+		string_replace_regex '@NAME' "${SED_NEW_LINE}---${SED_NEW_LINE}@NAME" |
+		string_replace_regex '@' "${SED_NEW_LINE}##### " |
+		cat >"${toMarkdownFile}"
 }
 
 # @NAME
@@ -657,16 +854,16 @@ function doc_comment_to_markdown() {
 # @SEE_ALSO
 #     doc_comment_to_markdown, doc_check_script_comment
 function doc_markdown_to_manpage() {
-  local fromMarkdownFile="$1"
-  local toManPageFile="$2"
-  local strManHeader="${3:-''}"
-  local pandocVersion="${4:-2.10}"
+	local fromMarkdownFile="$1"
+	local toManPageFile="$2"
+	local strManHeader="${3:-''}"
+	local pandocVersion="${4:-2.10}"
 
-  docker run --rm --volume "$(pwd):/data" --user `id -u`:`id -g` pandoc/core:${pandocVersion} -f markdown -t man --standalone "{fromMarkdownFile}" --variable=section:1 --variable=header:"${strManHeader}" -o ${toManPageFile}.1
-  man "${toManPageFile}.1"
+	docker run --rm --volume "$(pwd):/data" --user $(id -u):$(id -g) pandoc/core:${pandocVersion} -f markdown -t man --standalone "{fromMarkdownFile}" --variable=section:1 --variable=header:"${strManHeader}" -o ${toManPageFile}.1
+	man "${toManPageFile}.1"
 }
 
-### Functions others
+# ## Functions others
 
 # @NAME
 #     print_header -- print the header value with prefix '\n###' and bold font
@@ -678,7 +875,7 @@ function doc_markdown_to_manpage() {
 #     print_header "My header1"
 # @SEE_ALSO
 function print_header() {
-  echo -e "${COLOR_BOLD_BLACK}\n### $* ${COLOR_END}"
+	echo -e "${COLOR_BOLD_BLACK}\n### $* ${COLOR_END}"
 }
 
 # @NAME
@@ -693,10 +890,10 @@ function print_header() {
 #     stop_if_failed "ERROR: can't delete the directory '${destProjectPath}' !"
 # @SEE_ALSO
 function stop_if_failed() {
-  if [[ $? -ne 0 ]]; then
-    echo -e "${COLOR_BOLD_RED}${1} ${COLOR_END}\n"
-    exit 1
-  fi
+	if [[ $? -ne 0 ]]; then
+		echo -e "${COLOR_BOLD_RED}${1} ${COLOR_END}\n"
+		exit 1
+	fi
 }
 
 # @NAME
@@ -714,5 +911,5 @@ function stop_if_failed() {
 #     EOF
 # @SEE_ALSO
 function declare_heredoc() {
-  eval "$1='$(cat)'"
+	eval "$1='$(cat)'"
 }

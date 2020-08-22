@@ -322,6 +322,22 @@ Describe 'string_index_first'
         The output should eq "2"
     End
 
+    It 'find newline'
+        When call string_index_first $'\n' $'A D\nB\nC'
+        The output should eq 3
+    End
+
+    It 'with heredoc'
+        declare_heredoc var <<-EOF
+AB
+CD
+EF
+EOF
+
+        When call string_index_first $'\n' "${var}"
+        The output should eq "2"
+    End
+
     It 'with file'
         cat > temp_file.txt <<-EOF
 ABCD
@@ -341,6 +357,11 @@ Describe array_contains
 
     It 'found'
         When call array_contains arr "ab"
+        The status should be success
+    End
+
+    It 'found pipe'
+        When call eval 'echo "ab" | array_contains arr'
         The status should be success
     End
 
@@ -383,10 +404,10 @@ Describe 'array_map'
 End
 
 
-Describe 'array_join'
+fDescribe 'array_join'
     It '-'
         arr=(" a " " b c ")
-        When call array_join '|' "${arr[@]}"
+        When call array_join '|' arr
         The output should eq " a | b c "
     End
 End
