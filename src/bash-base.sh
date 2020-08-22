@@ -1,19 +1,19 @@
-#     !/usr/bin/env bash
+#!/usr/bin/env bash
 
 # ## Constants
-#     - **THIS_SCRIPT_NAME:** the main script name
+# - **THIS_SCRIPT_NAME:** the main script name
 THIS_SCRIPT_NAME="$(basename "$0")"
-#     - **SED_NEW_LINE:** return and new line, used with sed
+# - **SED_NEW_LINE:** return and new line, used with sed
 SED_NEW_LINE="\\$(echo -e '\r\n')"
-#     - **COLOR_BOLD_BLACK:** Header
+# - **COLOR_BOLD_BLACK:** Header
 COLOR_BOLD_BLACK=$'\e[1;30m'
-#     - **COLOR_BOLD_RED:** Error, KO
+# - **COLOR_BOLD_RED:** Error, KO
 COLOR_BOLD_RED=$'\e[1;91m'
-#     - **COLOR_BOLD_GREEN:** OK
+# - **COLOR_BOLD_GREEN:** OK
 COLOR_BOLD_GREEN=$'\e[1;32m'
-#     - **COLOR_BLUE:** Value
+# - **COLOR_BLUE:** Value
 COLOR_BLUE=$'\e[0;34m'
-#     - **COLOR_END:** for others, reset to default
+# - **COLOR_END:** for others, reset to default
 COLOR_END=$'\e[0m'
 export THIS_SCRIPT_NAME SED_NEW_LINE COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_GREEN COLOR_BLUE COLOR_END
 
@@ -24,7 +24,7 @@ export THIS_SCRIPT_NAME SED_NEW_LINE COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_
 # @SYNOPSIS
 #     string_trim [string]
 # @DESCRIPTION
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_trim " as fd "
 #     string_trim < logfile
@@ -39,7 +39,7 @@ function string_trim() {
 # @SYNOPSIS
 #     string_length [string]
 # @DESCRIPTION
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_length " as fd "
 #     string_length < logfile
@@ -54,9 +54,9 @@ function string_length() {
 }
 
 function string_is_empty() {
-  local string="${1-$(cat)}"
+	local string="${1-$(cat)}"
 
-  [[ $(string_length "$string") -eq 0 ]]
+	[[ $(string_length "$string") -eq 0 ]]
 }
 
 # @NAME
@@ -66,7 +66,7 @@ function string_is_empty() {
 # @DESCRIPTION
 #     **startIndex** the index of first character in string, 0 based, may negative
 #     **subStringLength** the length of sub string, 0 based, may negative
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_sub -5 -1 " as fd "
 #     string_sub 3 5 < temp_file.txt
@@ -85,7 +85,7 @@ function string_sub() {
 #     string_index_first tokenString [string]
 # @DESCRIPTION
 #     **tokenString** the string to search
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_index_first " as fd " "s f"
 #     string_index_first "token" < logfile
@@ -105,7 +105,7 @@ function string_index_first() {
 #     string_before_first tokenString [string]
 # @DESCRIPTION
 #     **tokenString** the string to search
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_before_first " as fd " "s f"
 #     string_before_first "str" < logfile
@@ -124,7 +124,7 @@ function string_before_first() {
 #     string_after_first tokenString [string]
 # @DESCRIPTION
 #     **tokenString** the string to search
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_after_first " as fd " "s f"
 #     string_after_first "str" < logfile
@@ -159,7 +159,7 @@ export -f escape_sed
 # @DESCRIPTION
 #     **tokenString** the string to search, the preserved character of regular expression will be escaped
 #     **newString** the new value of replacing to, the preserved character of regular expression will be escaped
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_replace 'a' 'b' 'aaa'   ==> 'bbb'
 #     string_replace '$' 'b' 'a$a'   ==> 'aba'
@@ -180,7 +180,7 @@ function string_replace() {
 # @DESCRIPTION
 #     **tokenString** the string to search, support regular expression and its modern extension
 #     **newString** the new value of replacing to, support [back-references](https://www.gnu.org/software/sed/manual/html_node/Back_002dreferences-and-Subexpressions.html)
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     string_replace_regex 'a*' 'b' 'a*a' ==> 'b*b'
 #     string_replace_regex 'a*' 'b' "aaa" ==> 'b'
@@ -198,6 +198,7 @@ function string_match() {
 
 	[[ ${value} =~ ${regExp} ]]
 }
+
 # @NAME
 #     string_split_to_array -- split a string to array by a delimiter character, then assign the array to a new variable name
 # @SYNOPSIS
@@ -205,7 +206,7 @@ function string_match() {
 # @DESCRIPTION
 #     **IFS** the delimiter character
 #     **newArrayVarName** the new variable name which the array will be assigned to
-#     **[string]** the string to process, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
@@ -273,7 +274,7 @@ function array_describe() {
 #     array_from_describe newArrayVarName [string]
 # @DESCRIPTION
 #     **newArrayVarName** the new variable name which the array will be assigned to
-#     **[string]** the string of array describe, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[string]** the string of array describe, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     array_from_describe myNewArray "([0]='a' [1]='b')"
 #     array_from_describe myNewArray < fileNameContentString
@@ -293,7 +294,7 @@ function array_from_describe() {
 #     array_contains arrayVarName [seekingElement]
 # @DESCRIPTION
 #     **arrayVarName** the variable name of array to test
-#     **[seekingElement]** the element to search in array, if absent or **empty string**, it will be read from the standard input (CTRL+D to end)
+#     **[seekingElement]** the element to search in array, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     arr=("a" "b" "c" "ab" "f" "g")
 #     array_contains arr "ab"
@@ -770,18 +771,18 @@ function reflect_all_variables() {
 # ## Functions doc_xxx
 
 # @NAME
-# reflect_all_variables -- print all the variables
+#     reflect_all_variables -- print all the variables
 # @SYNOPSIS
-#  reflect_function_names_of_file
+#     reflect_function_names_of_file
 # @DESCRIPTION
 # @EXAMPLES
 #     reflect_function_names_of_file
 # @SEE_ALSO
 function doc_lint_script_comment() {
 	local fromShellFile="$1"
-  local element
-  # shell format
-  docker run -it --rm -v "$(pwd)":/project -w /project jamesmstone/shfmt -l -w "${fromShellFile}"
+	local element
+	# shell format
+	docker run -it --rm -v "$(pwd)":/project -w /project jamesmstone/shfmt -l -w "${fromShellFile}"
 
 	# format the comment
 	sed -E -i '' \
@@ -789,31 +790,31 @@ function doc_lint_script_comment() {
 		-e "s/^#/#     /g" \
 		-e "s/^#[[:space:]]*@/# @/g" \
 		-e "s/^#[[:space:]]*!/#!/g" \
-		-e "s/^#[[:space:]]*-/#-/g" \
+		-e "s/^#[[:space:]]*-/# -/g" \
 		-e "s/^#[[:space:]]*(#+)/# \1/g" \
 		"${fromShellFile}"
 
 	# valid comment tags by man page convention
-	functionNames=( $( reflect_function_names_of_file "${fromShellFile}" ) )
+	functionNames=($(reflect_function_names_of_file "${fromShellFile}"))
 	nbFunctions=$(array_length functionNames)
 
-  functionComments=$(grep -e '^# @' -e '^function ' example/bash-base.test.sh | string_replace_regex '\(\)|#' '' | string_trim)
-  string_split_to_array "{" arrFunctions "${functionComments}"
-  minTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
-  for element3 in "${arrFunctions[@]}"; do
-    string_split_to_array $'\n' arrComments "${element3}"
-    array_intersection_distinct minTags arrComments intersection
-    array_equals minTags intersection
-    if [[ $? -ne 0 ]]; then
-      ((counter++))
-      print_error "the comments is not the same as template for ${arrComments[-1]}"
-    fi
-  done
+	functionComments=$(grep -e '^# @' -e '^function ' example/bash-base.test.sh | string_replace_regex '\(\)|#' '' | string_trim)
+	string_split_to_array "{" arrFunctions "${functionComments}"
+	minTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
+	for element3 in "${arrFunctions[@]}"; do
+		string_split_to_array $'\n' arrComments "${element3}"
+		array_intersection_distinct minTags arrComments intersection
+		array_equals minTags intersection
+		if [[ $? -ne 0 ]]; then
+			((counter++))
+			print_error "the comments is not the same as template for ${arrComments[-1]}"
+		fi
+	done
 
-  if (( counter > 0)); then
-    echo "there are ${counter} functions has invalid comments"
-    exit 1
-  fi
+	if ((counter > 0)); then
+		echo "there are ${counter} functions has invalid comments"
+		exit 1
+	fi
 }
 
 # @NAME
