@@ -602,7 +602,7 @@ function args_valid_or_select() {
 
 	while ! array_contains "${validValuesVarName}" "${value}"; do
 		echo -e "\n${prompt} ?"
-		[[ -n "${value}" ]] && echo -e "${COLOR_BOLD_RED}The input '${value}' is not valid.${COLOR_END}"
+		[[ -n "${value}" ]] && print_error "the input '${value}' is not valid."
 
 		PS3="choose one by ${COLOR_BOLD_BLACK}number${COLOR_END} [1|2|...] ? "
 		select value in "${!validValues}"; do
@@ -665,7 +665,7 @@ function args_valid_or_read() {
 		fi
 	fi
 	while ! [[ ${value} =~ ${regExp} ]]; do
-		[[ -n "${value}" ]] && echo -e "${COLOR_BOLD_RED}The input '${value}' is not valid, please input again.${COLOR_END}"
+		[[ -n "${value}" ]] && print_error "the input '${value}' is not valid, please input again."
 		read -r -p "${prompt}: " value
 		if [[ -z "${value}" ]]; then
 			value="${proposedValue}"
@@ -690,7 +690,7 @@ function args_valid_or_read() {
 function args_print() {
 	for varName in "$@"; do
 		varValue=$(eval echo '$'"${varName}")
-		varValueOutput=$([[ -z "${varValue}" ]] && echo "${COLOR_BOLD_RED}<NULL>${COLOR_END}" || echo "${COLOR_BLUE}${varValue}${COLOR_END}")
+		varValueOutput=$([[ -z "${varValue}" ]] && print_error "<NULL>" || echo "${COLOR_BLUE}${varValue}${COLOR_END}")
 		printf "%-30.30s%s\n" "${varName}:" "${varValueOutput}"
 	done
 }
@@ -779,7 +779,6 @@ function reflect_all_variables() {
 # @SEE_ALSO
 function doc_lint_script_comment() {
 	local fromShellFile="$1"
-
   local element
   # shell format
   docker run -it --rm -v "$(pwd)":/project -w /project jamesmstone/shfmt -l -w "${fromShellFile}"
@@ -789,6 +788,7 @@ function doc_lint_script_comment() {
 		-e "s/^#[[:space:]]*/#/g" \
 		-e "s/^#/#     /g" \
 		-e "s/^#[[:space:]]*@/# @/g" \
+		-e "s/^#[[:space:]]*!/#!/g" \
 		-e "s/^#[[:space:]]*(#+)/# \1/g" \
 		"${fromShellFile}"
 
@@ -801,11 +801,11 @@ function doc_lint_script_comment() {
   minTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
   for element3 in "${arrFunctions[@]}"; do
     string_split_to_array $'\n' arrComments "${element3}"
-    array_intersection_distinct arrComments minTags result
-    array_equals minTags result
+    array_intersection_distinct minTags arrComments intersection
+    array_equals minTags intersection
     if [[ $? -ne 0 ]]; then
       ((counter++))
-      echo "${COLOR_BOLD_RED}ERROR: The comments is not the same as template for ${arrComments[-1]} ${COLOR_END}"
+      print_error "the comments is not the same as template for ${arrComments[-1]}"
     fi
   done
 
@@ -878,6 +878,9 @@ function print_header() {
 	echo -e "${COLOR_BOLD_BLACK}\n### $* ${COLOR_END}"
 }
 
+function print_error() {
+	echo -e "${COLOR_BOLD_RED}\nERROR: $* ${COLOR_END}"
+}
 # @NAME
 #     stop_if_failed -- stop the execute if last command exit with fail code (no zero)
 # @SYNOPSIS
