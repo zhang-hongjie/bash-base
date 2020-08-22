@@ -561,7 +561,7 @@ function args_parse() {
 			exit 0
 			;;
 		\?)
-			echo -e "${COLOR_BOLD_RED}Error: invalid option: -$OPTARG ${COLOR_END}" >&2
+			print_error "invalid option: -$OPTARG" >&2
 			;;
 		esac
 	done
@@ -789,6 +789,7 @@ function doc_lint_script_comment() {
 		-e "s/^#/#     /g" \
 		-e "s/^#[[:space:]]*@/# @/g" \
 		-e "s/^#[[:space:]]*!/#!/g" \
+		-e "s/^#[[:space:]]*-/#-/g" \
 		-e "s/^#[[:space:]]*(#+)/# \1/g" \
 		"${fromShellFile}"
 
@@ -879,7 +880,7 @@ function print_header() {
 }
 
 function print_error() {
-	echo -e "${COLOR_BOLD_RED}\nERROR: $* ${COLOR_END}"
+	echo -e "${COLOR_BOLD_RED}ERROR: $* ${COLOR_END}"
 }
 # @NAME
 #     stop_if_failed -- stop the execute if last command exit with fail code (no zero)
@@ -894,7 +895,7 @@ function print_error() {
 # @SEE_ALSO
 function stop_if_failed() {
 	if [[ $? -ne 0 ]]; then
-		echo -e "${COLOR_BOLD_RED}${1} ${COLOR_END}\n"
+		print_error "${1}"
 		exit 1
 	fi
 }

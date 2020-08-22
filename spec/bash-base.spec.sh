@@ -597,7 +597,7 @@ Describe args_parse
         The variable var1 should be undefined
         The variable var2 should be undefined
         The status should be success
-        The error should include "Error: invalid option: -d"
+        The error should include "ERROR: invalid option: -d"
     End
 End
 
@@ -676,7 +676,7 @@ Describe 'stop_if_failed'
     It 'command not found'
         func() { eval "a_function_not_existed; stop_if_failed 'error occurred'"; }
         When run func
-        The output should include "${COLOR_BOLD_RED}error occurred ${COLOR_END}"
+        The output should include "${COLOR_BOLD_RED}ERROR: error occurred ${COLOR_END}"
         The error should include "a_function_not_existed: command not found"
         The status should be failure
     End
@@ -687,7 +687,7 @@ Describe 'stop_if_failed'
         }
         func() { eval "a_function_exit_error; stop_if_failed 'error occurred'"; }
         When run func
-        The output should include "${COLOR_BOLD_RED}error occurred ${COLOR_END}"
+        The output should include "${COLOR_BOLD_RED}ERROR: error occurred ${COLOR_END}"
         The status should be failure
     End
 End
