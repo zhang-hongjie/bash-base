@@ -210,7 +210,7 @@ function string_match() {
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
-#     
+#
 #     branchesToSelectString=$(git branch -r --list  'origin/*')
 #     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
@@ -865,8 +865,9 @@ function doc_comment_to_markdown() {
 		string_replace_regex '^#' '' |
 		string_replace_regex '!.*' '' |
 		string_trim |
-		string_replace_regex '@NAME' "${SED_NEW_LINE}---${SED_NEW_LINE}@NAME" |
-		string_replace_regex '@' "${SED_NEW_LINE}##### " |
+		string_replace_regex '^@NAME' "${SED_NEW_LINE}---${SED_NEW_LINE}@NAME" |
+		string_replace_regex '^\*\*' "- \*\*" |
+		string_replace_regex '^@' "${SED_NEW_LINE}##### " |
 		cat >"${toMarkdownFile}"
 }
 
