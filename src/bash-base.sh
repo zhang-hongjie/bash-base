@@ -46,10 +46,10 @@ function string_trim() {
 #     echo " add " | string_length
 # @SEE_ALSO
 function string_length() {
-	local string="${1-$(cat)}"
+	local string index
+	string="${1-$(cat)}"
 
 	index=$(string_index_first $'\n' "${string}")
-
 	[[ "${index}" -ge 0 ]] && expr "${string}" : '.*' || echo "${#string}"
 }
 
@@ -95,7 +95,7 @@ function string_sub() {
 function string_index_first() {
 	local tokenString=$1
 	local string="${2-$(cat)}"
-	prefix="${string%%${tokenString}*}"
+	local prefix="${string%%${tokenString}*}"
 	[ "${string}" == "${prefix}" ] && echo -1 || echo ${#prefix}
 }
 
@@ -210,7 +210,7 @@ function string_match() {
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
-#
+#     
 #     branchesToSelectString=$(git branch -r --list  'origin/*')
 #     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
@@ -219,10 +219,10 @@ function string_split_to_array() {
 	local newArrayVarName="$2"
 	local string="${3-$(cat)}"
 
-	IFS=$1
-	tmp=("${string}")
+	local IFS=$1
+	local tmp=("${string}")
 
-	command="${newArrayVarName}=(\${tmp[@]})"
+	local command="${newArrayVarName}=(\${tmp[@]})"
 	eval "${command}"
 	unset IFS
 }
@@ -244,7 +244,8 @@ function string_split_to_array() {
 function array_join() {
 	local delimiter="$1"
 	local array="$2[@]"
-	local result delimiterLength
+
+	local element result delimiterLength
 	for element in "${!array}"; do
 		result="${result}${element}${delimiter}"
 	done
@@ -284,7 +285,7 @@ function array_from_describe() {
 	local newArrayVarName="$1"
 	local string="${2-$(cat)}"
 
-	command="${newArrayVarName}=${string}"
+	local command="${newArrayVarName}=${string}"
 	eval "${command}"
 }
 
@@ -304,7 +305,9 @@ function array_from_describe() {
 function array_contains() {
 	local array="$1[@]"
 	local seeking="${2-$(cat)}"
-	local exitCode=1
+
+	local exitCode element
+	exitCode=1
 	for element in "${!array}"; do
 		if [[ ${element} == "${seeking}" ]]; then
 			exitCode=0
@@ -317,25 +320,26 @@ function array_contains() {
 function array_sort() {
 	local arrayVarName="$1"
 
-	sorted=($(array_join $'\n' ${arrayVarName} | sort))
+	local sorted=($(array_join $'\n' ${arrayVarName} | sort))
 
-	string="\${sorted[@]}"
-	command="${arrayVarName}=(\"${string}\")"
+	local string="\${sorted[@]}"
+	local command="${arrayVarName}=(\"${string}\")"
 	eval "${command}"
 }
 
 function array_sort_distinct() {
 	local arrayVarName="$1"
 
-	sorted=($(array_join $'\n' ${arrayVarName} | sort -u))
+	local sorted=($(array_join $'\n' ${arrayVarName} | sort -u))
 
-	string="\${sorted[@]}"
-	command="${arrayVarName}=(\"${string}\")"
+	local string="\${sorted[@]}"
+	local command="${arrayVarName}=(\"${string}\")"
 	eval "${command}"
 }
 
 function array_length() {
 	local arrayVarName="$1"
+	local string command tmp
 
 	eval "string='$'{${arrayVarName}[@]}"
 	command="tmp=(\"${string}\")"
@@ -346,6 +350,7 @@ function array_length() {
 
 function array_reset_index() {
 	local arrayVarName="$1"
+	local string command tmp
 
 	eval "string='$'{${arrayVarName}[@]}"
 	command="tmp=(\"${string}\")"
@@ -362,6 +367,7 @@ function array_equals() {
 	local ignoreOrder=${3:-true}
 	local ignoreDuplicated=${4:-false}
 
+	local tmp1 tmp2
 	array_clone "$arrayVarName1" tmp1
 	array_clone "$arrayVarName2" tmp2
 
@@ -381,51 +387,66 @@ function array_equals() {
 	[ "$(array_describe tmp1)" == "$(array_describe tmp2)" ]
 }
 
-function array_intersection_distinct() {
+function array_intersection() {
 	local array1="$1[@]"
 	local arrayVarName2="$2"
 	local newArrayVarName="$3"
+	local ignoreOrderAndDuplicated=${4:-true}
 
-	local tmp=()
+	local tmp element2 string command
+	tmp=()
 	for element2 in "${!array1}"; do
 		array_contains "$arrayVarName2" "$element2" && array_append tmp "$element2"
 	done
-	array_sort_distinct tmp
+
+	if [ "${ignoreOrderAndDuplicated}" = true ]; then
+		array_sort_distinct tmp
+	fi
 
 	string="\${tmp[@]}"
 	command="${newArrayVarName}=(\"${string}\")"
 	eval "${command}"
 }
 
-function array_subtract_distinct() {
+function array_subtract() {
 	local array1="$1[@]"
 	local arrayVarName2="$2"
 	local newArrayVarName="$3"
+	local ignoreOrderAndDuplicated=${4:-true}
 
-	local tmp=()
+	local tmp element2 string command
+	tmp=()
 	for element2 in "${!array1}"; do
 		array_contains "$arrayVarName2" "$element2" || array_append tmp "$element2"
 	done
-	array_sort_distinct tmp
+
+	if [ "${ignoreOrderAndDuplicated}" = true ]; then
+		array_sort_distinct tmp
+	fi
 
 	string="\${tmp[@]}"
 	command="${newArrayVarName}=(\"${string}\")"
 	eval "${command}"
 }
 
-function array_union_distinct() {
+function array_union() {
 	local array1="$1[@]"
 	local array2="$2[@]"
 	local newArrayVarName="$3"
+	local ignoreOrderAndDuplicated=${4:-true}
 
-	local tmp=()
+	local tmp element2 string command
+	tmp=()
 	for element2 in "${!array1}"; do
 		array_append tmp "$element2"
 	done
 	for element2 in "${!array2}"; do
 		array_append tmp "$element2"
 	done
-	array_sort_distinct tmp
+
+	if [ "${ignoreOrderAndDuplicated}" = true ]; then
+		array_sort_distinct tmp
+	fi
 
 	string="\${tmp[@]}"
 	command="${newArrayVarName}=(\"${string}\")"
@@ -447,6 +468,8 @@ function array_union_distinct() {
 function array_append() {
 	local arrayVarName="$1"
 	shift
+
+	local elementToAppend command
 	for elementToAppend in "$@"; do
 		command="$arrayVarName+=(\"${elementToAppend}\")"
 		eval "${command}"
@@ -469,6 +492,7 @@ function array_remove() {
 	local arrayVarName="$1"
 	local element="$2"
 
+	local string command tmp index
 	eval "string='$'{${arrayVarName}[@]}"
 	command="tmp=(\"${string}\")"
 	eval "${command}"
@@ -508,6 +532,7 @@ function array_map() {
 	local newArrayVarName="$2"
 	local pipedOperators="$3"
 
+	local tmp element mapped_value string command
 	tmp=()
 	for element in "${!array}"; do
 		mapped_value=$(eval "echo '${element}' | ${pipedOperators}")
@@ -524,6 +549,7 @@ function array_filter() {
 	local newArrayVarName="$2"
 	local regExp=$3
 
+	local tmp element string command
 	tmp=()
 	for element in "${!array}"; do
 		if [[ ${element} =~ ${regExp} ]]; then
@@ -548,6 +574,8 @@ function array_filter() {
 #     args_parse $# "$@" newVar1 newVar2 newVar3
 # @SEE_ALSO
 function args_parse() {
+	local nbArgValues nbPositionalVarNames option OPTARG OPTIND nbPositionalArgValues positionalArgValues positionalVarNames
+
 	nbArgValues=$1
 	shift 1
 	nbPositionalVarNames=$(($# - nbArgValues))
@@ -593,7 +621,7 @@ function args_parse() {
 # @SEE_ALSO
 #     args_valid_or_select_pipe, args_valid_or_read
 function args_valid_or_select() {
-	local valueVarName validValuesVarName prompt value validValues
+	local valueVarName validValuesVarName prompt value validValues PS3
 	valueVarName="${1}"
 	validValuesVarName=$2
 	prompt="${3}"
@@ -628,7 +656,7 @@ function args_valid_or_select() {
 # @SEE_ALSO
 #     args_valid_or_select, args_valid_or_read
 function args_valid_or_select_pipe() {
-	local valueVarName validValues prompt
+	local valueVarName validValues prompt newArray
 	valueVarName="${1}"
 	validValues="${2}"
 	prompt="${3}"
@@ -689,6 +717,7 @@ function args_valid_or_read() {
 # @SEE_ALSO
 #     args_confirm
 function args_print() {
+	local varName varValue varValueOutput
 	for varName in "$@"; do
 		varValue=$(eval echo '$'"${varName}")
 		varValueOutput=$([[ -z "${varValue}" ]] && print_error "<NULL>" || echo "${COLOR_BLUE}${varValue}${COLOR_END}")
@@ -709,6 +738,7 @@ function args_print() {
 # @SEE_ALSO
 #     args_print
 function args_confirm() {
+	local response
 	args_print "$@"
 	if ! [[ "${modeQuiet}" == "true" ]]; then
 		read -r -p "Continue ? [y/N] " response
@@ -780,7 +810,7 @@ function reflect_all_variables() {
 # @SEE_ALSO
 function doc_lint_script_comment() {
 	local fromShellFile="$1"
-	local element
+	local element functionComments arrFunctions manTags element3 arrComments intersection counter
 	# shell format
 	docker run -it --rm -v "$(pwd)":/project -w /project jamesmstone/shfmt -l -w "${fromShellFile}"
 
@@ -795,24 +825,22 @@ function doc_lint_script_comment() {
 		"${fromShellFile}"
 
 	# valid comment tags by man page convention
-	functionNames=($(reflect_function_names_of_file "${fromShellFile}"))
-	nbFunctions=$(array_length functionNames)
-
-	functionComments=$(grep -e '^# @' -e '^function ' example/bash-base.test.sh | string_replace_regex '\(\)|#' '' | string_trim)
+	functionComments=$(grep -e '^# @' -e '^function ' "${fromShellFile}" | string_replace_regex '\(\)|#' '' | string_trim)
 	string_split_to_array "{" arrFunctions "${functionComments}"
-	minTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
+	manTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
 	for element3 in "${arrFunctions[@]}"; do
 		string_split_to_array $'\n' arrComments "${element3}"
-		array_intersection_distinct minTags arrComments intersection
-		array_equals minTags intersection
+		array_intersection manTags arrComments intersection false
+		array_equals manTags intersection false
 		if [[ $? -ne 0 ]]; then
 			((counter++))
+			declare -p manTags intersection
 			print_error "the comments is not the same as template for ${arrComments[-1]}"
 		fi
 	done
 
 	if ((counter > 0)); then
-		echo "there are ${counter} functions has invalid comments"
+		echo "there are ${counter} functions has invalid comments in file ${fromShellFile}"
 		exit 1
 	fi
 }
