@@ -69,7 +69,7 @@ docker run -it zhj2074/bash-base:latest
 See [example](example) folder
 
 ### Reference
-See [reference](docs/reference.html)
+See [reference](docs/reference.md)
 
 ## Contributing
 

@@ -1,23 +1,13 @@
 #!/usr/bin/env bash
 
-# ## Constants
-# - **THIS_SCRIPT_NAME:** the main script name
-THIS_SCRIPT_NAME="$(basename "$0")"
-# - **SED_NEW_LINE:** return and new line, used with sed
-SED_NEW_LINE="\\$(echo -e '\r\n')"
-# - **COLOR_BOLD_BLACK:** Header
-COLOR_BOLD_BLACK=$'\e[1;30m'
-# - **COLOR_BOLD_RED:** Error, KO
-COLOR_BOLD_RED=$'\e[1;91m'
-# - **COLOR_BOLD_GREEN:** OK
-COLOR_BOLD_GREEN=$'\e[1;32m'
-# - **COLOR_BLUE:** Value
-COLOR_BLUE=$'\e[0;34m'
-# - **COLOR_END:** for others, reset to default
-COLOR_END=$'\e[0m'
-export THIS_SCRIPT_NAME SED_NEW_LINE COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_GREEN COLOR_BLUE COLOR_END
-
-# ## Functions string_xxx
+THIS_SCRIPT_NAME="$(basename "$0")" # the main script name
+NEW_LINE_SED="\\$(echo -e '\r\n')"  # return and new line, used with sed
+COLOR_BOLD_BLACK=$'\e[1;30m'        # Header
+COLOR_BOLD_RED=$'\e[1;91m'          # Error, KO
+COLOR_BOLD_GREEN=$'\e[1;32m'        # OK
+COLOR_BLUE=$'\e[0;34m'              # Value
+COLOR_END=$'\e[0m'                  # for others, reset to default
+export THIS_SCRIPT_NAME NEW_LINE_SED COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_GREEN COLOR_BLUE COLOR_END
 
 # @NAME
 #     string_trim -- remove the white chars from prefix and suffix
@@ -210,7 +200,7 @@ function string_match() {
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
-#     
+#
 #     branchesToSelectString=$(git branch -r --list  'origin/*')
 #     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
@@ -226,8 +216,6 @@ function string_split_to_array() {
 	eval "${command}"
 	unset IFS
 }
-
-# ## Functions array_xxx
 
 # @NAME
 #     array_join -- join an array to string using IFS
@@ -562,8 +550,6 @@ function array_filter() {
 	eval "${command}"
 }
 
-# ## Functions args_xxx
-
 # @NAME
 #     args_parse -- parse the script argument values to positional variable names, process firstly the optional param help(-h) / quiet(-q) if existed
 # @SYNOPSIS
@@ -756,8 +742,6 @@ function args_confirm() {
 	fi
 }
 
-# ## Functions reflect_xxx
-
 # @NAME
 #     reflect_function_definitions_of_bash_base -- print the definitions of functions in bash-base and its caller script
 # @SYNOPSIS
@@ -798,8 +782,6 @@ function reflect_all_variables() {
 	declare -p
 }
 
-# ## Functions doc_xxx
-
 # @NAME
 #     reflect_all_variables -- print all the variables
 # @SYNOPSIS
@@ -810,7 +792,7 @@ function reflect_all_variables() {
 # @SEE_ALSO
 function doc_lint_script_comment() {
 	local fromShellFile="$1"
-	local element functionComments arrFunctions manTags element3 arrComments intersection counter
+	local element strAllFunctionsAndTheirTags arrAllFunctionsAndTheirTags manTags strFunctionAndItsTags arrFunctionAndItsTags intersection counter
 	# shell format
 	docker run -it --rm -v "$(pwd)":/project -w /project jamesmstone/shfmt -l -w "${fromShellFile}"
 
@@ -825,17 +807,17 @@ function doc_lint_script_comment() {
 		"${fromShellFile}"
 
 	# valid comment tags by man page convention
-	functionComments=$(grep -e '^# @' -e '^function ' "${fromShellFile}" | string_replace_regex '\(\)|#' '' | string_trim)
-	string_split_to_array "{" arrFunctions "${functionComments}"
-	manTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
-	for element3 in "${arrFunctions[@]}"; do
-		string_split_to_array $'\n' arrComments "${element3}"
-		array_intersection manTags arrComments intersection false
+	strAllFunctionsAndTheirTags=$(grep -e '^# @' -e '^function ' "${fromShellFile}" | string_replace_regex '\(\)|#' '' | string_trim)
+	string_split_to_array "{" arrAllFunctionsAndTheirTags "${strAllFunctionsAndTheirTags}"
+	local manTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
+	for strFunctionAndItsTags in "${arrAllFunctionsAndTheirTags[@]}"; do
+		string_split_to_array $'\n' arrFunctionAndItsTags "${strFunctionAndItsTags}"
+		array_intersection manTags arrFunctionAndItsTags intersection false
 		array_equals manTags intersection false
 		if [[ $? -ne 0 ]]; then
 			((counter++))
 			declare -p manTags intersection
-			print_error "the comments is not the same as template for ${arrComments[-1]}"
+			print_error "the comments is not the same as template for ${arrFunctionAndItsTags[-1]}"
 		fi
 	done
 
@@ -860,17 +842,24 @@ function doc_comment_to_markdown() {
 	local fromShellFile="$1"
 	local toMarkdownFile="$2"
 
-	grep '^#' "${fromShellFile}" |
-		string_trim |
-		string_replace_regex '^#' '' |
-		string_replace_regex '!.*' '' |
-		string_trim |
-		string_replace_regex '^@NAME' "${SED_NEW_LINE}---${SED_NEW_LINE}##### NAME" |
-		string_replace_regex '^\*\*' "- \*\*" |
-		string_replace_regex '^@EXAMPLES' $"@EXAMPLES${SED_NEW_LINE}\`\`\`${SED_NEW_LINE}" |
-		string_replace_regex '^@SEE_ALSO' $"\`\`\`${SED_NEW_LINE}##### SEE_ALSO" |
-		string_replace_regex '^@' "${SED_NEW_LINE}##### " |
-		cat >"${toMarkdownFile}"
+  local md mdComment
+	export md="$(
+      grep '^#' "${fromShellFile}" |
+      string_trim |
+      string_replace_regex '^#!.*' '' |
+      string_replace_regex '^#' '' |
+      string_trim |
+      sed '/./,$!d' | # Delete all leading blank lines at top of file (only).
+      sed '1d' |      # Delete first line of file
+      string_replace_regex '^(@NAME)' "${NEW_LINE_SED}---${NEW_LINE_SED}${NEW_LINE_SED}\1" |
+      string_replace_regex '^(@SYNOPSIS|@EXAMPLES)' "${NEW_LINE_SED}\1${NEW_LINE_SED}\`\`\`" |
+      string_replace_regex '^(@DESCRIPTION|@SEE_ALSO)' "\`\`\`${NEW_LINE_SED}${NEW_LINE_SED}\1" |
+      string_replace_regex '^(\*\*)' "- \1"
+		)"
+
+  mdComment="[//]: # (This file is generated by bash-base function doc_comment_to_markdown, don't modify this file directly.)"
+	echo -e "${mdComment}\n\n@NAME\n${md//${NEW_LINE_SED}/\\n}" | #NEW_LINE_SED is not compatible by pandoc
+		string_replace_regex '@' "##### "  > "${toMarkdownFile}"
 }
 
 # @NAME
@@ -892,11 +881,9 @@ function doc_markdown_to_manpage() {
 	local strManHeader="${3:-''}"
 	local pandocVersion="${4:-2.10}"
 
-	docker run --rm --volume "$(pwd):/data" --user $(id -u):$(id -g) pandoc/core:${pandocVersion} -f markdown -t man --standalone "{fromMarkdownFile}" --variable=section:1 --variable=header:"${strManHeader}" -o ${toManPageFile}.1
+	docker run --rm --volume "$(pwd):/data" --user $(id -u):$(id -g) pandoc/core:${pandocVersion} -f markdown -t man --standalone "${fromMarkdownFile}" --variable=section:1 --variable=header:"${strManHeader}" -o ${toManPageFile}.1
 	man "${toManPageFile}.1"
 }
-
-# ## Functions others
 
 # @NAME
 #     print_header -- print the header value with prefix '\n###' and bold font
