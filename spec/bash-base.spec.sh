@@ -384,12 +384,17 @@ Describe 'array_map'
     arr=(" a " " b c ")
 
     It 'string_trim'
-        When call array_map arr actual "string_trim"
+        When call array_map arr "string_trim" actual
         The variable actual should satisfy array_equal actual "([0]='a' [1]='b c')"
     End
 
+    It 'string_trim stdout'
+        When call array_map arr "string_trim"
+        The output should eq  "a b c"
+    End
+
     It 'string_trim | wc -m | string_trim'
-        When call array_map arr actual "string_trim | wc -m | string_trim"
+        When call array_map arr "string_trim | wc -m | string_trim" actual
         The variable actual should satisfy array_equal actual "([0]='2' [1]='4')"
     End
 
@@ -398,13 +403,13 @@ Describe 'array_map'
         "  origin/develop"
         "  origin/integration"
         "* origin/feature/52-new-feature")
-        When call array_map branchesArray actual "sed -e 's/*//' -e 's/^[[:space:]]*//' -e 's/^origin\///' | string_trim"
+        When call array_map branchesArray "sed -e 's/*//' -e 's/^[[:space:]]*//' -e 's/^origin\///' | string_trim" actual
         The variable actual should satisfy array_equal actual "([0]='develop' [1]='integration' [2]='feature/52-new-feature')"
     End
 End
 
 
-fDescribe 'array_join'
+Describe 'array_join'
     It '-'
         arr=(" a " " b c ")
         When call array_join '|' arr

@@ -218,15 +218,15 @@ function string_split_to_array() {
 }
 
 # @NAME
-#     array_join -- join an array to string using IFS
+#     array_join -- join an array to string using delimiter string
 # @SYNOPSIS
-#     array_join IFS arrayValue...
+#     array_join delimiter arrayVarName
 # @DESCRIPTION
-#     **IFS** the delimiter character
-#     **arrayValue...** the values of an array
+#     **delimiter** the delimiter string
+#     **arrayVarName** the variable name of the array to be processed
 # @EXAMPLES
 #     myArry=(" a " " b c ")
-#     array_join '|' "${myArry[@]}" ==> " a | b c "
+#     array_join '|' myArry ==> " a | b c "
 # @SEE_ALSO
 #     string_split_to_array, array_describe, array_from_describe
 function array_join() {
@@ -506,19 +506,19 @@ function array_clone() {
 # @NAME
 #     array_map -- apply the specified map operation on each element of array, and assign the result array to a new variable name
 # @SYNOPSIS
-#     array_map arrayVarName newArrayVarName pipedOperators
+#     array_map arrayVarName pipedOperators [newArrayVarName]
 # @DESCRIPTION
 #     **arrayVarName** the variable name of array to process
-#     **newArrayVarName** the variable name of result array
 #     **pipedOperators** a string of operations, if multiple operations will be apply on each element, join them by pipe '|'
+#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by space and printed to stdout
 # @EXAMPLES
 #     arr=(" a " " b c ")
-#     array_map arr newArray "string_trim | wc -m | string_trim"
+#     array_map arr "string_trim | wc -m | string_trim" newArray
 # @SEE_ALSO
 function array_map() {
 	local array="$1[@]"
-	local newArrayVarName="$2"
-	local pipedOperators="$3"
+	local pipedOperators="$2"
+	local newArrayVarName="$3"
 
 	local tmp element mapped_value string command
 	tmp=()
@@ -527,9 +527,13 @@ function array_map() {
 		tmp+=("${mapped_value}")
 	done
 
-	string="\${tmp[@]}"
-	command="${newArrayVarName}=(\"${string}\")"
-	eval "${command}"
+  if [[ -n "${newArrayVarName}" ]]; then
+    string="\${tmp[@]}"
+    command="${newArrayVarName}=(\"${string}\")"
+    eval "${command}"
+	else
+	  array_join ' ' tmp
+	fi
 }
 
 function array_filter() {
@@ -560,8 +564,8 @@ function array_filter() {
 #     args_parse $# "$@" newVar1 newVar2 newVar3
 # @SEE_ALSO
 function args_parse() {
-	local nbArgValues nbPositionalVarNames option OPTARG OPTIND nbPositionalArgValues positionalArgValues positionalVarNames
-
+	local nbArgValues nbPositionalVarNames option showUsage OPTARG OPTIND nbPositionalArgValues positionalArgValues positionalVarNames
+  local positionalArgDescriptions element validCommand description DEFAULT_SIMPLE_USAGE
 	nbArgValues=$1
 	shift 1
 	nbPositionalVarNames=$(($# - nbArgValues))
@@ -572,8 +576,7 @@ function args_parse() {
 			modeQuiet="true"
 			;;
 		h)
-			echo -e "${USAGE}"
-			exit 0
+		  showUsage="true"
 			;;
 		\?)
 			print_error "invalid option: -$OPTARG" >&2
@@ -588,6 +591,64 @@ function args_parse() {
 	for i in $(seq 0 $((nbPositionalVarNames - 1))); do
 		eval "${positionalVarNames[i]}='${positionalArgValues[i]}'"
 	done
+
+  positionalArgDescriptions=$(
+    for element in "${positionalVarNames[@]}"; do
+      validCommand="$( grep "^\s*args_valid.* ${element} " "$0" | sed -e "s/\'//g" )"
+      if [[ -z ${validCommand} ]]; then
+        description="a valid value for ${element}"
+      else
+        description=$(args_nth 5 "${validCommand}")
+        if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
+          description="${description}, possible values: $(args_nth 4 $validCommand)"
+        fi
+      fi
+
+      printf "    %-20s%s\n" "${element} " "${description}"
+    done
+  )
+
+	declare_heredoc DEFAULT_SIMPLE_USAGE <<-EOF
+${COLOR_BOLD_BLACK} NAME ${COLOR_END}
+    ${THIS_SCRIPT_NAME} -- a bash script using bash-base
+
+${COLOR_BOLD_BLACK} SYNOPSIS ${COLOR_END}
+    ./${THIS_SCRIPT_NAME} [-qh] $(array_join ' ' positionalVarNames)
+
+${COLOR_BOLD_BLACK} DESCRIPTION ${COLOR_END}
+    -h                  help, print the usage
+    -q                  optional, Run quietly, no confirmation
+${positionalArgDescriptions}
+
+${COLOR_BOLD_BLACK} EXAMPLES ${COLOR_END}
+    help, print the usage:
+        ./${THIS_SCRIPT_NAME} -h
+
+    run with params:
+        ./${THIS_SCRIPT_NAME} [-q] "$(array_join 'Value" "' positionalVarNames)Value"
+
+    run using wizard, input value for params step by step:
+        ./${THIS_SCRIPT_NAME}
+
+EOF
+
+  if [[ $showUsage == "true" ]]; then
+    	echo -e "${USAGE:-$DEFAULT_SIMPLE_USAGE}"
+			exit 0
+	fi
+}
+
+function args_nth() {
+  local indexDoubleQuote indexSingleQuote args
+
+  indexDoubleQuote=$(string_index_first $' \"' "$*")
+  indexSingleQuote=$(string_index_first $' \'' "$*")
+	if [[ "${indexDoubleQuote}" -ge 0 || "${indexSingleQuote}" -ge 0 ]]; then
+	  args="$( echo $* | string_replace '|' '/' )"
+	  eval args_nth ${args//[{<>]/}
+	else
+	  eval eval "echo '$'$1"
+	fi
 }
 
 # @NAME
