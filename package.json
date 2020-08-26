@@ -15,7 +15,7 @@
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
     "shellcheck": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base koalaman/shellcheck:latest src/*.sh",
-    "shfmt": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base jamesmstone/shfmt -l -w src",
+    "shfmt": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base mvdan/shfmt -l -w src",
     "lint": "npm run shellcheck && npm run shfmt",
     "test": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash spec/*.sh",
     "test:focus": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash --focus spec/*.sh #execute only fIt/fDescribe",

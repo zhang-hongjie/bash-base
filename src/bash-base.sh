@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
+NEW_LINE_SED="\\$(echo -e '\r\n')" # Constant: the return and new line character, used with sed
+COLOR_BOLD_BLACK=$'\e[1;30m'       # Constant: color for printing Header
+COLOR_BOLD_RED=$'\e[1;91m'         # Constant: color for printing message of Error/KO
+COLOR_BOLD_GREEN=$'\e[1;32m'       # Constant: color for printing message of OK
+COLOR_BLUE=$'\e[0;34m'             # Constant: color for printing Value
+COLOR_END=$'\e[0m'                 # Constant: color for others, reset to default
+export NEW_LINE_SED COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_GREEN COLOR_BLUE COLOR_END
+
 THIS_SCRIPT_NAME="$(basename "$0")" # the main script name
-NEW_LINE_SED="\\$(echo -e '\r\n')"  # return and new line, used with sed
-COLOR_BOLD_BLACK=$'\e[1;30m'        # Header
-COLOR_BOLD_RED=$'\e[1;91m'          # Error, KO
-COLOR_BOLD_GREEN=$'\e[1;32m'        # OK
-COLOR_BLUE=$'\e[0;34m'              # Value
-COLOR_END=$'\e[0m'                  # for others, reset to default
-export THIS_SCRIPT_NAME NEW_LINE_SED COLOR_BOLD_BLACK COLOR_BOLD_RED COLOR_BOLD_GREEN COLOR_BLUE COLOR_END
+SHORT_DESC=''                       # redefine it to show your script short description in the 'NAME' field of generated -h response
+USAGE=''                            # redefine it in your script only if the generated -h response is not good for you
 
 # @NAME
 #     string_trim -- remove the white chars from prefix and suffix
@@ -43,6 +46,18 @@ function string_length() {
 	[[ "${index}" -ge 0 ]] && expr "${string}" : '.*' || echo "${#string}"
 }
 
+# @NAME
+#     string_is_empty -- exit success code 0 if the string is empty
+# @SYNOPSIS
+#     string_is_empty [string]
+# @DESCRIPTION
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_is_empty " as fd "
+#     string_is_empty < logfile
+#     echo " add " | string_is_empty
+# @SEE_ALSO
+#     string_length
 function string_is_empty() {
 	local string="${1-$(cat)}"
 
@@ -67,6 +82,25 @@ function string_sub() {
 	local subStringLength=$2
 	local string="${3-$(cat)}"
 	echo "${string:$startIndex:$subStringLength}"
+}
+
+# @NAME
+#     string_match -- test if the string match the regular expression
+# @SYNOPSIS
+#     string_match regExp [string]
+# @DESCRIPTION
+#     **regExp** the regular expression
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_match 'name;+' "name;name;"
+# @SEE_ALSO
+#     string_index_first
+function string_match() {
+	local value regExp
+	regExp=${1}
+	string="${2-$(cat)}"
+
+	[[ ${string} =~ ${regExp} ]]
 }
 
 # @NAME
@@ -179,14 +213,6 @@ function string_replace() {
 #     string_replace
 function string_replace_regex() {
 	echo "${3-$(cat)}" | sed -E -e "s/$1/$2/g"
-}
-
-function string_match() {
-	local value regExp
-	value="$1"
-	regExp=${2}
-
-	[[ ${value} =~ ${regExp} ]]
 }
 
 # @NAME
@@ -305,6 +331,17 @@ function array_contains() {
 	return $exitCode
 }
 
+# @NAME
+#     array_sort -- sort the elements of array, save the result to original variable name
+# @SYNOPSIS
+#     array_sort arrayVarName
+# @DESCRIPTION
+#     **arrayVarName** the variable name of the array to be processed
+# @EXAMPLES
+#     myArray=('aa' 'bb' 'aa')
+#     array_sort myArray ==> ([0]='aa' [1]='aa' [2]='bb')
+# @SEE_ALSO
+#     array_sort_distinct
 function array_sort() {
 	local arrayVarName="$1"
 
@@ -315,6 +352,17 @@ function array_sort() {
 	eval "${command}"
 }
 
+# @NAME
+#     array_sort_distinct -- remove the duplicated elements of array, sort and save the result to original variable name
+# @SYNOPSIS
+#     array_sort_distinct arrayVarName
+# @DESCRIPTION
+#     **arrayVarName** the variable name of the array to be processed
+# @EXAMPLES
+#     myArray=('aa' 'bb' 'aa')
+#     array_sort_distinct myArray ==> ([0]='aa' [1]='bb')
+# @SEE_ALSO
+#     array_sort
 function array_sort_distinct() {
 	local arrayVarName="$1"
 
@@ -325,6 +373,16 @@ function array_sort_distinct() {
 	eval "${command}"
 }
 
+# @NAME
+#     array_length -- return the number of elements of array
+# @SYNOPSIS
+#     array_length arrayVarName
+# @DESCRIPTION
+#     **arrayVarName** the variable name of the array to be processed
+# @EXAMPLES
+#     myArray=('aa' 'bb' 'aa')
+#     array_length myArray ==> 3
+# @SEE_ALSO
 function array_length() {
 	local arrayVarName="$1"
 	local string command tmp
@@ -336,6 +394,16 @@ function array_length() {
 	echo "${#tmp[@]}"
 }
 
+# @NAME
+#     array_reset_index -- reset the indexes of array to the sequence 0,1,2..., save the result to original variable name
+# @SYNOPSIS
+#     array_reset_index arrayVarName
+# @DESCRIPTION
+#     **arrayVarName** the variable name of the array to be processed
+# @EXAMPLES
+#     myArray=([2]='a' [5]='c' [11]='dd')
+#     array_reset_index myArray ==> ([0]='a' [1]='c' [2]='dd')
+# @SEE_ALSO
 function array_reset_index() {
 	local arrayVarName="$1"
 	local string command tmp
@@ -349,6 +417,21 @@ function array_reset_index() {
 	eval "${command}"
 }
 
+# @NAME
+#     array_equals -- test if the elements of 2 array are equal, ignore the array index
+# @SYNOPSIS
+#     array_equals arrayVarName1 arrayVarName2 [ignoreOrder] [ignoreDuplicated]
+# @DESCRIPTION
+#     **arrayVarName1** the variable name of an array
+#     **arrayVarName2** the variable name of another array to compare with
+#     **[ignoreOrder]** optional, a boolean value true/false, indicate whether ignore element order when compare, default true
+#     **[ignoreDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated when compare, default false
+# @EXAMPLES
+#     myArray1=('aa' [3]='bb' 'aa')
+#     myArray2=('aa' 'aa' 'bb')
+#     array_equals myArray1 myArray2 false && echo Y || echo N ==> N
+#     array_equals myArray1 myArray2 true && echo Y || echo N ==> Y
+# @SEE_ALSO
 function array_equals() {
 	local arrayVarName1="$1"
 	local arrayVarName2="$2"
@@ -375,6 +458,22 @@ function array_equals() {
 	[ "$(array_describe tmp1)" == "$(array_describe tmp2)" ]
 }
 
+# @NAME
+#     array_intersection -- calcul the intersection of 2 arrays, and save the result to a new variable
+# @SYNOPSIS
+#     array_intersection arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
+# @DESCRIPTION
+#     **arrayVarName1** the variable name of an array
+#     **arrayVarName2** the variable name of another array
+#     **newArrayVarName** the name of new variable to save the result
+#     **[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
+# @EXAMPLES
+#     myArray1=('aa' [3]='bb' 'aa' 'cc')
+#     myArray2=('aa' 'aa' 'dd' 'bb')
+#     array_intersection myArray1 myArray2 newArray
+#     array_intersection myArray1 myArray2 newArray false
+# @SEE_ALSO
+#     array_subtract, array_union
 function array_intersection() {
 	local array1="$1[@]"
 	local arrayVarName2="$2"
@@ -396,6 +495,22 @@ function array_intersection() {
 	eval "${command}"
 }
 
+# @NAME
+#     array_subtract -- calcul the subtract of 2 arrays, and save the result to a new variable
+# @SYNOPSIS
+#     array_subtract arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
+# @DESCRIPTION
+#     **arrayVarName1** the variable name of an array
+#     **arrayVarName2** the variable name of another array
+#     **newArrayVarName** the name of new variable to save the result
+#     **[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
+# @EXAMPLES
+#     myArray1=('aa' [3]='bb' 'aa' 'cc')
+#     myArray2=('aa' 'aa' 'dd' 'bb')
+#     array_subtract myArray1 myArray2 newArray
+#     array_subtract myArray1 myArray2 newArray false
+# @SEE_ALSO
+#     array_intersection, array_union
 function array_subtract() {
 	local array1="$1[@]"
 	local arrayVarName2="$2"
@@ -417,6 +532,22 @@ function array_subtract() {
 	eval "${command}"
 }
 
+# @NAME
+#     array_union -- calcul the union of 2 arrays, and save the result to a new variable
+# @SYNOPSIS
+#     array_union arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
+# @DESCRIPTION
+#     **arrayVarName1** the variable name of an array
+#     **arrayVarName2** the variable name of another array
+#     **newArrayVarName** the name of new variable to save the result
+#     **[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
+# @EXAMPLES
+#     myArray1=('aa' [3]='bb' 'aa' 'cc')
+#     myArray2=('aa' 'aa' 'dd' 'bb')
+#     array_union myArray1 myArray2 newArray
+#     array_union myArray1 myArray2 newArray false
+# @SEE_ALSO
+#     array_intersection, array_union
 function array_union() {
 	local array1="$1[@]"
 	local array2="$2[@]"
@@ -496,6 +627,17 @@ function array_remove() {
 	eval "${command}"
 }
 
+# @NAME
+#     array_clone -- clone an array, including index/order/duplication/value, and assign the result array to a new variable name
+# @SYNOPSIS
+#     array_clone arrayVarName newArrayVarName
+# @DESCRIPTION
+#     **arrayVarName** the variable name of array to process
+#     **newArrayVarName** the variable name of result array
+# @EXAMPLES
+#     arr=(" a " " b c ")
+#     array_clone arr newArray
+# @SEE_ALSO
 function array_clone() {
 	local arrayVarName="$1"
 	local arrayVarName2="$2"
@@ -510,7 +652,7 @@ function array_clone() {
 # @DESCRIPTION
 #     **arrayVarName** the variable name of array to process
 #     **pipedOperators** a string of operations, if multiple operations will be apply on each element, join them by pipe '|'
-#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by space and printed to stdout
+#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
 # @EXAMPLES
 #     arr=(" a " " b c ")
 #     array_map arr "string_trim | wc -m | string_trim" newArray
@@ -527,19 +669,31 @@ function array_map() {
 		tmp+=("${mapped_value}")
 	done
 
-  if [[ -n "${newArrayVarName}" ]]; then
-    string="\${tmp[@]}"
-    command="${newArrayVarName}=(\"${string}\")"
-    eval "${command}"
+	if [[ -n "${newArrayVarName}" ]]; then
+		string="\${tmp[@]}"
+		command="${newArrayVarName}=(\"${string}\")"
+		eval "${command}"
 	else
-	  array_join ' ' tmp
+		array_join $'\n' tmp
 	fi
 }
 
+# @NAME
+#     array_filter -- filter the elements of an array, and assign the result array to a new variable name
+# @SYNOPSIS
+#     array_filter arrayVarName regExp [newArrayVarName]
+# @DESCRIPTION
+#     **arrayVarName** the variable name of array to process
+#     **regExp** a string of regular expression pattern
+#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
+# @EXAMPLES
+#     arr=("NAME A" "NAME B" "OTHER")
+#     array_filter arr 'NAME' newArray
+# @SEE_ALSO
 function array_filter() {
 	local array="$1[@]"
-	local newArrayVarName="$2"
-	local regExp=$3
+	local regExp="$2"
+	local newArrayVarName="$3"
 
 	local tmp element string command
 	tmp=()
@@ -549,9 +703,13 @@ function array_filter() {
 		fi
 	done
 
-	string="\${tmp[@]}"
-	command="${newArrayVarName}=(\"${string}\")"
-	eval "${command}"
+	if [[ -n "${newArrayVarName}" ]]; then
+		string="\${tmp[@]}"
+		command="${newArrayVarName}=(\"${string}\")"
+		eval "${command}"
+	else
+		array_join $'\n' tmp
+	fi
 }
 
 # @NAME
@@ -565,7 +723,8 @@ function array_filter() {
 # @SEE_ALSO
 function args_parse() {
 	local nbArgValues nbPositionalVarNames option showUsage OPTARG OPTIND nbPositionalArgValues positionalArgValues positionalVarNames
-  local positionalArgDescriptions element validCommand description DEFAULT_SIMPLE_USAGE
+	local element validCommand description defaultUsage
+
 	nbArgValues=$1
 	shift 1
 	nbPositionalVarNames=$(($# - nbArgValues))
@@ -576,7 +735,7 @@ function args_parse() {
 			modeQuiet="true"
 			;;
 		h)
-		  showUsage="true"
+			showUsage="true"
 			;;
 		\?)
 			print_error "invalid option: -$OPTARG" >&2
@@ -592,62 +751,47 @@ function args_parse() {
 		eval "${positionalVarNames[i]}='${positionalArgValues[i]}'"
 	done
 
-  positionalArgDescriptions=$(
-    for element in "${positionalVarNames[@]}"; do
-      validCommand="$( grep "^\s*args_valid.* ${element} " "$0" | sed -e "s/\'//g" )"
-      if [[ -z ${validCommand} ]]; then
-        description="a valid value for ${element}"
-      else
-        description=$(args_nth 5 "${validCommand}")
-        if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
-          description="${description}, possible values: $(args_nth 4 $validCommand)"
-        fi
-      fi
+	# Generate default usage response for -h
+	declare_heredoc defaultUsage <<-EOF
+		${COLOR_BOLD_BLACK}NAME${COLOR_END}
+		    ${THIS_SCRIPT_NAME} -- ${SHORT_DESC:-a bash script using bash-base}
 
-      printf "    %-20s%s\n" "${element} " "${description}"
-    done
-  )
+		${COLOR_BOLD_BLACK}SYNOPSIS${COLOR_END}
+		    ./${THIS_SCRIPT_NAME} [-qh] $(array_join ' ' positionalVarNames)
 
-	declare_heredoc DEFAULT_SIMPLE_USAGE <<-EOF
-${COLOR_BOLD_BLACK} NAME ${COLOR_END}
-    ${THIS_SCRIPT_NAME} -- a bash script using bash-base
+		${COLOR_BOLD_BLACK}DESCRIPTION${COLOR_END}
+		    [-h]                help, print the usage
+		    [-q]                optional, Run quietly, no confirmation
+		$(
+			for element in "${positionalVarNames[@]}"; do
+				validCommand="$(grep "^\s*args_valid.* ${element} " "$0" | sed -e "s/\'//g")"
+				if [[ -z ${validCommand} ]]; then
+					description="a valid value for ${element}"
+				else
+					description=$(reflect_nth_arg 4 "${validCommand}")
+					if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
+						description="${description}, possible values: $(reflect_nth_arg 3 $validCommand)"
+					fi
+				fi
 
-${COLOR_BOLD_BLACK} SYNOPSIS ${COLOR_END}
-    ./${THIS_SCRIPT_NAME} [-qh] $(array_join ' ' positionalVarNames)
+				printf "\n    %-20s%s" "${element} " "${description}"
+			done
+		)
 
-${COLOR_BOLD_BLACK} DESCRIPTION ${COLOR_END}
-    -h                  help, print the usage
-    -q                  optional, Run quietly, no confirmation
-${positionalArgDescriptions}
+		${COLOR_BOLD_BLACK}EXAMPLES${COLOR_END}
+		    help, print the usage:
+		        ./${THIS_SCRIPT_NAME} -h
 
-${COLOR_BOLD_BLACK} EXAMPLES ${COLOR_END}
-    help, print the usage:
-        ./${THIS_SCRIPT_NAME} -h
+		    run with params:
+		        ./${THIS_SCRIPT_NAME} [-q] "$(array_join 'Value" "' positionalVarNames)Value"
 
-    run with params:
-        ./${THIS_SCRIPT_NAME} [-q] "$(array_join 'Value" "' positionalVarNames)Value"
+		    run using wizard, input value for params step by step:
+		        ./${THIS_SCRIPT_NAME}
+	EOF
 
-    run using wizard, input value for params step by step:
-        ./${THIS_SCRIPT_NAME}
-
-EOF
-
-  if [[ $showUsage == "true" ]]; then
-    	echo -e "${USAGE:-$DEFAULT_SIMPLE_USAGE}"
-			exit 0
-	fi
-}
-
-function args_nth() {
-  local indexDoubleQuote indexSingleQuote args
-
-  indexDoubleQuote=$(string_index_first $' \"' "$*")
-  indexSingleQuote=$(string_index_first $' \'' "$*")
-	if [[ "${indexDoubleQuote}" -ge 0 || "${indexSingleQuote}" -ge 0 ]]; then
-	  args="$( echo $* | string_replace '|' '/' )"
-	  eval args_nth ${args//[{<>]/}
-	else
-	  eval eval "echo '$'$1"
+	if [[ $showUsage == "true" ]]; then
+		echo -e "${USAGE:-$defaultUsage}"
+		exit 0
 	fi
 }
 
@@ -804,16 +948,41 @@ function args_confirm() {
 }
 
 # @NAME
-#     reflect_function_definitions_of_bash_base -- print the definitions of functions in bash-base and its caller script
+#     reflect_nth_arg -- parse a string of arguments, then extract the nth argument
 # @SYNOPSIS
-#     reflect_function_definitions_of_bash_base
+#     reflect_nth_arg index arguments...
 # @DESCRIPTION
+#     **index** a number based on 1, which argument to extract
+#     **arguments...** the string to parse, the arguments and may also including the command.
 # @EXAMPLES
-#     reflect_function_definitions_of_bash_base
+#     reflect_nth_arg 3 ab cdv "ha ho" ==>  "ha ho"
+#
+#     string="args_valid_or_read myVar '^[0-9a-z]{3,3}$' \"SIA\""
+#     reflect_nth_arg 4 $string ==> "SIA"
+# @SEE_ALSO
+function reflect_nth_arg() {
+	local index string args
+	index=$1
+	string="$(echo $* | string_replace_regex '(\\|\||\{|>|<|&)' '\\\1')"
+
+	args=()
+	eval 'for word in '${string}'; do args+=("$word"); done'
+	echo "${args[$index]}"
+}
+
+# @NAME
+#     reflect_get_function_definition -- print the definition of the specified function in system
+# @SYNOPSIS
+#     reflect_get_function_definition functionName
+# @DESCRIPTION
+#     **functionName** the specified function name
+# @EXAMPLES
+#     reflect_get_function_definition args_confirm
 # @SEE_ALSO
 #     reflect_function_names_of_file
-function reflect_all_function_definitions() {
-	declare -f
+function reflect_get_function_definition() {
+	local functionName="$1"
+	declare -f "$functionName"
 }
 
 # @NAME
@@ -826,49 +995,72 @@ function reflect_all_function_definitions() {
 #     reflect_function_names_of_file $0
 #     reflect_function_names_of_file scripts/my_script.sh
 # @SEE_ALSO
-#     reflect_all_function_definitions
+#     reflect_get_function_definition
 function reflect_function_names_of_file() {
 	grep "^[[:space:]]*function " "$1" | cut -d'(' -f1 | sed -e "s/function//"
 }
 
 # @NAME
-#     reflect_all_variables -- print all the variables
+#     reflect_search_function -- search usable function by name pattern
 # @SYNOPSIS
-#     reflect_function_names_of_file
+#     reflect_search_function functionNamePattern
 # @DESCRIPTION
+#     **functionNamePattern** the string of function name regular expression pattern
 # @EXAMPLES
-#     reflect_function_names_of_file
+#     reflect_search_function args
+#     reflect_search_function '^args_.*'
 # @SEE_ALSO
-function reflect_all_variables() {
-	declare -p
+#     reflect_search_variable
+function reflect_search_function() {
+	local functionNamePattern="$1"
+	declare -f | grep -E '\s+\(\)\s+' | sed -E 's/[(){ ]//g' | grep -Ei "${functionNamePattern}"
 }
 
 # @NAME
-#     reflect_all_variables -- print all the variables
+#     reflect_search_variable -- search usable variable by name pattern
 # @SYNOPSIS
-#     reflect_function_names_of_file
+#     reflect_search_variable variableNamePattern
 # @DESCRIPTION
+#     **variableNamePattern** the string of variable name regular expression pattern
 # @EXAMPLES
-#     reflect_function_names_of_file
+#     reflect_search_variable COLOR
+#     reflect_search_variable '^COLOR'
 # @SEE_ALSO
+#     reflect_search_function
+function reflect_search_variable() {
+	local variableNamePattern="$1"
+	declare -p | grep -Eo '\s+\w+=' | sed -E 's/[= ]//g' | grep -Ei "${variableNamePattern}"
+}
+
+# @NAME
+#     doc_lint_script_comment -- format the shell script, and check whether the comment is corrected man-styled
+# @SYNOPSIS
+#     doc_lint_script_comment shellScriptFile
+# @DESCRIPTION
+#     **shellScriptFile** the path of shell script file
+# @EXAMPLES
+#     doc_lint_script_comment src/bash-base.sh
+# @SEE_ALSO
+#     doc_comment_to_markdown, doc_markdown_to_manpage
 function doc_lint_script_comment() {
-	local fromShellFile="$1"
+	local shellScriptFile="$1"
 	local element strAllFunctionsAndTheirTags arrAllFunctionsAndTheirTags manTags strFunctionAndItsTags arrFunctionAndItsTags intersection counter
+
 	# shell format
-	docker run -it --rm -v "$(pwd)":/project -w /project jamesmstone/shfmt -l -w "${fromShellFile}"
+	docker run -it --rm -v "$(pwd)":/project -w /project mvdan/shfmt -w "${shellScriptFile}"
 
 	# format the comment
-	sed -E -i '' \
+	sed -E -i \
 		-e "s/^#[[:space:]]*/#/g" \
 		-e "s/^#/#     /g" \
 		-e "s/^#[[:space:]]*@/# @/g" \
 		-e "s/^#[[:space:]]*!/#!/g" \
 		-e "s/^#[[:space:]]*-/# -/g" \
 		-e "s/^#[[:space:]]*(#+)/# \1/g" \
-		"${fromShellFile}"
+		"${shellScriptFile}"
 
 	# valid comment tags by man page convention
-	strAllFunctionsAndTheirTags=$(grep -e '^# @' -e '^function ' "${fromShellFile}" | string_replace_regex '\(\)|#' '' | string_trim)
+	strAllFunctionsAndTheirTags=$(grep -e '^# @' -e '^function ' "${shellScriptFile}" | string_replace_regex '\(\)|#' '' | string_trim)
 	string_split_to_array "{" arrAllFunctionsAndTheirTags "${strAllFunctionsAndTheirTags}"
 	local manTags=('@NAME' '@SYNOPSIS' '@DESCRIPTION' '@EXAMPLES' '@SEE_ALSO')
 	for strFunctionAndItsTags in "${arrAllFunctionsAndTheirTags[@]}"; do
@@ -883,13 +1075,13 @@ function doc_lint_script_comment() {
 	done
 
 	if ((counter > 0)); then
-		echo "there are ${counter} functions has invalid comments in file ${fromShellFile}"
+		echo "there are ${counter} functions has invalid comments in file ${shellScriptFile}"
 		exit 1
 	fi
 }
 
 # @NAME
-#     doc_comment_to_markdown -- convert the shell script comment to markdown file
+#     doc_comment_to_markdown -- convert the shell script man-styled comment to markdown file
 # @SYNOPSIS
 #     doc_comment_to_markdown fromShellFile toMarkdownFile
 # @DESCRIPTION
@@ -903,24 +1095,24 @@ function doc_comment_to_markdown() {
 	local fromShellFile="$1"
 	local toMarkdownFile="$2"
 
-  local md mdComment
+	local md mdComment
 	export md="$(
-      grep '^#' "${fromShellFile}" |
-      string_trim |
-      string_replace_regex '^#!.*' '' |
-      string_replace_regex '^#' '' |
-      string_trim |
-      sed '/./,$!d' | # Delete all leading blank lines at top of file (only).
-      sed '1d' |      # Delete first line of file
-      string_replace_regex '^(@NAME)' "${NEW_LINE_SED}---${NEW_LINE_SED}${NEW_LINE_SED}\1" |
-      string_replace_regex '^(@SYNOPSIS|@EXAMPLES)' "${NEW_LINE_SED}\1${NEW_LINE_SED}\`\`\`" |
-      string_replace_regex '^(@DESCRIPTION|@SEE_ALSO)' "\`\`\`${NEW_LINE_SED}${NEW_LINE_SED}\1" |
-      string_replace_regex '^(\*\*)' "- \1"
-		)"
+		grep '^#' "${fromShellFile}" |
+			string_trim |
+			string_replace_regex '^#!.*' '' |
+			string_replace_regex '^#' '' |
+			string_trim |
+			sed '/./,$!d' | # Delete all leading blank lines at top of file (only).
+			sed '1d' |      # Delete first line of file
+			string_replace_regex '^(@NAME)' "${NEW_LINE_SED}---${NEW_LINE_SED}${NEW_LINE_SED}\1" |
+			string_replace_regex '^(@SYNOPSIS|@EXAMPLES)' "${NEW_LINE_SED}\1${NEW_LINE_SED}\`\`\`" |
+			string_replace_regex '^(@DESCRIPTION|@SEE_ALSO)' "\`\`\`${NEW_LINE_SED}${NEW_LINE_SED}\1" |
+			string_replace_regex '^(\*\*)' "- \1"
+	)"
 
-  mdComment="[//]: # (This file is generated by bash-base function doc_comment_to_markdown, don't modify this file directly.)"
+	mdComment="[//]: # (This file is generated by bash-base function doc_comment_to_markdown, don't modify this file directly.)"
 	echo -e "${mdComment}\n\n@NAME\n${md//${NEW_LINE_SED}/\\n}" | #NEW_LINE_SED is not compatible by pandoc
-		string_replace_regex '@' "##### "  > "${toMarkdownFile}"
+		string_replace_regex '@' "##### " >"${toMarkdownFile}"
 }
 
 # @NAME
@@ -931,7 +1123,7 @@ function doc_comment_to_markdown() {
 #     **fromMarkdownFile** the path of source markdown file
 #     **toManPageFile** the path of destination man file
 #     **[strManHeader]** optional, the string of man page header, default to empty string
-#     **[pandocVersion]** optiona, lthe pandoc version to use, default to 2.10
+#     **[pandocVersion]** optiona, the pandoc version to use, default to 2.10
 # @EXAMPLES
 #     doc_markdown_to_manpage docs/reference.md man/bash-base 'bash-base function reference man page'
 # @SEE_ALSO
@@ -955,13 +1147,25 @@ function doc_markdown_to_manpage() {
 # @EXAMPLES
 #     print_header "My header1"
 # @SEE_ALSO
+#     print_error
 function print_header() {
 	echo -e "${COLOR_BOLD_BLACK}\n### $* ${COLOR_END}"
 }
 
+# @NAME
+#     print_error -- print the error message with prefix 'ERROR:' and font color red
+# @SYNOPSIS
+#     print_error string
+# @DESCRIPTION
+#     **string** the error message
+# @EXAMPLES
+#     print_error "my error message"
+# @SEE_ALSO
+#     print_header
 function print_error() {
 	echo -e "${COLOR_BOLD_RED}ERROR: $* ${COLOR_END}"
 }
+
 # @NAME
 #     stop_if_failed -- stop the execute if last command exit with fail code (no zero)
 # @SYNOPSIS
