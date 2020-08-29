@@ -173,6 +173,19 @@ C"
 End
 
 
+Describe 'string_repeat'
+    It 'with value'
+        When call string_repeat "ab" 3
+        The output should eq "ababab"
+    End
+
+    It 'with pipe'
+        When call eval "echo 3 | string_repeat 'ab'"
+        The output should eq "ababab"
+    End
+End
+
+
 Describe 'string_length'
     It 'with value'
         When call string_length " as fd "

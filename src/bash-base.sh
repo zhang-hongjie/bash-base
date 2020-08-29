@@ -28,6 +28,23 @@ function string_trim() {
 }
 
 # @NAME
+#     string_repeat -- make a string by repeat n times of a token string
+# @SYNOPSIS
+#     string_repeat string [nbTimes]
+# @DESCRIPTION
+#     **string** the string to be repeated
+#     **[nbTimes]** the number of times, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_repeat 'abc' 5
+#     echo 5 | string_repeat 'abc'
+# @SEE_ALSO
+function string_repeat() {
+    local token="$1"
+    local nbTimes=${2-$(cat)}
+    printf "${token}%.0s" $(seq 1 "$nbTimes")
+}
+
+# @NAME
 #     string_length -- return the string length
 # @SYNOPSIS
 #     string_length [string]
