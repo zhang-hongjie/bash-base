@@ -7,7 +7,7 @@ module.exports = {
     "@semantic-release/github",
     "@semantic-release/git",
     ["@semantic-release/exec", {
-      "prepareCmd": "docker build -t zhj2074/bash-base . && npm run doc"
+      "prepareCmd": "docker build -t zhj2074/bash-base . && npm run livedoc"
     }],
     ["semantic-release-docker", {
       "name": "zhj2074/bash-base"

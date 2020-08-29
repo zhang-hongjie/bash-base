@@ -20,7 +20,7 @@
     "test": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash spec/*.sh",
     "test:focus": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash --focus spec/*.sh #execute only fIt/fDescribe",
     "test:coverage": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options \"--include-path=src\" -f t spec/*.sh",
-    "doc": "./scripts/bashdoc.sh",
+    "livedoc": "./scripts/bashdoc.sh",
     "install:man": "npm link"
   },
   "repository": {
