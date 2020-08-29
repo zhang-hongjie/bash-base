@@ -1001,6 +1001,25 @@ function reflect_function_names_of_file() {
 }
 
 # @NAME
+#     reflect_function_names_of_file -- print the function names defined in a shell script file
+# @SYNOPSIS
+#     reflect_function_names_of_file file
+# @DESCRIPTION
+#     **file** the path of shell script file
+# @EXAMPLES
+#     reflect_function_names_of_file $0
+#     reflect_function_names_of_file scripts/my_script.sh
+# @SEE_ALSO
+#     reflect_get_function_definition
+function reflect_function_definitions_of_file() {
+	sed -E -n '/^[[:space:]]*function /,/^[[:space:]]*}$/p' src/bash-base.sh
+}
+
+function reflect_function_comments_of_file() {
+	sed -E -n '/^[[:space:]]*function /,/^[[:space:]]*}$/!p' src/bash-base.sh
+}
+
+# @NAME
 #     reflect_search_function -- search usable function by name pattern
 # @SYNOPSIS
 #     reflect_search_function functionNamePattern
@@ -1037,6 +1056,8 @@ function reflect_search_variable() {
 # @SYNOPSIS
 #     doc_lint_script_comment shellScriptFile
 # @DESCRIPTION
+#     required: run firstly ```docker run -it --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"```
+#
 #     **shellScriptFile** the path of shell script file
 # @EXAMPLES
 #     doc_lint_script_comment src/bash-base.sh
@@ -1045,9 +1066,6 @@ function reflect_search_variable() {
 function doc_lint_script_comment() {
 	local shellScriptFile="$1"
 	local element strAllFunctionsAndTheirTags arrAllFunctionsAndTheirTags manTags strFunctionAndItsTags arrFunctionAndItsTags intersection counter
-
-	# shell format
-	docker run -it --rm -v "$(pwd)":/project -w /project mvdan/shfmt -w "${shellScriptFile}"
 
 	# format the comment
 	sed -E -i \
