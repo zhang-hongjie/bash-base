@@ -2,7 +2,7 @@
 
 Include "src/bash-base.sh"
 
-array_equal() {
+array_describe_equals() {
     local arrayName="$1"
     local expected="$2"
 
@@ -24,7 +24,7 @@ Describe 'string_split_to_array'
     It 'with variable'
         str="a b c"
         When call string_split_to_array ' ' actual "$str"
-        The variable actual should satisfy array_equal actual "([0]='a' [1]='b' [2]='c')"
+        The variable actual should satisfy array_describe_equals actual "([0]='a' [1]='b' [2]='c')"
     End
 
     It 'with stdin'
@@ -34,7 +34,7 @@ Describe 'string_split_to_array'
 * origin/feature/52-new-feature
 EOF
         When call string_split_to_array $'\n' actual "${lines}"
-        The variable actual should satisfy array_equal actual "([0]='  origin/develop' [1]='  origin/integration' [2]='* origin/feature/52-new-feature')"
+        The variable actual should satisfy array_describe_equals actual "([0]='  origin/develop' [1]='  origin/integration' [2]='* origin/feature/52-new-feature')"
     End
 
     It 'with file'
@@ -44,7 +44,7 @@ EOF
  3. C
 EOF
         When call eval "string_split_to_array $'\n' actual < temp_file.txt"
-        The variable actual should satisfy array_equal actual "([0]=' 1. A D' [1]=' 2. B' [2]=' 3. C')"
+        The variable actual should satisfy array_describe_equals actual "([0]=' 1. A D' [1]=' 2. B' [2]=' 3. C')"
 
         rm -fr temp_file.txt
     End
@@ -432,7 +432,7 @@ Describe 'array_sort'
     It '-'
         myArray=('aa' 'bb' 'aa')
         When call array_sort myArray
-        The variable myArray should satisfy array_equal myArray "([0]='aa' [1]='aa' [2]='bb')"
+        The variable myArray should satisfy array_describe_equals myArray "([0]='aa' [1]='aa' [2]='bb')"
     End
 End
 
@@ -441,7 +441,7 @@ Describe 'array_sort_distinct'
     It '-'
         myArray=('aa' 'bb' 'aa')
         When call array_sort_distinct myArray
-        The variable myArray should satisfy array_equal myArray "([0]='aa' [1]='bb')"
+        The variable myArray should satisfy array_describe_equals myArray "([0]='aa' [1]='bb')"
     End
 End
 
@@ -459,7 +459,7 @@ Describe 'array_reset_index'
     It '-'
         myArray=([2]='a' [5]='c' [11]='dd')
         When call array_reset_index myArray
-        The variable myArray should satisfy array_equal myArray "([0]='a' [1]='c' [2]='dd')"
+        The variable myArray should satisfy array_describe_equals myArray "([0]='a' [1]='c' [2]='dd')"
     End
 End
 
@@ -493,12 +493,12 @@ Describe 'array_intersection'
 
     It 'ignore duplicated and order'
         When call array_intersection myArray1 myArray2 newArray
-        The variable newArray should satisfy array_equal newArray "([0]='aa' [1]='bb')"
+        The variable newArray should satisfy array_describe_equals newArray "([0]='aa' [1]='bb')"
     End
 
     It 'not ignore duplicated and order'
         When call array_intersection myArray1 myArray2 newArray false
-        The variable newArray should satisfy array_equal newArray "([0]='aa' [1]='bb' [2]='aa')"
+        The variable newArray should satisfy array_describe_equals newArray "([0]='aa' [1]='bb' [2]='aa')"
     End
 End
 
@@ -509,12 +509,12 @@ Describe 'array_subtract'
 
     It 'ignore duplicated and order'
         When call array_subtract myArray1 myArray2 newArray
-        The variable newArray should satisfy array_equal newArray "([0]='cc')"
+        The variable newArray should satisfy array_describe_equals newArray "([0]='cc')"
     End
 
     It 'not ignore duplicated and order'
         When call array_subtract myArray1 myArray2 newArray false
-        The variable newArray should satisfy array_equal newArray "([0]='cc' [1]='cc')"
+        The variable newArray should satisfy array_describe_equals newArray "([0]='cc' [1]='cc')"
     End
 End
 
@@ -525,12 +525,12 @@ Describe 'array_union'
 
     It 'ignore duplicated and order'
         When call array_union myArray1 myArray2 newArray
-        The variable newArray should satisfy array_equal newArray "([0]='aa' [1]='bb' [2]='cc' [3]='dd')"
+        The variable newArray should satisfy array_describe_equals newArray "([0]='aa' [1]='bb' [2]='cc' [3]='dd')"
     End
 
     It 'not ignore duplicated and order'
         When call array_union myArray1 myArray2 newArray false
-        The variable newArray should satisfy array_equal newArray  "([0]='aa' [1]='bb' [2]='aa' [3]='cc' [4]='cc' [5]='aa' [6]='aa' [7]='dd' [8]='bb')"
+        The variable newArray should satisfy array_describe_equals newArray  "([0]='aa' [1]='bb' [2]='aa' [3]='cc' [4]='cc' [5]='aa' [6]='aa' [7]='dd' [8]='bb')"
     End
 End
 
@@ -538,7 +538,7 @@ End
 Describe 'array_append'
     It '-'
         When call eval 'array_append myarr " ele ment1" " ele ment2 "; array_append myarr "ele ment3" "ele ment4 "'
-        The variable myarr should satisfy array_equal myarr "([0]=' ele ment1' [1]=' ele ment2 ' [2]='ele ment3' [3]='ele ment4 ')"
+        The variable myarr should satisfy array_describe_equals myarr "([0]=' ele ment1' [1]=' ele ment2 ' [2]='ele ment3' [3]='ele ment4 ')"
     End
 End
 
@@ -547,27 +547,28 @@ Describe 'array_clone'
     It '-'
         myarr=('aa' [3]='bb' 'aa')
         When call array_clone myarr myarr4
-        The variable myarr4 should satisfy array_equal myarr4  "([0]='aa' [3]='bb' [4]='aa')"
+        The variable myarr4 should satisfy array_describe_equals myarr4  "([0]='aa' [3]='bb' [4]='aa')"
     End
 End
 
 
 Describe 'array_map'
-    arr=(" a " " b c ")
+    arr=(" a " " b '(c ")
+    embeded="b '(c"
 
     It 'string_trim'
         When call array_map arr "string_trim" actual
-        The variable actual should satisfy array_equal actual "([0]='a' [1]='b c')"
+        The variable actual should satisfy array_describe_equals actual "([0]='a' [1]='${embeded}')"
     End
 
     It 'string_trim stdout'
         When call array_map arr "string_trim"
-        The output should eq  $'a\nb c'
+        The output should eq "$(printf "a\n${embeded}" )"
     End
 
     It 'string_trim | wc -m | string_trim'
         When call array_map arr "string_trim | wc -m | string_trim" actual
-        The variable actual should satisfy array_equal actual "([0]='2' [1]='4')"
+        The variable actual should satisfy array_describe_equals actual "([0]='2' [1]='6')"
     End
 
     It 'sed'
@@ -576,7 +577,7 @@ Describe 'array_map'
         "  origin/integration"
         "* origin/feature/52-new-feature")
         When call array_map branchesArray "sed -e 's/*//' -e 's/^[[:space:]]*//' -e 's/^origin\///' | string_trim" actual
-        The variable actual should satisfy array_equal actual "([0]='develop' [1]='integration' [2]='feature/52-new-feature')"
+        The variable actual should satisfy array_describe_equals actual "([0]='develop' [1]='integration' [2]='feature/52-new-feature')"
     End
 End
 
@@ -586,7 +587,7 @@ Describe 'array_filter'
 
     It 'string_trim'
         When call array_filter arr 'NAME' actual
-        The variable actual should satisfy array_equal actual "([0]='NAME' [1]='NAME B')"
+        The variable actual should satisfy array_describe_equals actual "([0]='NAME' [1]='NAME B')"
     End
 
     It 'string_trim stdout'
@@ -609,7 +610,7 @@ Describe 'array_remove'
     It '-'
         arr=("a" " b" "c" "a b" "f" "g")
         When call array_remove arr "a b"
-        The variable arr should satisfy array_equal arr "([0]='a' [1]=' b' [2]='c' [3]='f' [4]='g')"
+        The variable arr should satisfy array_describe_equals arr "([0]='a' [1]=' b' [2]='c' [3]='f' [4]='g')"
     End
 End
 
@@ -780,7 +781,7 @@ Describe args_parse
         The output should eq "Usage:..."
     End
 
-    fIt 'print generated usage with customized SHORT_DESC'
+    It 'print generated usage with customized SHORT_DESC'
         cat <<-EOF > my_script.sh
 #!/bin/bash2
 
@@ -1013,5 +1014,138 @@ Describe 'reflect_nth_arg'
         string="args_valid_or_read myVar '$1' \"$1\" 'SIA (lowercase, 3 chars)'"
         When call reflect_nth_arg 5 $string
         The output should eq "SIA (lowercase, 3 chars)"
+    End
+End
+
+
+Describe 'reflect_get_function_definition'
+    It 'bash-base function'
+        When call reflect_get_function_definition args_confirm
+        The status should eq "0"
+        The output should include "args_confirm"
+    End
+
+    It 'test function'
+        When call reflect_get_function_definition array_describe_equals
+        The status should eq "0"
+        The output should include "array_describe_equals"
+    End
+End
+
+
+Describe 'reflect_function_names_of_file'
+    It '-'
+        When call reflect_function_names_of_file src/bash-base.sh
+        The status should eq "0"
+        The output should include "args_confirm"
+        The lines of output should eq 47
+    End
+End
+
+
+Describe 'reflect_search_function'
+    It 'normal pattern'
+        When call reflect_search_function args
+        The status should eq "0"
+        The output should include "args_confirm"
+    End
+
+    It 'regular expression pattern'
+        When call reflect_search_function '^args_.*'
+        The status should eq "0"
+        The output should include "args_confirm"
+    End
+End
+
+
+Describe 'reflect_search_variable'
+    It 'normal pattern'
+        When call reflect_search_variable COLOR
+        The status should eq "0"
+        The output should include "COLOR_BLUE"
+    End
+
+    It 'regular expression pattern'
+        When call reflect_search_variable '^COLOR.*'
+        The status should eq "0"
+        The output should include "COLOR_BLUE"
+    End
+End
+
+
+Describe 'doc_lint_script_comment'
+    It '-'
+        When call doc_lint_script_comment src/bash-base.sh
+        The status should eq "0"
+    End
+End
+
+
+Describe 'doc_comment_to_markdown'
+    It '-'
+        rm -fr docs/references.md
+
+        When call doc_comment_to_markdown src/bash-base.sh docs/references.md
+        The status should eq "0"
+        The contents of file "docs/references.md" should include "This file is generated by bash-base"
+
+        rm -fr docs/references.md
+    End
+End
+
+
+Describe 'doc_markdown_to_manpage'
+    It '-'
+        cat <<-EOF > tmp.md
+[//]: # (This file is generated by bash-base function doc_comment_to_markdown, don't modify this file directly.)
+
+            ##### NAME
+            string_trim -- remove the white chars from prefix and suffix
+
+            ##### SYNOPSIS
+            ```
+            string_trim [string]
+            ```
+
+            ##### DESCRIPTION
+            - **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+
+            ##### EXAMPLES
+            ```
+            string_trim " as fd "
+            string_trim < logfile
+            echo " add " | string_trim
+            ```
+
+            ##### SEE_ALSO
+
+            ---
+
+            ##### NAME
+            string_length -- return the string length
+
+            ##### SYNOPSIS
+            ```
+            string_length [string]
+            ```
+
+            ##### DESCRIPTION
+            - **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+
+            ##### EXAMPLES
+            ```
+            string_length " as fd "
+            string_length < logfile
+            echo " add " | string_length
+            ```
+
+            ##### SEE_ALSO
+EOF
+
+        When call doc_markdown_to_manpage tmp.md man/bash-base "bash-base manual"
+        The status should eq "0"
+        The contents of file "man/bash-base.1" should include "bash-base manual"
+
+        rm -fr tmp.md man/bash-base.1
     End
 End

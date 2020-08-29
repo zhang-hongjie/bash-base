@@ -665,7 +665,8 @@ function array_map() {
 	local tmp element mapped_value string command
 	tmp=()
 	for element in "${!array}"; do
-		mapped_value=$(eval "echo '${element}' | ${pipedOperators}")
+    escaped="${element//\'/\'\"\'\"\'}" # escape the single quote
+		mapped_value=$(eval "echo '${escaped}' | ${pipedOperators}")
 		tmp+=("${mapped_value}")
 	done
 
@@ -997,7 +998,8 @@ function reflect_get_function_definition() {
 # @SEE_ALSO
 #     reflect_get_function_definition
 function reflect_function_names_of_file() {
-	grep "^[[:space:]]*function " "$1" | cut -d'(' -f1 | sed -e "s/function//"
+  local shellScriptFile="$1"
+	grep -E '^[[:space:]]*(function)?[[:space:]]*[0-9A-Za-z_\-]{3,}[[:space:]]*\(\)[[:space:]]*{?' "${shellScriptFile}" | cut -d'(' -f1 | sed -e "s/function//"
 }
 
 # @NAME
