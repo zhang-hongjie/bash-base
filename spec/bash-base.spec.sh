@@ -556,6 +556,11 @@ Describe 'array_map'
     arr=(" a " " b '(c ")
     embeded="b '(c"
 
+    It 'cat'
+        When call array_map arr "cat" actual
+        The variable actual should satisfy array_describe_equals actual "([0]=' a ' [1]=' ${embeded} ')"
+    End
+
     It 'string_trim'
         When call array_map arr "string_trim" actual
         The variable actual should satisfy array_describe_equals actual "([0]='a' [1]='${embeded}')"
@@ -1038,7 +1043,16 @@ Describe 'reflect_function_names_of_file'
         When call reflect_function_names_of_file src/bash-base.sh
         The status should eq "0"
         The output should include "args_confirm"
-        The lines of output should eq 47
+        The lines of output should eq 48
+    End
+End
+
+
+Describe 'reflect_function_definitions_of_file'
+    It '-'
+        When call reflect_function_definitions_of_file src/bash-base.sh
+        The status should eq "0"
+        The output should include "args_confirm() {"
     End
 End
 

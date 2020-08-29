@@ -665,8 +665,8 @@ function array_map() {
 	local tmp element mapped_value string command
 	tmp=()
 	for element in "${!array}"; do
-    escaped="${element//\'/\'\"\'\"\'}" # escape the single quote
-		mapped_value=$(eval "echo '${escaped}' | ${pipedOperators}")
+		escaped="${element//\'/\'"\'"\'}" # escape the single quote
+		mapped_value="$(eval "echo '${escaped}' | ${pipedOperators}")"
 		tmp+=("${mapped_value}")
 	done
 
@@ -989,36 +989,33 @@ function reflect_get_function_definition() {
 # @NAME
 #     reflect_function_names_of_file -- print the function names defined in a shell script file
 # @SYNOPSIS
-#     reflect_function_names_of_file file
+#     reflect_function_names_of_file shellScriptFile
 # @DESCRIPTION
-#     **file** the path of shell script file
+#     **shellScriptFile** the path of shell script file
 # @EXAMPLES
 #     reflect_function_names_of_file $0
 #     reflect_function_names_of_file scripts/my_script.sh
 # @SEE_ALSO
 #     reflect_get_function_definition
 function reflect_function_names_of_file() {
-  local shellScriptFile="$1"
-	grep -E '^[[:space:]]*(function)?[[:space:]]*[0-9A-Za-z_\-]{3,}[[:space:]]*\(\)[[:space:]]*{?' "${shellScriptFile}" | cut -d'(' -f1 | sed -e "s/function//"
+	local shellScriptFile="$1"
+	grep -E '^[[:space:]]*(function)?[[:space:]]*[0-9A-Za-z_\-]+[[:space:]]*\(\)[[:space:]]*\{?' "${shellScriptFile}" | cut -d'(' -f1 | sed -e "s/function//"
 }
 
 # @NAME
-#     reflect_function_names_of_file -- print the function names defined in a shell script file
+#     reflect_function_definitions_of_file -- print the function definitions defined in a shell script file
 # @SYNOPSIS
-#     reflect_function_names_of_file file
+#     reflect_function_definitions_of_file shellScriptFile
 # @DESCRIPTION
-#     **file** the path of shell script file
+#     **shellScriptFile** the path of shell script file
 # @EXAMPLES
-#     reflect_function_names_of_file $0
-#     reflect_function_names_of_file scripts/my_script.sh
+#     reflect_function_definitions_of_file $0
+#     reflect_function_definitions_of_file scripts/my_script.sh
 # @SEE_ALSO
 #     reflect_get_function_definition
 function reflect_function_definitions_of_file() {
-	sed -E -n '/^[[:space:]]*function /,/^[[:space:]]*}$/p' src/bash-base.sh
-}
-
-function reflect_function_comments_of_file() {
-	sed -E -n '/^[[:space:]]*function /,/^[[:space:]]*}$/!p' src/bash-base.sh
+	local shellScriptFile="$1"
+	sed -E -n '/^[[:space:]]*(function)?[[:space:]]*[0-9A-Za-z_\-]+[[:space:]]*\(\)[[:space:]]*\{?/,/^[[:space:]]*}/p' "${shellScriptFile}"
 }
 
 # @NAME
@@ -1058,11 +1055,13 @@ function reflect_search_variable() {
 # @SYNOPSIS
 #     doc_lint_script_comment shellScriptFile
 # @DESCRIPTION
-#     required: run firstly ```docker run -it --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"```
+#     It's better format your shell script by `shfmt` firstly before using this function.
 #
 #     **shellScriptFile** the path of shell script file
 # @EXAMPLES
-#     doc_lint_script_comment src/bash-base.sh
+#     shellScriptFile="src/bash-base.sh"
+#     docker run -it --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"
+#     doc_lint_script_comment "${shellScriptFile}"
 # @SEE_ALSO
 #     doc_comment_to_markdown, doc_markdown_to_manpage
 function doc_lint_script_comment() {
