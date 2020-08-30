@@ -867,12 +867,28 @@ function args_parse() {
 		    [-h]                help, print the usage
 		    [-q]                optional, Run quietly, no confirmation
 		$(
+		  local spacePlaceHolder="_SPACE_"
+		  local dollarPlaceHolder="_DOLLAR_"
+		  local leftParenthesesPlaceHolder="_PARENTHESES_LEFT_"
+		  local rightParenthesesPlaceHolder="_PARENTHESES_RIGHT_"
+
 			for element in "${positionalVarNames[@]}"; do
-				validCommand="$(grep -E "^\s*args_valid.*\s+${element}\s+" "$0" | sed -E "s/('[^ ']+) ([^']*')/\1_\2/g" | sed -e "s/\'//g")"
+				validCommand="$(grep -E "^\s*args_valid.*\s+${element}\s+" "$0" |
+				    sed -E ":A;s/('[^ ']+) ([^']*')/\1${spacePlaceHolder}\2/;tA" |
+				    sed -E ":A;s/('[^\$']+)\$([^']*')/\1${dollarPlaceHolder}\2/;tA" |
+				    sed -E ":A;s/('[^\(']+)\(([^']*')/\1${leftParenthesesPlaceHolder}\2/;tA" |
+				    sed -E ":A;s/('[^\)']+)\)([^']*')/\1${rightParenthesesPlaceHolder}\2/;tA" |
+				    sed -e "s/\'//g" |
+				    cat)"
 				if [[ -z ${validCommand} ]]; then
 					description="a valid value for ${element}"
 				else
-					description=$(reflect_nth_arg 4 "${validCommand}")
+					description=$(reflect_nth_arg 4 "${validCommand}" |
+					    string_replace "${spacePlaceHolder}" " " |
+					    string_replace "${dollarPlaceHolder}" "$" |
+					    string_replace "${leftParenthesesPlaceHolder}" "(" |
+					    string_replace "${rightParenthesesPlaceHolder}" ")"
+					)
 					if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
 						description="${description}, possible values: $(reflect_nth_arg 3 $validCommand)"
 					fi
