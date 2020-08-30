@@ -24,7 +24,8 @@ USAGE=''                            # redefine it in your script only if the gen
 #     echo " add " | string_trim
 # @SEE_ALSO
 function string_trim() {
-	echo "${1-$(cat)}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' #trim ' '
+  local string="${1-$(cat)}"
+	echo "${string}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' #trim ' '
 }
 
 # @NAME
@@ -307,7 +308,7 @@ function string_after_first() {
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
-#
+#     
 #     branchesToSelectString=$(git branch -r --list  'origin/*')
 #     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
@@ -396,7 +397,11 @@ function array_join() {
 	done
 
 	delimiterLength=$(string_length "${delimiter}")
-	string_is_empty "${result}" && echo '' || string_sub 0 $((0 - delimiterLength)) "${result}"
+	if string_is_empty "${result}"; then
+	  echo ''
+	else
+	  string_sub 0 $((0 - delimiterLength)) "${result}"
+	fi
 }
 
 # @NAME
@@ -864,10 +869,10 @@ function args_parse() {
 	while getopts ":qh" option; do
 		case ${option} in
 		q)
-			modeQuiet="true"
+			modeQuiet=true
 			;;
 		h)
-			showUsage="true"
+			showUsage=true
 			;;
 		\?)
 			print_error "invalid option: -$OPTARG" >&2
@@ -939,7 +944,7 @@ function args_parse() {
 		        ./${THIS_SCRIPT_NAME}
 	EOF
 
-	if [[ $showUsage == "true" ]]; then
+	if [ "$showUsage" == true ]; then
 		echo -e "${USAGE:-$defaultUsage}"
 		exit 0
 	fi
@@ -1030,7 +1035,7 @@ function args_valid_or_read() {
 
 	if [[ -n "${proposedValue}" ]]; then
 		prompt="${prompt} [${proposedValue}]"
-		if [[ -z "${value}" && "${modeQuiet}" == "true" ]]; then
+		if [[ -z "${value}" && "${modeQuiet}" == true ]]; then
 			value="${proposedValue}"
 		fi
 	fi
@@ -1081,7 +1086,7 @@ function args_print() {
 function args_confirm() {
 	local response
 	args_print "$@"
-	if ! [[ "${modeQuiet}" == "true" ]]; then
+	if ! [ "${modeQuiet}" == true ]; then
 		read -r -p "Continue ? [y/N] " response
 
 		case "${response}" in
@@ -1106,7 +1111,7 @@ function args_confirm() {
 #     **arguments...** the string to parse, the arguments and may also including the command.
 # @EXAMPLES
 #     reflect_nth_arg 3 ab cdv "ha ho" ==>  "ha ho"
-#
+#     
 #     string="args_valid_or_read myVar '^[0-9a-z]{3,3}$' \"SIA\""
 #     reflect_nth_arg 4 $string ==> "SIA"
 # @SEE_ALSO
@@ -1206,7 +1211,7 @@ function reflect_search_variable() {
 #     doc_lint_script_comment shellScriptFile
 # @DESCRIPTION
 #     It's better format your shell script by `shfmt` firstly before using this function.
-#
+#     
 #     **shellScriptFile** the path of shell script file
 # @EXAMPLES
 #     shellScriptFile="src/bash-base.sh"

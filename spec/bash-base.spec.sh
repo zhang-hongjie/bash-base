@@ -765,10 +765,16 @@ End
 
 
 Describe 'array_join'
-    It '-'
+    It 'normal array'
         arr=(" a " " b c ")
         When call array_join '|' arr
         The output should eq " a | b c "
+    End
+
+    It 'empty array'
+        arr=()
+        When call array_join '|' arr
+        The output should eq ""
     End
 End
 
