@@ -39,9 +39,9 @@ function string_trim() {
 #     echo 5 | string_repeat 'abc'
 # @SEE_ALSO
 function string_repeat() {
-    local token="$1"
+    local string="$1"
     local nbTimes=${2-$(cat)}
-    printf "${token}%.0s" $(seq 1 "$nbTimes")
+    printf "${string}%.0s" $(seq 1 "$nbTimes")
 }
 
 # @NAME
@@ -79,6 +79,52 @@ function string_is_empty() {
 	local string="${1-$(cat)}"
 
 	[[ $(string_length "$string") -eq 0 ]]
+}
+
+# @NAME
+#     string_upper -- convert all characters to upper case
+# @SYNOPSIS
+#     string_upper [string]
+# @DESCRIPTION
+#     **[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_upper 'abc'
+#     echo 'abc' | string_upper
+# @SEE_ALSO
+function string_upper() {
+    local string=${1-$(cat)}
+    echo "${string^^}"
+}
+
+# @NAME
+#     string_lower -- convert all characters to lower case
+# @SYNOPSIS
+#     string_lower [string]
+# @DESCRIPTION
+#     **[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_lower 'aBc'
+#     echo 'aBc' | string_lower
+# @SEE_ALSO
+function string_lower() {
+    local string=${1-$(cat)}
+    echo "${string,,}"
+}
+
+# @NAME
+#     string_upper_first -- convert the first characters to upper case, and the others to lower case
+# @SYNOPSIS
+#     string_upper_first [string]
+# @DESCRIPTION
+#     **[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_upper_first 'aBc'
+#     echo 'aBc' | string_upper_first
+# @SEE_ALSO
+function string_upper_first() {
+    local string=${1-$(cat)}
+    local lower="${string,,}"
+    echo "${lower^}"
 }
 
 # @NAME
@@ -243,7 +289,7 @@ function string_replace_regex() {
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
-#
+#     
 #     branchesToSelectString=$(git branch -r --list  'origin/*')
 #     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
@@ -974,7 +1020,7 @@ function args_confirm() {
 #     **arguments...** the string to parse, the arguments and may also including the command.
 # @EXAMPLES
 #     reflect_nth_arg 3 ab cdv "ha ho" ==>  "ha ho"
-#
+#     
 #     string="args_valid_or_read myVar '^[0-9a-z]{3,3}$' \"SIA\""
 #     reflect_nth_arg 4 $string ==> "SIA"
 # @SEE_ALSO
@@ -1073,7 +1119,7 @@ function reflect_search_variable() {
 #     doc_lint_script_comment shellScriptFile
 # @DESCRIPTION
 #     It's better format your shell script by `shfmt` firstly before using this function.
-#
+#     
 #     **shellScriptFile** the path of shell script file
 # @EXAMPLES
 #     shellScriptFile="src/bash-base.sh"

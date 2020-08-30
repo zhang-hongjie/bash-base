@@ -239,6 +239,60 @@ EOF
 End
 
 
+Describe 'string_upper'
+    It 'with value'
+        When call string_upper "aBc"
+        The output should eq "ABC"
+    End
+
+    It 'with empty'
+        When call eval "echo '' | string_upper"
+        The output should eq ""
+    End
+
+    It 'with pipe'
+        When call eval "echo 'aBc' | string_upper"
+        The output should eq "ABC"
+    End
+End
+
+
+Describe 'string_lower'
+    It 'with value'
+        When call string_lower "aBc"
+        The output should eq "abc"
+    End
+
+    It 'with empty'
+        When call eval "echo '' | string_lower"
+        The output should eq ""
+    End
+
+    It 'with pipe'
+        When call eval "echo 'aBc' | string_lower"
+        The output should eq "abc"
+    End
+End
+
+
+Describe 'string_upper_first'
+    It 'with value'
+        When call string_upper_first "aBc"
+        The output should eq "Abc"
+    End
+
+    It 'with empty'
+        When call eval "echo '' | string_upper_first"
+        The output should eq ""
+    End
+
+    It 'with pipe'
+        When call eval "echo 'aBc' | string_upper_first"
+        The output should eq "Abc"
+    End
+End
+
+
 Describe 'string_sub'
     It 'with value'
         When call string_sub 2 4 " as fd "
@@ -1070,7 +1124,7 @@ Describe 'reflect_function_names_of_file'
         When call reflect_function_names_of_file src/bash-base.sh
         The status should eq "0"
         The output should include "args_confirm"
-        The lines of output should eq 47
+        The lines of output should eq 51
     End
 End
 
