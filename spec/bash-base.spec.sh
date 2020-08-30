@@ -888,7 +888,7 @@ source src/bash-base.sh
 SHORT_DESC='this is a script for test generated help usage'
 
 args_parse \$# "\$@" myVar myVar44 fromEnv varWithoutValidation
-args_valid_or_read myVar '^[0-9a-z]{3,3}$' "SIA (lowercase, 3 chars)"
+args_valid_or_read myVar '^[0-9a-z ]{3,}$' "SIA (lowercase, 3 chars)"
 args_valid_or_select myVar44 arrBranchesToSelectCleaned "The base of merge request (normally it's develop or integration)"
 args_valid_or_select_pipe fromEnv 'int|qua|sta|rec|ope' "Which env of DCP Alpine" int
 EOF
@@ -1053,6 +1053,12 @@ Describe 'reflect_nth_arg example'
         The output should eq "SIA"
     End
 
+    It 'regexp include space'
+        string="args_valid_or_read myVar '^[A-Za-z ]{2,}$' \"SIA\""
+        When call reflect_nth_arg 4 $string
+        The output should eq "SIA"
+    End
+
     It 'with variable and single quote'
         string="args_valid_or_read myVar '^[0-9a-z]{3,3}$' 'SIA (lowercase, 3 chars)'"
         When call reflect_nth_arg 4 $string
@@ -1074,6 +1080,12 @@ Describe 'reflect_nth_arg example'
     It 'with variable with regular expression and redirection'
         string="args_valid_or_read myVar '^(?<=prefix.*)&nbsp;\/\|[0-9a-z]{3,5,9}(?!suffix+)$' \"SIA (lowercase, 3 chars)\" \${proposedValue} | cat <input >output 2>&1"
         When call reflect_nth_arg 4 $string
+        The output should eq "SIA (lowercase, 3 chars)"
+    End
+
+    It 'index in the string'
+        string="4 args_valid_or_read myVar '^(?<=prefix.*)&nbsp;\/\|[0-9a-z]{3,5,9}(?!suffix+)$' \"SIA (lowercase, 3 chars)\" \${proposedValue} | cat <input >output 2>&1"
+        When call reflect_nth_arg "$string"
         The output should eq "SIA (lowercase, 3 chars)"
     End
 End
@@ -1109,7 +1121,7 @@ Describe 'reflect_nth_arg'
     End
 
     Example "with string contains $1"
-        string="args_valid_or_read myVar '$1' \"$1\" 'SIA (lowercase, 3 chars)'"
+        string="args_valid_or_read myVar 'a$1b' \"c$1d\" 'SIA (lowercase, 3 chars)'"
         When call reflect_nth_arg 5 $string
         The output should eq "SIA (lowercase, 3 chars)"
     End

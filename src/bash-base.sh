@@ -868,7 +868,7 @@ function args_parse() {
 		    [-q]                optional, Run quietly, no confirmation
 		$(
 			for element in "${positionalVarNames[@]}"; do
-				validCommand="$(grep "^\s*args_valid.* ${element} " "$0" | sed -e "s/\'//g")"
+				validCommand="$(grep -E "^\s*args_valid.*\s+${element}\s+" "$0" | sed -E "s/('[^ ']+) ([^']*')/\1_\2/g" | sed -e "s/\'//g")"
 				if [[ -z ${validCommand} ]]; then
 					description="a valid value for ${element}"
 				else
@@ -1066,11 +1066,12 @@ function args_confirm() {
 # @SEE_ALSO
 function reflect_nth_arg() {
 	local index string args
-	index=$1
-	string="$(echo $* | string_replace_regex '(\\|\||\{|>|<|&)' '\\\1')"
 
+	string="$(echo $* | string_replace_regex '(\\|\||\{|>|<|&)' '\\\1')"
 	args=()
 	eval 'for word in '${string}'; do args+=("$word"); done'
+
+	index="${args[0]}"
 	echo "${args[$index]}"
 }
 
