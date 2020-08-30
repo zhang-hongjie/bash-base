@@ -167,64 +167,6 @@ function string_match() {
 }
 
 # @NAME
-#     string_index_first -- return the positive index of first place of token in string, -1 if not existed
-# @SYNOPSIS
-#     string_index_first tokenString [string]
-# @DESCRIPTION
-#     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
-# @EXAMPLES
-#     string_index_first " as fd " "s f"
-#     string_index_first "token" < logfile
-#     echo " add " | string_index_first "token"
-# @SEE_ALSO
-#     string_before_first, string_after_first
-function string_index_first() {
-	local tokenString=$1
-	local string="${2-$(cat)}"
-	local prefix="${string%%${tokenString}*}"
-	[ "${string}" == "${prefix}" ] && echo -1 || echo ${#prefix}
-}
-
-# @NAME
-#     string_before_first -- find the first index of token in string, and return the sub string before it.
-# @SYNOPSIS
-#     string_before_first tokenString [string]
-# @DESCRIPTION
-#     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
-# @EXAMPLES
-#     string_before_first " as fd " "s f"
-#     string_before_first "str" < logfile
-#     echo " add " | string_before_first "dd"
-# @SEE_ALSO
-#     string_index_first, string_after_first
-function string_before_first() {
-	local tokenString=$1
-	local string="${2-$(cat)}"
-	echo "${string%%${tokenString}*}" # Remove the first - and everything following it
-}
-
-# @NAME
-#     string_after_first -- find the first index of token in string, and return the sub string after it.
-# @SYNOPSIS
-#     string_after_first tokenString [string]
-# @DESCRIPTION
-#     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
-# @EXAMPLES
-#     string_after_first " as fd " "s f"
-#     string_after_first "str" < logfile
-#     echo " add " | string_after_first "dd"
-# @SEE_ALSO
-#     string_index_first, string_before_first
-function string_after_first() {
-	local tokenString=$1
-	local string="${2-$(cat)}"
-	echo "${string#*${tokenString}}" # Remove everything up to and including first -
-}
-
-# @NAME
 #     escape_sed -- escape preserved char of regex, normally for preprocessing of sed token.
 # @SYNOPSIS
 #     escape_sed string
@@ -279,12 +221,70 @@ function string_replace_regex() {
 }
 
 # @NAME
+#     string_index_first -- return the positive index of first place of token in string, -1 if not existed
+# @SYNOPSIS
+#     string_index_first tokenString [string]
+# @DESCRIPTION
+#     **tokenString** the string to search
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_index_first "s f" " as fd "
+#     string_index_first "token" < logfile
+#     echo " add " | string_index_first "token"
+# @SEE_ALSO
+#     string_before_first, string_after_first
+function string_index_first() {
+	local tokenString=$1
+	local string="${2-$(cat)}"
+	local prefix="${string%%${tokenString}*}"
+	[ "${string}" == "${prefix}" ] && echo -1 || echo ${#prefix}
+}
+
+# @NAME
+#     string_before_first -- find the first index of token in string, and return the sub string before it.
+# @SYNOPSIS
+#     string_before_first tokenString [string]
+# @DESCRIPTION
+#     **tokenString** the string to search
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_before_first "s f" " as fd "
+#     string_before_first "str" < logfile
+#     echo " add " | string_before_first "dd"
+# @SEE_ALSO
+#     string_index_first, string_after_first
+function string_before_first() {
+	local tokenString=$1
+	local string="${2-$(cat)}"
+	echo "${string%%${tokenString}*}" # Remove the first - and everything following it
+}
+
+# @NAME
+#     string_after_first -- find the first index of token in string, and return the sub string after it.
+# @SYNOPSIS
+#     string_after_first tokenString [string]
+# @DESCRIPTION
+#     **tokenString** the string to search
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_after_first "s f" " as fd "
+#     string_after_first "str" < logfile
+#     echo " add " | string_after_first "dd"
+# @SEE_ALSO
+#     string_index_first, string_before_first
+function string_after_first() {
+	local tokenString=$1
+	local string="${2-$(cat)}"
+	echo "${string#*${tokenString}}" # Remove everything up to and including first -
+}
+
+# @NAME
 #     string_split_to_array -- split a string to array by a delimiter character, then assign the array to a new variable name
 # @SYNOPSIS
-#     string_split_to_array IFS newArrayVarName [string]
+#     string_split_to_array tokenString [newArrayVarName] [string]
 # @DESCRIPTION
-#     **IFS** the delimiter character
-#     **newArrayVarName** the new variable name which the array will be assigned to
+#     **tokenString** the delimiter character
+#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
 #     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
 #     str="a|b|c"
@@ -295,15 +295,27 @@ function string_replace_regex() {
 # @SEE_ALSO
 #     array_join, array_describe, array_from_describe
 function string_split_to_array() {
+  local tokenString="$1"
 	local newArrayVarName="$2"
 	local string="${3-$(cat)}"
 
-	local IFS=$1
-	local tmp=("${string}")
+  local tmp=()
+  while [[ "$(string_index_first "${tokenString}" "${string}")" -ge 0 ]]; do
+    array_append tmp "$(string_before_first "${tokenString}" "${string}")"
+    string="$(string_after_first "${tokenString}" "${string}" )"
+	done
 
-	local command="${newArrayVarName}=(\${tmp[@]})"
-	eval "${command}"
-	unset IFS
+	if [[ -n "${string}" ]]; then
+	  array_append tmp "${string}"
+	fi
+
+	if [[ -n "${newArrayVarName}" ]]; then
+		string="\${tmp[@]}"
+		command="${newArrayVarName}=(\"${string}\")"
+		eval "${command}"
+	else
+		array_join $'\n' tmp
+	fi
 }
 
 # @NAME

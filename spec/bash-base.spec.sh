@@ -27,6 +27,18 @@ Describe 'string_split_to_array'
         The variable actual should satisfy array_describe_equals actual "([0]='a' [1]='b' [2]='c')"
     End
 
+    It 'with pipe and print to stdout'
+        str="a b c"
+        When call eval "echo $str | string_split_to_array ' '"
+        The output should eq $'a\nb\nc'
+    End
+
+    It 'with token string including space'
+        str="amy delimiterbmy delimiterc"
+        When call string_split_to_array 'my delimiter' actual "$str"
+        The variable actual should satisfy array_describe_equals actual "([0]='a' [1]='b' [2]='c')"
+    End
+
     It 'with stdin'
         declare_heredoc lines <<-EOF
   origin/develop
@@ -441,8 +453,8 @@ Describe 'string_index_first'
     End
 
     It 'with pipe'
-        When call eval "echo ' as fd ' | string_index_first 's f'"
-        The output should eq "2"
+        When call eval "echo 's as fd ' | string_index_first 's f'"
+        The output should eq "3"
     End
 
     It 'find newline'
