@@ -289,7 +289,7 @@ function string_after_first() {
 # @EXAMPLES
 #     str="a|b|c"
 #     string_split_to_array '|' newArray "$str"
-#     
+#
 #     branchesToSelectString=$(git branch -r --list  'origin/*')
 #     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
@@ -301,13 +301,41 @@ function string_split_to_array() {
 
   local tmp=()
   while [[ "$(string_index_first "${tokenString}" "${string}")" -ge 0 ]]; do
-    array_append tmp "$(string_before_first "${tokenString}" "${string}")"
+    tmp+=("$(string_before_first "${tokenString}" "${string}")")
     string="$(string_after_first "${tokenString}" "${string}" )"
 	done
 
 	if [[ -n "${string}" ]]; then
-	  array_append tmp "${string}"
+	  tmp+=("${string}")
 	fi
+
+	if [[ -n "${newArrayVarName}" ]]; then
+		string="\${tmp[@]}"
+		command="${newArrayVarName}=(\"${string}\")"
+		eval "${command}"
+	else
+		array_join $'\n' tmp
+	fi
+}
+
+function string_revert() {
+  rev
+}
+
+function string_pick_to_array() {
+  local startTokenString="$1"
+  local endTokenString="$2"
+	local newArrayVarName="$3"
+	local string="${4-$(cat)}"
+
+  local tmp=()
+  while [[ "$(string_index_first "${startTokenString}" "${string}")" -ge 0 ]]; do
+    string="$(string_after_first "${startTokenString}" "${string}" )"
+    if [[ "$(string_index_first "${endTokenString}" "${string}")" -ge 0 ]]; then
+      tmp+=("$(string_before_first "${endTokenString}" "${string}")")
+      string="$(string_after_first "${endTokenString}" "${string}" )"
+    fi
+	done
 
 	if [[ -n "${newArrayVarName}" ]]; then
 		string="\${tmp[@]}"
@@ -1032,7 +1060,7 @@ function args_confirm() {
 #     **arguments...** the string to parse, the arguments and may also including the command.
 # @EXAMPLES
 #     reflect_nth_arg 3 ab cdv "ha ho" ==>  "ha ho"
-#     
+#
 #     string="args_valid_or_read myVar '^[0-9a-z]{3,3}$' \"SIA\""
 #     reflect_nth_arg 4 $string ==> "SIA"
 # @SEE_ALSO
@@ -1131,7 +1159,7 @@ function reflect_search_variable() {
 #     doc_lint_script_comment shellScriptFile
 # @DESCRIPTION
 #     It's better format your shell script by `shfmt` firstly before using this function.
-#     
+#
 #     **shellScriptFile** the path of shell script file
 # @EXAMPLES
 #     shellScriptFile="src/bash-base.sh"
