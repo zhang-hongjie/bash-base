@@ -20,6 +20,7 @@ preserve() {
 }
 AfterRun preserve
 
+
 Describe 'string_split_to_array'
     It 'with variable'
         str="a b c"
@@ -57,6 +58,59 @@ EOF
 EOF
         When call eval "string_split_to_array $'\n' actual < temp_file.txt"
         The variable actual should satisfy array_describe_equals actual "([0]=' 1. A D' [1]=' 2. B' [2]=' 3. C')"
+
+        rm -fr temp_file.txt
+    End
+End
+
+
+Describe 'string_pick_to_array'
+    It 'with variable'
+        str="[{age:12},{age:15},{age:16}]"
+        When call string_pick_to_array '{age:' '}' actual "$str"
+        The variable actual should satisfy array_describe_equals actual "([0]='12' [1]='15' [2]='16')"
+    End
+
+    It 'with pipe and print to stdout'
+        str="[{age:12},{age:15},{age:16}]"
+        When call eval "echo $str | string_pick_to_array '{age:' '}'"
+        The output should eq $'12\n15\n16'
+    End
+
+    It 'with stdin'
+        declare_heredoc lines <<-EOF
+[
+  {
+    age:12
+  },
+  {
+    age:15
+  },
+  {
+    age:16
+  }
+]
+EOF
+        When call string_pick_to_array 'age:' $'\n' actual "${lines}"
+        The variable actual should satisfy array_describe_equals actual "([0]='12' [1]='15' [2]='16')"
+    End
+
+    It 'with file'
+        cat > temp_file.txt <<-EOF
+[
+  {
+    age:12
+  },
+  {
+    age:15
+  },
+  {
+    age:16
+  }
+]
+EOF
+        When call eval "string_pick_to_array 'age:' $'\n' actual < temp_file.txt"
+        The variable actual should satisfy array_describe_equals actual "([0]='12' [1]='15' [2]='16')"
 
         rm -fr temp_file.txt
     End
@@ -246,6 +300,35 @@ Describe 'string_is_empty'
 EOF
         When call eval "string_is_empty < temp_file.txt"
         The status should eq "1"
+        rm -fr temp_file.txt
+    End
+End
+
+
+Describe 'string_revert'
+    It 'with value'
+        When call string_revert " as fd "
+        The output should eq " df sa "
+    End
+
+    It 'with empty'
+        When call eval "echo '' | string_revert"
+        The output should eq ""
+    End
+
+    It 'with pipe'
+        When call eval "echo ' add ' | string_revert"
+        The output should eq " dda "
+    End
+
+    It 'with file'
+        cat > temp_file.txt <<-EOF
+  A D
+  B
+  C
+EOF
+        When call eval "string_revert < temp_file.txt"
+        The output should eq $'D A  \nB  \nC  '
         rm -fr temp_file.txt
     End
 End
@@ -1156,7 +1239,7 @@ Describe 'reflect_function_names_of_file'
         When call reflect_function_names_of_file src/bash-base.sh
         The status should eq "0"
         The output should include "args_confirm"
-        The lines of output should eq 51
+        The lines of output should eq 53
     End
 End
 

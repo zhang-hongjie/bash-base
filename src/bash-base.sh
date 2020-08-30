@@ -39,9 +39,9 @@ function string_trim() {
 #     echo 5 | string_repeat 'abc'
 # @SEE_ALSO
 function string_repeat() {
-    local string="$1"
-    local nbTimes=${2-$(cat)}
-    printf "${string}%.0s" $(seq 1 "$nbTimes")
+	local string="$1"
+	local nbTimes=${2-$(cat)}
+	printf "${string}%.0s" $(seq 1 "$nbTimes")
 }
 
 # @NAME
@@ -82,6 +82,21 @@ function string_is_empty() {
 }
 
 # @NAME
+#     string_revert -- revert the characters of a string
+# @SYNOPSIS
+#     string_revert [string]
+# @DESCRIPTION
+#     **[string]** the string to be reverted, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     string_revert 'aBc'
+#     echo 'aBc' | string_revert
+# @SEE_ALSO
+function string_revert() {
+	local string="${1-$(cat)}"
+	echo "${string}" | rev
+}
+
+# @NAME
 #     string_upper -- convert all characters to upper case
 # @SYNOPSIS
 #     string_upper [string]
@@ -91,9 +106,10 @@ function string_is_empty() {
 #     string_upper 'abc'
 #     echo 'abc' | string_upper
 # @SEE_ALSO
+#     string_upper_first, string_lower
 function string_upper() {
-    local string=${1-$(cat)}
-    echo "${string^^}"
+	local string=${1-$(cat)}
+	echo "${string^^}"
 }
 
 # @NAME
@@ -106,9 +122,10 @@ function string_upper() {
 #     string_lower 'aBc'
 #     echo 'aBc' | string_lower
 # @SEE_ALSO
+#     string_upper, string_upper_first
 function string_lower() {
-    local string=${1-$(cat)}
-    echo "${string,,}"
+	local string=${1-$(cat)}
+	echo "${string,,}"
 }
 
 # @NAME
@@ -121,10 +138,11 @@ function string_lower() {
 #     string_upper_first 'aBc'
 #     echo 'aBc' | string_upper_first
 # @SEE_ALSO
+#     string_lower, string_upper
 function string_upper_first() {
-    local string=${1-$(cat)}
-    local lower="${string,,}"
-    echo "${lower^}"
+	local string=${1-$(cat)}
+	local lower="${string,,}"
+	echo "${lower^}"
 }
 
 # @NAME
@@ -283,7 +301,7 @@ function string_after_first() {
 # @SYNOPSIS
 #     string_split_to_array tokenString [newArrayVarName] [string]
 # @DESCRIPTION
-#     **tokenString** the delimiter character
+#     **tokenString** the delimiter string
 #     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
 #     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
@@ -293,20 +311,20 @@ function string_after_first() {
 #     branchesToSelectString=$(git branch -r --list  'origin/*')
 #     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
-#     array_join, array_describe, array_from_describe
+#     array_join, array_describe, array_from_describe, string_pick_to_array
 function string_split_to_array() {
-  local tokenString="$1"
+	local tokenString="$1"
 	local newArrayVarName="$2"
 	local string="${3-$(cat)}"
 
-  local tmp=()
-  while [[ "$(string_index_first "${tokenString}" "${string}")" -ge 0 ]]; do
-    tmp+=("$(string_before_first "${tokenString}" "${string}")")
-    string="$(string_after_first "${tokenString}" "${string}" )"
+	local tmp=()
+	while [[ "$(string_index_first "${tokenString}" "${string}")" -ge 0 ]]; do
+		tmp+=("$(string_before_first "${tokenString}" "${string}")")
+		string="$(string_after_first "${tokenString}" "${string}")"
 	done
 
 	if [[ -n "${string}" ]]; then
-	  tmp+=("${string}")
+		tmp+=("${string}")
 	fi
 
 	if [[ -n "${newArrayVarName}" ]]; then
@@ -318,23 +336,33 @@ function string_split_to_array() {
 	fi
 }
 
-function string_revert() {
-  rev
-}
-
+# @NAME
+#     string_pick_to_array -- take value using start token and end token from a string to array, then assign the array to a new variable name
+# @SYNOPSIS
+#     string_pick_to_array startTokenString endTokenString [newArrayVarName] [string]
+# @DESCRIPTION
+#     **startTokenString** the start token string
+#     **endTokenString** the end token string
+#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
+#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+# @EXAMPLES
+#     str="[{age:12},{age:15},{age:16}]"
+#     string_pick_to_array '{age:' '}' newArray "$str"
+# @SEE_ALSO
+#     array_join, array_describe, array_from_describe, string_split_to_array
 function string_pick_to_array() {
-  local startTokenString="$1"
-  local endTokenString="$2"
+	local startTokenString="$1"
+	local endTokenString="$2"
 	local newArrayVarName="$3"
 	local string="${4-$(cat)}"
 
-  local tmp=()
-  while [[ "$(string_index_first "${startTokenString}" "${string}")" -ge 0 ]]; do
-    string="$(string_after_first "${startTokenString}" "${string}" )"
-    if [[ "$(string_index_first "${endTokenString}" "${string}")" -ge 0 ]]; then
-      tmp+=("$(string_before_first "${endTokenString}" "${string}")")
-      string="$(string_after_first "${endTokenString}" "${string}" )"
-    fi
+	local tmp=()
+	while [[ "$(string_index_first "${startTokenString}" "${string}")" -ge 0 ]]; do
+		string="$(string_after_first "${startTokenString}" "${string}")"
+		if [[ "$(string_index_first "${endTokenString}" "${string}")" -ge 0 ]]; then
+			tmp+=("$(string_before_first "${endTokenString}" "${string}")")
+			string="$(string_after_first "${endTokenString}" "${string}")"
+		fi
 	done
 
 	if [[ -n "${newArrayVarName}" ]]; then
@@ -867,28 +895,30 @@ function args_parse() {
 		    [-h]                help, print the usage
 		    [-q]                optional, Run quietly, no confirmation
 		$(
-		  local spacePlaceHolder="_SPACE_"
-		  local dollarPlaceHolder="_DOLLAR_"
-		  local leftParenthesesPlaceHolder="_PARENTHESES_LEFT_"
-		  local rightParenthesesPlaceHolder="_PARENTHESES_RIGHT_"
+			local spacePlaceHolder="_SPACE_"
+			local dollarPlaceHolder="_DOLLAR_"
+			local leftParenthesesPlaceHolder="_PARENTHESES_LEFT_"
+			local rightParenthesesPlaceHolder="_PARENTHESES_RIGHT_"
 
 			for element in "${positionalVarNames[@]}"; do
-				validCommand="$(grep -E "^\s*args_valid.*\s+${element}\s+" "$0" |
-				    sed -E ":A;s/('[^ ']+) ([^']*')/\1${spacePlaceHolder}\2/;tA" |
-				    sed -E ":A;s/('[^\$']+)\$([^']*')/\1${dollarPlaceHolder}\2/;tA" |
-				    sed -E ":A;s/('[^\(']+)\(([^']*')/\1${leftParenthesesPlaceHolder}\2/;tA" |
-				    sed -E ":A;s/('[^\)']+)\)([^']*')/\1${rightParenthesesPlaceHolder}\2/;tA" |
-				    sed -e "s/\'//g" |
-				    cat)"
+				validCommand="$(
+					grep -E "^\s*args_valid.*\s+${element}\s+" "$0" |
+						sed -E ":A;s/('[^ ']+) ([^']*')/\1${spacePlaceHolder}\2/;tA" |
+						sed -E ":A;s/('[^\$']+)\$([^']*')/\1${dollarPlaceHolder}\2/;tA" |
+						sed -E ":A;s/('[^\(']+)\(([^']*')/\1${leftParenthesesPlaceHolder}\2/;tA" |
+						sed -E ":A;s/('[^\)']+)\)([^']*')/\1${rightParenthesesPlaceHolder}\2/;tA" |
+						sed -e "s/\'//g"
+				)"
 				if [[ -z ${validCommand} ]]; then
 					description="a valid value for ${element}"
 				else
-					description=$(reflect_nth_arg 4 "${validCommand}" |
-					    string_replace "${spacePlaceHolder}" " " |
-					    string_replace "${dollarPlaceHolder}" "$" |
-					    string_replace "${leftParenthesesPlaceHolder}" "(" |
-					    string_replace "${rightParenthesesPlaceHolder}" ")"
-					)
+					description="$(
+						reflect_nth_arg 4 "${validCommand}" |
+							string_replace "${spacePlaceHolder}" " " |
+							string_replace "${dollarPlaceHolder}" "$" |
+							string_replace "${leftParenthesesPlaceHolder}" "(" |
+							string_replace "${rightParenthesesPlaceHolder}" ")"
+					)"
 					if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
 						description="${description}, possible values: $(reflect_nth_arg 3 $validCommand)"
 					fi
