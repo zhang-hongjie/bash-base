@@ -13,15 +13,15 @@ SHORT_DESC=''                       # redefine it to show your script short desc
 USAGE=''                            # redefine it in your script only if the generated -h response is not good for you
 
 # @NAME
-#     string_trim -- remove the white chars from prefix and suffix
+#string_trim -- remove the white chars from prefix and suffix
 # @SYNOPSIS
-#     string_trim [string]
+#string_trim [string]
 # @DESCRIPTION
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_trim " as fd "
-#     string_trim < logfile
-#     echo " add " | string_trim
+#string_trim " as fd "
+#string_trim < logfile
+#echo " add " | string_trim
 # @SEE_ALSO
 function string_trim() {
 	local string="${1-$(cat)}"
@@ -29,15 +29,15 @@ function string_trim() {
 }
 
 # @NAME
-#     string_repeat -- make a string by repeat n times of a token string
+#string_repeat -- make a string by repeat n times of a token string
 # @SYNOPSIS
-#     string_repeat string [nbTimes]
+#string_repeat string [nbTimes]
 # @DESCRIPTION
-#     **string** the string to be repeated
-#     **[nbTimes]** the number of times, if absent, it will be read from the standard input (CTRL+D to end)
+#**string** the string to be repeated
+#**[nbTimes]** the number of times, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_repeat 'abc' 5
-#     echo 5 | string_repeat 'abc'
+#string_repeat 'abc' 5
+#echo 5 | string_repeat 'abc'
 # @SEE_ALSO
 function string_repeat() {
 	local string="$1"
@@ -46,15 +46,15 @@ function string_repeat() {
 }
 
 # @NAME
-#     string_length -- return the string length
+#string_length -- return the string length
 # @SYNOPSIS
-#     string_length [string]
+#string_length [string]
 # @DESCRIPTION
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_length " as fd "
-#     string_length < logfile
-#     echo " add " | string_length
+#string_length " as fd "
+#string_length < logfile
+#echo " add " | string_length
 # @SEE_ALSO
 function string_length() {
 	local string index
@@ -65,17 +65,17 @@ function string_length() {
 }
 
 # @NAME
-#     string_is_empty -- exit success code 0 if the string is empty
+#string_is_empty -- exit success code 0 if the string is empty
 # @SYNOPSIS
-#     string_is_empty [string]
+#string_is_empty [string]
 # @DESCRIPTION
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_is_empty " as fd "
-#     string_is_empty < logfile
-#     echo " add " | string_is_empty
+#string_is_empty " as fd "
+#string_is_empty < logfile
+#echo " add " | string_is_empty
 # @SEE_ALSO
-#     string_length
+#string_length
 function string_is_empty() {
 	local string="${1-$(cat)}"
 
@@ -83,14 +83,14 @@ function string_is_empty() {
 }
 
 # @NAME
-#     string_revert -- revert the characters of a string
+#string_revert -- revert the characters of a string
 # @SYNOPSIS
-#     string_revert [string]
+#string_revert [string]
 # @DESCRIPTION
-#     **[string]** the string to be reverted, if absent, it will be read from the standard input (CTRL+D to end)
+#**[string]** the string to be reverted, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_revert 'aBc'
-#     echo 'aBc' | string_revert
+#string_revert 'aBc'
+#echo 'aBc' | string_revert
 # @SEE_ALSO
 function string_revert() {
 	local string="${1-$(cat)}"
@@ -98,48 +98,48 @@ function string_revert() {
 }
 
 # @NAME
-#     string_upper -- convert all characters to upper case
+#string_upper -- convert all characters to upper case
 # @SYNOPSIS
-#     string_upper [string]
+#string_upper [string]
 # @DESCRIPTION
-#     **[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
+#**[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_upper 'abc'
-#     echo 'abc' | string_upper
+#string_upper 'abc'
+#echo 'abc' | string_upper
 # @SEE_ALSO
-#     string_upper_first, string_lower
+#string_upper_first, string_lower
 function string_upper() {
 	local string=${1-$(cat)}
 	echo "${string^^}"
 }
 
 # @NAME
-#     string_lower -- convert all characters to lower case
+#string_lower -- convert all characters to lower case
 # @SYNOPSIS
-#     string_lower [string]
+#string_lower [string]
 # @DESCRIPTION
-#     **[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
+#**[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_lower 'aBc'
-#     echo 'aBc' | string_lower
+#string_lower 'aBc'
+#echo 'aBc' | string_lower
 # @SEE_ALSO
-#     string_upper, string_upper_first
+#string_upper, string_upper_first
 function string_lower() {
 	local string=${1-$(cat)}
 	echo "${string,,}"
 }
 
 # @NAME
-#     string_upper_first -- convert the first characters to upper case, and the others to lower case
+#string_upper_first -- convert the first characters to upper case, and the others to lower case
 # @SYNOPSIS
-#     string_upper_first [string]
+#string_upper_first [string]
 # @DESCRIPTION
-#     **[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
+#**[string]** the string to be converted, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_upper_first 'aBc'
-#     echo 'aBc' | string_upper_first
+#string_upper_first 'aBc'
+#echo 'aBc' | string_upper_first
 # @SEE_ALSO
-#     string_lower, string_upper
+#string_lower, string_upper
 function string_upper_first() {
 	local string=${1-$(cat)}
 	local lower="${string,,}"
@@ -147,17 +147,17 @@ function string_upper_first() {
 }
 
 # @NAME
-#     string_sub -- extract a part of string and return
+#string_sub -- extract a part of string and return
 # @SYNOPSIS
-#     string_sub startIndex subStringLength [string]
+#string_sub startIndex subStringLength [string]
 # @DESCRIPTION
-#     **startIndex** the index of first character in string, 0 based, may negative
-#     **subStringLength** the length of sub string, 0 based, may negative
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**startIndex** the index of first character in string, 0 based, may negative
+#**subStringLength** the length of sub string, 0 based, may negative
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_sub -5 -1 " as fd "
-#     string_sub 3 5 < temp_file.txt
-#     echo ' as fd ' | string_sub 2 4
+#string_sub -5 -1 " as fd "
+#string_sub 3 5 < temp_file.txt
+#echo ' as fd ' | string_sub 2 4
 # @SEE_ALSO
 function string_sub() {
 	local startIndex=$1
@@ -167,16 +167,16 @@ function string_sub() {
 }
 
 # @NAME
-#     string_match -- test if the string match the regular expression
+#string_match -- test if the string match the regular expression
 # @SYNOPSIS
-#     string_match regExp [string]
+#string_match regExp [string]
 # @DESCRIPTION
-#     **regExp** the regular expression
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**regExp** the regular expression
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_match 'name;+' "name;name;"
+#string_match 'name;+' "name;name;"
 # @SEE_ALSO
-#     string_index_first
+#string_index_first
 function string_match() {
 	local value regExp
 	regExp=${1}
@@ -186,34 +186,34 @@ function string_match() {
 }
 
 # @NAME
-#     escape_sed -- escape preserved char of regex, normally for preprocessing of sed token.
+#escape_sed -- escape preserved char of regex, normally for preprocessing of sed token.
 # @SYNOPSIS
-#     escape_sed string
+#escape_sed string
 # @DESCRIPTION
-#     **string** the string to process
+#**string** the string to process
 # @EXAMPLES
-#     escape_sed 'a$'
+#escape_sed 'a$'
 # @SEE_ALSO
-#     string_replace
+#string_replace
 function escape_sed() {
 	echo "${1}" | sed -e 's/\//\\\//g' -e 's/\&/\\\&/g' -e 's/\./\\\./g' -e 's/\^/\\\^/g' -e 's/\[/\\\[/g' -e 's/\$/\\\$/g'
 }
 export -f escape_sed
 
 # @NAME
-#     string_replace -- replace literally the token string to new string, not support regular expression
+#string_replace -- replace literally the token string to new string, not support regular expression
 # @SYNOPSIS
-#     string_replace tokenString newString [string]
+#string_replace tokenString newString [string]
 # @DESCRIPTION
-#     **tokenString** the string to search, the preserved character of regular expression will be escaped
-#     **newString** the new value of replacing to, the preserved character of regular expression will be escaped
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**tokenString** the string to search, the preserved character of regular expression will be escaped
+#**newString** the new value of replacing to, the preserved character of regular expression will be escaped
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_replace 'a' 'b' 'aaa'   ==> 'bbb'
-#     string_replace '$' 'b' 'a$a'   ==> 'aba'
-#     string_replace '\*' 'b' 'a*a'  ==> 'aba'
+#string_replace 'a' 'b' 'aaa'   ==> 'bbb'
+#string_replace '$' 'b' 'a$a'   ==> 'aba'
+#string_replace '\*' 'b' 'a*a'  ==> 'aba'
 # @SEE_ALSO
-#     escape_sed, string_replace_regex
+#escape_sed, string_replace_regex
 function string_replace() {
 	local tokenString newString
 	tokenString=$(escape_sed "${1}")
@@ -222,36 +222,36 @@ function string_replace() {
 }
 
 # @NAME
-#     string_replace_regex -- replace the token string to new string, support regular expression
+#string_replace_regex -- replace the token string to new string, support regular expression
 # @SYNOPSIS
-#     string_replace_regex tokenString newString [string]
+#string_replace_regex tokenString newString [string]
 # @DESCRIPTION
-#     **tokenString** the string to search, support regular expression and its modern extension
-#     **newString** the new value of replacing to, support [back-references](https://www.gnu.org/software/sed/manual/html_node/Back_002dreferences-and-Subexpressions.html)
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**tokenString** the string to search, support regular expression and its modern extension
+#**newString** the new value of replacing to, support [back-references](https://www.gnu.org/software/sed/manual/html_node/Back_002dreferences-and-Subexpressions.html)
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_replace_regex 'a*' 'b' 'a*a' ==> 'b*b'
-#     string_replace_regex 'a*' 'b' "aaa" ==> 'b'
-#     string_replace_regex '*' 'b' 'a*a'  ==> 'aba'
+#string_replace_regex 'a*' 'b' 'a*a' ==> 'b*b'
+#string_replace_regex 'a*' 'b' "aaa" ==> 'b'
+#string_replace_regex '*' 'b' 'a*a'  ==> 'aba'
 # @SEE_ALSO
-#     string_replace
+#string_replace
 function string_replace_regex() {
 	echo "${3-$(cat)}" | sed -E -e "s/$1/$2/g"
 }
 
 # @NAME
-#     string_index_first -- return the positive index of first place of token in string, -1 if not existed
+#string_index_first -- return the positive index of first place of token in string, -1 if not existed
 # @SYNOPSIS
-#     string_index_first tokenString [string]
+#string_index_first tokenString [string]
 # @DESCRIPTION
-#     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**tokenString** the string to search
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_index_first "s f" " as fd "
-#     string_index_first "token" < logfile
-#     echo " add " | string_index_first "token"
+#string_index_first "s f" " as fd "
+#string_index_first "token" < logfile
+#echo " add " | string_index_first "token"
 # @SEE_ALSO
-#     string_before_first, string_after_first
+#string_before_first, string_after_first
 function string_index_first() {
 	local tokenString=$1
 	local string="${2-$(cat)}"
@@ -260,18 +260,18 @@ function string_index_first() {
 }
 
 # @NAME
-#     string_before_first -- find the first index of token in string, and return the sub string before it.
+#string_before_first -- find the first index of token in string, and return the sub string before it.
 # @SYNOPSIS
-#     string_before_first tokenString [string]
+#string_before_first tokenString [string]
 # @DESCRIPTION
-#     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**tokenString** the string to search
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_before_first "s f" " as fd "
-#     string_before_first "str" < logfile
-#     echo " add " | string_before_first "dd"
+#string_before_first "s f" " as fd "
+#string_before_first "str" < logfile
+#echo " add " | string_before_first "dd"
 # @SEE_ALSO
-#     string_index_first, string_after_first
+#string_index_first, string_after_first
 function string_before_first() {
 	local tokenString=$1
 	local string="${2-$(cat)}"
@@ -279,18 +279,18 @@ function string_before_first() {
 }
 
 # @NAME
-#     string_after_first -- find the first index of token in string, and return the sub string after it.
+#string_after_first -- find the first index of token in string, and return the sub string after it.
 # @SYNOPSIS
-#     string_after_first tokenString [string]
+#string_after_first tokenString [string]
 # @DESCRIPTION
-#     **tokenString** the string to search
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**tokenString** the string to search
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     string_after_first "s f" " as fd "
-#     string_after_first "str" < logfile
-#     echo " add " | string_after_first "dd"
+#string_after_first "s f" " as fd "
+#string_after_first "str" < logfile
+#echo " add " | string_after_first "dd"
 # @SEE_ALSO
-#     string_index_first, string_before_first
+#string_index_first, string_before_first
 function string_after_first() {
 	local tokenString=$1
 	local string="${2-$(cat)}"
@@ -298,21 +298,21 @@ function string_after_first() {
 }
 
 # @NAME
-#     string_split_to_array -- split a string to array by a delimiter character, then assign the array to a new variable name
+#string_split_to_array -- split a string to array by a delimiter character, then assign the array to a new variable name
 # @SYNOPSIS
-#     string_split_to_array tokenString [newArrayVarName] [string]
+#string_split_to_array tokenString [newArrayVarName] [string]
 # @DESCRIPTION
-#     **tokenString** the delimiter string
-#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**tokenString** the delimiter string
+#**[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     str="a|b|c"
-#     string_split_to_array '|' newArray "$str"
+#str="a|b|c"
+#string_split_to_array '|' newArray "$str"
 #
-#     branchesToSelectString=$(git branch -r --list  'origin/*')
-#     string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
+#branchesToSelectString=$(git branch -r --list  'origin/*')
+#string_split_to_array $'\n' branchesToSelectArray "${branchesToSelectString}"
 # @SEE_ALSO
-#     array_join, array_describe, array_from_describe, string_pick_to_array
+#array_join, array_describe, array_from_describe, string_pick_to_array
 function string_split_to_array() {
 	local tokenString="$1"
 	local newArrayVarName="$2"
@@ -338,19 +338,19 @@ function string_split_to_array() {
 }
 
 # @NAME
-#     string_pick_to_array -- take value using start token and end token from a string to array, then assign the array to a new variable name
+#string_pick_to_array -- take value using start token and end token from a string to array, then assign the array to a new variable name
 # @SYNOPSIS
-#     string_pick_to_array startTokenString endTokenString [newArrayVarName] [string]
+#string_pick_to_array startTokenString endTokenString [newArrayVarName] [string]
 # @DESCRIPTION
-#     **startTokenString** the start token string
-#     **endTokenString** the end token string
-#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
-#     **[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
+#**startTokenString** the start token string
+#**endTokenString** the end token string
+#**[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
+#**[string]** the string to process, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     str="[{age:12},{age:15},{age:16}]"
-#     string_pick_to_array '{age:' '}' newArray "$str"
+#str="[{age:12},{age:15},{age:16}]"
+#string_pick_to_array '{age:' '}' newArray "$str"
 # @SEE_ALSO
-#     array_join, array_describe, array_from_describe, string_split_to_array
+#array_join, array_describe, array_from_describe, string_split_to_array
 function string_pick_to_array() {
 	local startTokenString="$1"
 	local endTokenString="$2"
@@ -376,17 +376,17 @@ function string_pick_to_array() {
 }
 
 # @NAME
-#     array_join -- join an array to string using delimiter string
+#array_join -- join an array to string using delimiter string
 # @SYNOPSIS
-#     array_join delimiter arrayVarName
+#array_join delimiter arrayVarName
 # @DESCRIPTION
-#     **delimiter** the delimiter string
-#     **arrayVarName** the variable name of the array to be processed
+#**delimiter** the delimiter string
+#**arrayVarName** the variable name of the array to be processed
 # @EXAMPLES
-#     myArry=(" a " " b c ")
-#     array_join '|' myArry ==> " a | b c "
+#myArry=(" a " " b c ")
+#array_join '|' myArry ==> " a | b c "
 # @SEE_ALSO
-#     string_split_to_array, array_describe, array_from_describe
+#string_split_to_array, array_describe, array_from_describe
 function array_join() {
 	local delimiter="$1"
 	local array="$2[@]"
@@ -405,32 +405,32 @@ function array_join() {
 }
 
 # @NAME
-#     array_describe -- convert the array to its string representation
+#array_describe -- convert the array to its string representation
 # @SYNOPSIS
-#     array_describe arrayVarName
+#array_describe arrayVarName
 # @DESCRIPTION
-#     **arrayVarName** the variable name of the array to be processed
+#**arrayVarName** the variable name of the array to be processed
 # @EXAMPLES
-#     myArray=("a" "b")
-#     array_describe myArray ==> ([0]='a' [1]='b')
+#myArray=("a" "b")
+#array_describe myArray ==> ([0]='a' [1]='b')
 # @SEE_ALSO
-#     string_split_to_array, array_join, array_from_describe
+#string_split_to_array, array_join, array_from_describe
 function array_describe() {
 	declare -p "$1" | string_after_first "=" | tr '"' "'"
 }
 
 # @NAME
-#     array_from_describe -- restore the array from its string representation, then assign it to a variable name
+#array_from_describe -- restore the array from its string representation, then assign it to a variable name
 # @SYNOPSIS
-#     array_from_describe newArrayVarName [string]
+#array_from_describe newArrayVarName [string]
 # @DESCRIPTION
-#     **newArrayVarName** the new variable name which the array will be assigned to
-#     **[string]** the string of array describe, if absent, it will be read from the standard input (CTRL+D to end)
+#**newArrayVarName** the new variable name which the array will be assigned to
+#**[string]** the string of array describe, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     array_from_describe myNewArray "([0]='a' [1]='b')"
-#     array_from_describe myNewArray < fileNameContentString
+#array_from_describe myNewArray "([0]='a' [1]='b')"
+#array_from_describe myNewArray < fileNameContentString
 # @SEE_ALSO
-#     string_split_to_array, array_join, array_describe
+#string_split_to_array, array_join, array_describe
 function array_from_describe() {
 	local newArrayVarName="$1"
 	local string="${2-$(cat)}"
@@ -440,18 +440,18 @@ function array_from_describe() {
 }
 
 # @NAME
-#     array_contains -- exit success code 0 if array contains element, fail if not.
+#array_contains -- exit success code 0 if array contains element, fail if not.
 # @SYNOPSIS
-#     array_contains arrayVarName [seekingElement]
+#array_contains arrayVarName [seekingElement]
 # @DESCRIPTION
-#     **arrayVarName** the variable name of array to test
-#     **[seekingElement]** the element to search in array, if absent, it will be read from the standard input (CTRL+D to end)
+#**arrayVarName** the variable name of array to test
+#**[seekingElement]** the element to search in array, if absent, it will be read from the standard input (CTRL+D to end)
 # @EXAMPLES
-#     arr=("a" "b" "c" "ab" "f" "g")
-#     array_contains arr "ab"
-#     echo "ab" | array_contains arr
+#arr=("a" "b" "c" "ab" "f" "g")
+#array_contains arr "ab"
+#echo "ab" | array_contains arr
 # @SEE_ALSO
-#     array_remove
+#array_remove
 function array_contains() {
 	local array="$1[@]"
 	local seeking="${2-$(cat)}"
@@ -468,16 +468,16 @@ function array_contains() {
 }
 
 # @NAME
-#     array_sort -- sort the elements of array, save the result to original variable name
+#array_sort -- sort the elements of array, save the result to original variable name
 # @SYNOPSIS
-#     array_sort arrayVarName
+#array_sort arrayVarName
 # @DESCRIPTION
-#     **arrayVarName** the variable name of the array to be processed
+#**arrayVarName** the variable name of the array to be processed
 # @EXAMPLES
-#     myArray=('aa' 'bb' 'aa')
-#     array_sort myArray ==> ([0]='aa' [1]='aa' [2]='bb')
+#myArray=('aa' 'bb' 'aa')
+#array_sort myArray ==> ([0]='aa' [1]='aa' [2]='bb')
 # @SEE_ALSO
-#     array_sort_distinct
+#array_sort_distinct
 function array_sort() {
 	local arrayVarName="$1"
 	local strSorted arrSorted
@@ -491,16 +491,16 @@ function array_sort() {
 }
 
 # @NAME
-#     array_sort_distinct -- remove the duplicated elements of array, sort and save the result to original variable name
+#array_sort_distinct -- remove the duplicated elements of array, sort and save the result to original variable name
 # @SYNOPSIS
-#     array_sort_distinct arrayVarName
+#array_sort_distinct arrayVarName
 # @DESCRIPTION
-#     **arrayVarName** the variable name of the array to be processed
+#**arrayVarName** the variable name of the array to be processed
 # @EXAMPLES
-#     myArray=('aa' 'bb' 'aa')
-#     array_sort_distinct myArray ==> ([0]='aa' [1]='bb')
+#myArray=('aa' 'bb' 'aa')
+#array_sort_distinct myArray ==> ([0]='aa' [1]='bb')
 # @SEE_ALSO
-#     array_sort
+#array_sort
 function array_sort_distinct() {
 	local arrayVarName="$1"
 	local strSorted arrSorted
@@ -514,14 +514,14 @@ function array_sort_distinct() {
 }
 
 # @NAME
-#     array_length -- return the number of elements of array
+#array_length -- return the number of elements of array
 # @SYNOPSIS
-#     array_length arrayVarName
+#array_length arrayVarName
 # @DESCRIPTION
-#     **arrayVarName** the variable name of the array to be processed
+#**arrayVarName** the variable name of the array to be processed
 # @EXAMPLES
-#     myArray=('aa' 'bb' 'aa')
-#     array_length myArray ==> 3
+#myArray=('aa' 'bb' 'aa')
+#array_length myArray ==> 3
 # @SEE_ALSO
 function array_length() {
 	local arrayVarName="$1"
@@ -535,14 +535,14 @@ function array_length() {
 }
 
 # @NAME
-#     array_reset_index -- reset the indexes of array to the sequence 0,1,2..., save the result to original variable name
+#array_reset_index -- reset the indexes of array to the sequence 0,1,2..., save the result to original variable name
 # @SYNOPSIS
-#     array_reset_index arrayVarName
+#array_reset_index arrayVarName
 # @DESCRIPTION
-#     **arrayVarName** the variable name of the array to be processed
+#**arrayVarName** the variable name of the array to be processed
 # @EXAMPLES
-#     myArray=([2]='a' [5]='c' [11]='dd')
-#     array_reset_index myArray ==> ([0]='a' [1]='c' [2]='dd')
+#myArray=([2]='a' [5]='c' [11]='dd')
+#array_reset_index myArray ==> ([0]='a' [1]='c' [2]='dd')
 # @SEE_ALSO
 function array_reset_index() {
 	local arrayVarName="$1"
@@ -558,19 +558,19 @@ function array_reset_index() {
 }
 
 # @NAME
-#     array_equals -- test if the elements of 2 array are equal, ignore the array index
+#array_equals -- test if the elements of 2 array are equal, ignore the array index
 # @SYNOPSIS
-#     array_equals arrayVarName1 arrayVarName2 [ignoreOrder] [ignoreDuplicated]
+#array_equals arrayVarName1 arrayVarName2 [ignoreOrder] [ignoreDuplicated]
 # @DESCRIPTION
-#     **arrayVarName1** the variable name of an array
-#     **arrayVarName2** the variable name of another array to compare with
-#     **[ignoreOrder]** optional, a boolean value true/false, indicate whether ignore element order when compare, default true
-#     **[ignoreDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated when compare, default false
+#**arrayVarName1** the variable name of an array
+#**arrayVarName2** the variable name of another array to compare with
+#**[ignoreOrder]** optional, a boolean value true/false, indicate whether ignore element order when compare, default true
+#**[ignoreDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated when compare, default false
 # @EXAMPLES
-#     myArray1=('aa' [3]='bb' 'aa')
-#     myArray2=('aa' 'aa' 'bb')
-#     array_equals myArray1 myArray2 false && echo Y || echo N ==> N
-#     array_equals myArray1 myArray2 true && echo Y || echo N ==> Y
+#myArray1=('aa' [3]='bb' 'aa')
+#myArray2=('aa' 'aa' 'bb')
+#array_equals myArray1 myArray2 false && echo Y || echo N ==> N
+#array_equals myArray1 myArray2 true && echo Y || echo N ==> Y
 # @SEE_ALSO
 function array_equals() {
 	local arrayVarName1="$1"
@@ -599,21 +599,21 @@ function array_equals() {
 }
 
 # @NAME
-#     array_intersection -- calcul the intersection of 2 arrays, and save the result to a new variable
+#array_intersection -- calcul the intersection of 2 arrays, and save the result to a new variable
 # @SYNOPSIS
-#     array_intersection arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
+#array_intersection arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
 # @DESCRIPTION
-#     **arrayVarName1** the variable name of an array
-#     **arrayVarName2** the variable name of another array
-#     **newArrayVarName** the name of new variable to save the result
-#     **[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
+#**arrayVarName1** the variable name of an array
+#**arrayVarName2** the variable name of another array
+#**newArrayVarName** the name of new variable to save the result
+#**[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
 # @EXAMPLES
-#     myArray1=('aa' [3]='bb' 'aa' 'cc')
-#     myArray2=('aa' 'aa' 'dd' 'bb')
-#     array_intersection myArray1 myArray2 newArray
-#     array_intersection myArray1 myArray2 newArray false
+#myArray1=('aa' [3]='bb' 'aa' 'cc')
+#myArray2=('aa' 'aa' 'dd' 'bb')
+#array_intersection myArray1 myArray2 newArray
+#array_intersection myArray1 myArray2 newArray false
 # @SEE_ALSO
-#     array_subtract, array_union
+#array_subtract, array_union
 function array_intersection() {
 	local array1="$1[@]"
 	local arrayVarName2="$2"
@@ -636,21 +636,21 @@ function array_intersection() {
 }
 
 # @NAME
-#     array_subtract -- calcul the subtract of 2 arrays, and save the result to a new variable
+#array_subtract -- calcul the subtract of 2 arrays, and save the result to a new variable
 # @SYNOPSIS
-#     array_subtract arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
+#array_subtract arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
 # @DESCRIPTION
-#     **arrayVarName1** the variable name of an array
-#     **arrayVarName2** the variable name of another array
-#     **newArrayVarName** the name of new variable to save the result
-#     **[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
+#**arrayVarName1** the variable name of an array
+#**arrayVarName2** the variable name of another array
+#**newArrayVarName** the name of new variable to save the result
+#**[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
 # @EXAMPLES
-#     myArray1=('aa' [3]='bb' 'aa' 'cc')
-#     myArray2=('aa' 'aa' 'dd' 'bb')
-#     array_subtract myArray1 myArray2 newArray
-#     array_subtract myArray1 myArray2 newArray false
+#myArray1=('aa' [3]='bb' 'aa' 'cc')
+#myArray2=('aa' 'aa' 'dd' 'bb')
+#array_subtract myArray1 myArray2 newArray
+#array_subtract myArray1 myArray2 newArray false
 # @SEE_ALSO
-#     array_intersection, array_union
+#array_intersection, array_union
 function array_subtract() {
 	local array1="$1[@]"
 	local arrayVarName2="$2"
@@ -673,21 +673,21 @@ function array_subtract() {
 }
 
 # @NAME
-#     array_union -- calcul the union of 2 arrays, and save the result to a new variable
+#array_union -- calcul the union of 2 arrays, and save the result to a new variable
 # @SYNOPSIS
-#     array_union arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
+#array_union arrayVarName1 arrayVarName2 newArrayVarName [ignoreOrderAndDuplicated]
 # @DESCRIPTION
-#     **arrayVarName1** the variable name of an array
-#     **arrayVarName2** the variable name of another array
-#     **newArrayVarName** the name of new variable to save the result
-#     **[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
+#**arrayVarName1** the variable name of an array
+#**arrayVarName2** the variable name of another array
+#**newArrayVarName** the name of new variable to save the result
+#**[ignoreOrderAndDuplicated]** optional, a boolean value true/false, indicate whether ignore element duplicated and order them when save the result, default true
 # @EXAMPLES
-#     myArray1=('aa' [3]='bb' 'aa' 'cc')
-#     myArray2=('aa' 'aa' 'dd' 'bb')
-#     array_union myArray1 myArray2 newArray
-#     array_union myArray1 myArray2 newArray false
+#myArray1=('aa' [3]='bb' 'aa' 'cc')
+#myArray2=('aa' 'aa' 'dd' 'bb')
+#array_union myArray1 myArray2 newArray
+#array_union myArray1 myArray2 newArray false
 # @SEE_ALSO
-#     array_intersection, array_union
+#array_intersection, array_union
 function array_union() {
 	local array1="$1[@]"
 	local array2="$2[@]"
@@ -713,17 +713,17 @@ function array_union() {
 }
 
 # @NAME
-#     array_append -- append some elements to original array
+#array_append -- append some elements to original array
 # @SYNOPSIS
-#     array_append arrayVarName element...
+#array_append arrayVarName element...
 # @DESCRIPTION
-#     **arrayVarName** the variable name of array to process
-#     **element...** the elements to append to array
+#**arrayVarName** the variable name of array to process
+#**element...** the elements to append to array
 # @EXAMPLES
-#     myArray=()
-#     array_append myArray "ele ment1" "ele ment2"
+#myArray=()
+#array_append myArray "ele ment1" "ele ment2"
 # @SEE_ALSO
-#     array_remove
+#array_remove
 function array_append() {
 	local arrayVarName="$1"
 	shift
@@ -736,17 +736,17 @@ function array_append() {
 }
 
 # @NAME
-#     array_remove -- remove the element from the original array
+#array_remove -- remove the element from the original array
 # @SYNOPSIS
-#     array_remove arrayVarName element
+#array_remove arrayVarName element
 # @DESCRIPTION
-#     **arrayVarName** the variable name of array to process
-#     **element** the element to remove from array
+#**arrayVarName** the variable name of array to process
+#**element** the element to remove from array
 # @EXAMPLES
-#     arr=("a" "b" "c" "ab" "f" "g")
-#     array_remove arr "ab"
+#arr=("a" "b" "c" "ab" "f" "g")
+#array_remove arr "ab"
 # @SEE_ALSO
-#     array_contains, array_append
+#array_contains, array_append
 function array_remove() {
 	local arrayVarName="$1"
 	local element="$2"
@@ -768,15 +768,15 @@ function array_remove() {
 }
 
 # @NAME
-#     array_clone -- clone an array, including index/order/duplication/value, and assign the result array to a new variable name
+#array_clone -- clone an array, including index/order/duplication/value, and assign the result array to a new variable name
 # @SYNOPSIS
-#     array_clone arrayVarName newArrayVarName
+#array_clone arrayVarName newArrayVarName
 # @DESCRIPTION
-#     **arrayVarName** the variable name of array to process
-#     **newArrayVarName** the variable name of result array
+#**arrayVarName** the variable name of array to process
+#**newArrayVarName** the variable name of result array
 # @EXAMPLES
-#     arr=(" a " " b c ")
-#     array_clone arr newArray
+#arr=(" a " " b c ")
+#array_clone arr newArray
 # @SEE_ALSO
 function array_clone() {
 	local arrayVarName="$1"
@@ -786,16 +786,16 @@ function array_clone() {
 }
 
 # @NAME
-#     array_map -- apply the specified map operation on each element of array, and assign the result array to a new variable name
+#array_map -- apply the specified map operation on each element of array, and assign the result array to a new variable name
 # @SYNOPSIS
-#     array_map arrayVarName pipedOperators [newArrayVarName]
+#array_map arrayVarName pipedOperators [newArrayVarName]
 # @DESCRIPTION
-#     **arrayVarName** the variable name of array to process
-#     **pipedOperators** a string of operations, if multiple operations will be apply on each element, join them by pipe '|'
-#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
+#**arrayVarName** the variable name of array to process
+#**pipedOperators** a string of operations, if multiple operations will be apply on each element, join them by pipe '|'
+#**[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
 # @EXAMPLES
-#     arr=(" a " " b c ")
-#     array_map arr "string_trim | wc -m | string_trim" newArray
+#arr=(" a " " b c ")
+#array_map arr "string_trim | wc -m | string_trim" newArray
 # @SEE_ALSO
 function array_map() {
 	local array="$1[@]"
@@ -820,16 +820,16 @@ function array_map() {
 }
 
 # @NAME
-#     array_filter -- filter the elements of an array, and assign the result array to a new variable name
+#array_filter -- filter the elements of an array, and assign the result array to a new variable name
 # @SYNOPSIS
-#     array_filter arrayVarName regExp [newArrayVarName]
+#array_filter arrayVarName regExp [newArrayVarName]
 # @DESCRIPTION
-#     **arrayVarName** the variable name of array to process
-#     **regExp** a string of regular expression pattern
-#     **[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
+#**arrayVarName** the variable name of array to process
+#**regExp** a string of regular expression pattern
+#**[newArrayVarName]** optional, the variable name of result array, if absent, the mapped array will be joined by newline and printed to stdout
 # @EXAMPLES
-#     arr=("NAME A" "NAME B" "OTHER")
-#     array_filter arr 'NAME' newArray
+#arr=("NAME A" "NAME B" "OTHER")
+#array_filter arr 'NAME' newArray
 # @SEE_ALSO
 function array_filter() {
 	local array="$1[@]"
@@ -854,13 +854,13 @@ function array_filter() {
 }
 
 # @NAME
-#     args_parse -- parse the script argument values to positional variable names, process firstly the optional param help(-h) / quiet(-q) if existed
+#args_parse -- parse the script argument values to positional variable names, process firstly the optional param help(-h) / quiet(-q) if existed
 # @SYNOPSIS
-#     args_parse $# "$@" positionalVarName...
+#args_parse $# "$@" positionalVarName...
 # @DESCRIPTION
-#     **positionalVarName...** some new variable names to catch the positional argument values
+#**positionalVarName...** some new variable names to catch the positional argument values
 # @EXAMPLES
-#     args_parse $# "$@" newVar1 newVar2 newVar3
+#args_parse $# "$@" newVar1 newVar2 newVar3
 # @SEE_ALSO
 function args_parse() {
 	local nbArgValues nbPositionalVarNames option showUsage OPTARG OPTIND nbPositionalArgValues positionalArgValues positionalVarNames
@@ -955,21 +955,21 @@ function args_parse() {
 }
 
 # @NAME
-#     args_valid_or_select -- test whether the value contains by the array, if not contained, require to select a new one from array and assign it to the value variable name
+#args_valid_or_select -- test whether the value contains by the array, if not contained, require to select a new one from array and assign it to the value variable name
 # @SYNOPSIS
-#     args_valid_or_select valueVarName arrayVarName prompt
+#args_valid_or_select valueVarName arrayVarName prompt
 # @DESCRIPTION
-#     **valueVarName** the variable name of the value to valid and the new value assign to,
-#     **arrayVarName** the variable name of array
-#     **prompt** the prompt message to show when requiring to select a new one from array
+#**valueVarName** the variable name of the value to valid and the new value assign to,
+#**arrayVarName** the variable name of array
+#**prompt** the prompt message to show when requiring to select a new one from array
 # @EXAMPLES
-#     arr=("a" "b" "c" "ab" "f" "g")
-#     appName="abc"
-#     args_valid_or_select appName arr "Which app"
-#     varEmpty=""
-#     args_valid_or_select varEmpty arr "Which app"
+#arr=("a" "b" "c" "ab" "f" "g")
+#appName="abc"
+#args_valid_or_select appName arr "Which app"
+#varEmpty=""
+#args_valid_or_select varEmpty arr "Which app"
 # @SEE_ALSO
-#     args_valid_or_select_pipe, args_valid_or_read
+#args_valid_or_select_pipe, args_valid_or_read
 function args_valid_or_select() {
 	local valueVarName validValuesVarName prompt value validValues PS3
 	valueVarName="${1}"
@@ -993,18 +993,18 @@ function args_valid_or_select() {
 }
 
 # @NAME
-#     args_valid_or_select_pipe -- test whether the value contains by the array, if not contained, require to select a new one from array and assign it to the value variable name
+#args_valid_or_select_pipe -- test whether the value contains by the array, if not contained, require to select a new one from array and assign it to the value variable name
 # @SYNOPSIS
-#     args_valid_or_select_pipe valueVarName strValidValues prompt
+#args_valid_or_select_pipe valueVarName strValidValues prompt
 # @DESCRIPTION
-#     **valueVarName** the variable name of the value to valid and the new value assign to,
-#     **strValidValues** values joined by pipe '|'
-#     **prompt** the prompt message to show when requiring to select a new one from array
+#**valueVarName** the variable name of the value to valid and the new value assign to,
+#**strValidValues** values joined by pipe '|'
+#**prompt** the prompt message to show when requiring to select a new one from array
 # @EXAMPLES
-#     sel="abc"
-#     args_valid_or_select_pipe sel "a|ab|d" "which value"
+#sel="abc"
+#args_valid_or_select_pipe sel "a|ab|d" "which value"
 # @SEE_ALSO
-#     args_valid_or_select, args_valid_or_read
+#args_valid_or_select, args_valid_or_read
 function args_valid_or_select_pipe() {
 	local valueVarName validValues prompt newArray
 	valueVarName="${1}"
@@ -1016,20 +1016,20 @@ function args_valid_or_select_pipe() {
 }
 
 # @NAME
-#     args_valid_or_read -- test whether the value matched the valid regular expression, if not matched, require input a new one and assign it to the value variable name
+#args_valid_or_read -- test whether the value matched the valid regular expression, if not matched, require input a new one and assign it to the value variable name
 # @SYNOPSIS
-#     args_valid_or_read valueVarName strRegExp prompt [proposedValue]
+#args_valid_or_read valueVarName strRegExp prompt [proposedValue]
 # @DESCRIPTION
-#     **valueVarName** the variable name of the value to valid and the new value assign to,
-#     **strRegExp** a string of regular expression to be used for validation
-#     **prompt** the prompt message to show when requiring to read a new one from stdin
-#     **[proposedValue]** the proposed spare value to show for user, or to used when quite mode
+#**valueVarName** the variable name of the value to valid and the new value assign to,
+#**strRegExp** a string of regular expression to be used for validation
+#**prompt** the prompt message to show when requiring to read a new one from stdin
+#**[proposedValue]** the proposed spare value to show for user, or to used when quite mode
 # @EXAMPLES
-#     args_valid_or_read destProjectSIA '^[0-9a-z]{3,3}$' "SIA (lowercase, 3 chars)"
-#     args_valid_or_read destProjectIRN '^[0-9]{5,5}$' "IRN (only the 5 digits)"
-#     args_valid_or_read destRootPackage '^.+$' "Destination root package" "${defaultDestRootPackage}"
+#args_valid_or_read destProjectSIA '^[0-9a-z]{3,3}$' "SIA (lowercase, 3 chars)"
+#args_valid_or_read destProjectIRN '^[0-9]{5,5}$' "IRN (only the 5 digits)"
+#args_valid_or_read destRootPackage '^.+$' "Destination root package" "${defaultDestRootPackage}"
 # @SEE_ALSO
-#     args_valid_or_select, args_valid_or_select_pipe
+#args_valid_or_select, args_valid_or_select_pipe
 function args_valid_or_read() {
 	local value regExp prompt proposedValue
 	value=$(eval eval "echo '$'$1")
@@ -1055,17 +1055,17 @@ function args_valid_or_read() {
 }
 
 # @NAME
-#     args_print -- show the name and value of variables
+#args_print -- show the name and value of variables
 # @SYNOPSIS
-#     args_print variableName...
+#args_print variableName...
 # @DESCRIPTION
-#     **variableName...** some existed variable names to show its value
+#**variableName...** some existed variable names to show its value
 # @EXAMPLES
-#     var1="value 1"
-#     var2="value 2"
-#     args_print var1 var2
+#var1="value 1"
+#var2="value 2"
+#args_print var1 var2
 # @SEE_ALSO
-#     args_confirm
+#args_confirm
 function args_print() {
 	local varName varValue varValueOutput
 	for varName in "$@"; do
@@ -1076,17 +1076,17 @@ function args_print() {
 }
 
 # @NAME
-#     args_confirm -- show the name and value of variables, and continue execute if confirmed by user, or exit if not
+#args_confirm -- show the name and value of variables, and continue execute if confirmed by user, or exit if not
 # @SYNOPSIS
-#     args_confirm variableName...
+#args_confirm variableName...
 # @DESCRIPTION
-#     **variableName...** some existed variable names to show its value
+#**variableName...** some existed variable names to show its value
 # @EXAMPLES
-#     a="correct value"
-#     b="wrong value"
-#     args_confirm a b
+#a="correct value"
+#b="wrong value"
+#args_confirm a b
 # @SEE_ALSO
-#     args_print
+#args_print
 function args_confirm() {
 	local response
 	args_print "$@"
@@ -1107,17 +1107,17 @@ function args_confirm() {
 }
 
 # @NAME
-#     reflect_nth_arg -- parse a string of arguments, then extract the nth argument
+#reflect_nth_arg -- parse a string of arguments, then extract the nth argument
 # @SYNOPSIS
-#     reflect_nth_arg index arguments...
+#reflect_nth_arg index arguments...
 # @DESCRIPTION
-#     **index** a number based on 1, which argument to extract
-#     **arguments...** the string to parse, the arguments and may also including the command.
+#**index** a number based on 1, which argument to extract
+#**arguments...** the string to parse, the arguments and may also including the command.
 # @EXAMPLES
-#     reflect_nth_arg 3 ab cdv "ha ho" ==>  "ha ho"
+#reflect_nth_arg 3 ab cdv "ha ho" ==>  "ha ho"
 #
-#     string="args_valid_or_read myVar '^[0-9a-z]{3,3}$' \"SIA\""
-#     reflect_nth_arg 4 $string ==> "SIA"
+#string="args_valid_or_read myVar '^[0-9a-z]{3,3}$' \"SIA\""
+#reflect_nth_arg 4 $string ==> "SIA"
 # @SEE_ALSO
 function reflect_nth_arg() {
 	local index string args
@@ -1131,111 +1131,110 @@ function reflect_nth_arg() {
 }
 
 # @NAME
-#     reflect_get_function_definition -- print the definition of the specified function in system
+#reflect_get_function_definition -- print the definition of the specified function in system
 # @SYNOPSIS
-#     reflect_get_function_definition functionName
+#reflect_get_function_definition functionName
 # @DESCRIPTION
-#     **functionName** the specified function name
+#**functionName** the specified function name
 # @EXAMPLES
-#     reflect_get_function_definition args_confirm
+#reflect_get_function_definition args_confirm
 # @SEE_ALSO
-#     reflect_function_names_of_file
+#reflect_function_names_of_file
 function reflect_get_function_definition() {
 	local functionName="$1"
 	declare -f "$functionName"
 }
 
 # @NAME
-#     reflect_function_names_of_file -- print the function names defined in a shell script file
+#reflect_function_names_of_file -- print the function names defined in a shell script file
 # @SYNOPSIS
-#     reflect_function_names_of_file shellScriptFile
+#reflect_function_names_of_file shellScriptFile
 # @DESCRIPTION
-#     **shellScriptFile** the path of shell script file
+#**shellScriptFile** the path of shell script file
 # @EXAMPLES
-#     reflect_function_names_of_file $0
-#     reflect_function_names_of_file scripts/my_script.sh
+#reflect_function_names_of_file $0
+#reflect_function_names_of_file scripts/my_script.sh
 # @SEE_ALSO
-#     reflect_get_function_definition
+#reflect_get_function_definition
 function reflect_function_names_of_file() {
 	local shellScriptFile="$1"
 	grep -E '^[[:space:]]*(function)?[[:space:]]*[0-9A-Za-z_\-]+[[:space:]]*\(\)[[:space:]]*\{?' "${shellScriptFile}" | cut -d'(' -f1 | sed -e "s/function//"
 }
 
 # @NAME
-#     reflect_function_definitions_of_file -- print the function definitions defined in a shell script file
+#reflect_function_definitions_of_file -- print the function definitions defined in a shell script file
 # @SYNOPSIS
-#     reflect_function_definitions_of_file shellScriptFile
+#reflect_function_definitions_of_file shellScriptFile
 # @DESCRIPTION
-#     **shellScriptFile** the path of shell script file
+#**shellScriptFile** the path of shell script file
 # @EXAMPLES
-#     reflect_function_definitions_of_file $0
-#     reflect_function_definitions_of_file scripts/my_script.sh
+#reflect_function_definitions_of_file $0
+#reflect_function_definitions_of_file scripts/my_script.sh
 # @SEE_ALSO
-#     reflect_get_function_definition
+#reflect_get_function_definition
 function reflect_function_definitions_of_file() {
 	local shellScriptFile="$1"
 	sed -E -n '/^[[:space:]]*(function)?[[:space:]]*[0-9A-Za-z_\-]+[[:space:]]*\(\)[[:space:]]*\{?/,/^[[:space:]]*}/p' "${shellScriptFile}"
 }
 
 # @NAME
-#     reflect_search_function -- search usable function by name pattern
+#reflect_search_function -- search usable function by name pattern
 # @SYNOPSIS
-#     reflect_search_function functionNamePattern
+#reflect_search_function functionNamePattern
 # @DESCRIPTION
-#     **functionNamePattern** the string of function name regular expression pattern
+#**functionNamePattern** the string of function name regular expression pattern
 # @EXAMPLES
-#     reflect_search_function args
-#     reflect_search_function '^args_.*'
+#reflect_search_function args
+#reflect_search_function '^args_.*'
 # @SEE_ALSO
-#     reflect_search_variable
+#reflect_search_variable
 function reflect_search_function() {
 	local functionNamePattern="$1"
 	declare -f | grep -E '\s+\(\)\s+' | sed -E 's/[(){ ]//g' | grep -Ei "${functionNamePattern}"
 }
 
 # @NAME
-#     reflect_search_variable -- search usable variable by name pattern
+#reflect_search_variable -- search usable variable by name pattern
 # @SYNOPSIS
-#     reflect_search_variable variableNamePattern
+#reflect_search_variable variableNamePattern
 # @DESCRIPTION
-#     **variableNamePattern** the string of variable name regular expression pattern
+#**variableNamePattern** the string of variable name regular expression pattern
 # @EXAMPLES
-#     reflect_search_variable COLOR
-#     reflect_search_variable '^COLOR'
+#reflect_search_variable COLOR
+#reflect_search_variable '^COLOR'
 # @SEE_ALSO
-#     reflect_search_function
+#reflect_search_function
 function reflect_search_variable() {
 	local variableNamePattern="$1"
 	declare -p | grep -Eo '\s+\w+=' | sed -E 's/[= ]//g' | grep -Ei "${variableNamePattern}"
 }
 
 # @NAME
-#     doc_lint_script_comment -- format the shell script, and check whether the comment is corrected man-styled
+#doc_lint_script_comment -- format the shell script, and check whether the comment is corrected man-styled
 # @SYNOPSIS
-#     doc_lint_script_comment shellScriptFile
+#doc_lint_script_comment shellScriptFile
 # @DESCRIPTION
-#     It's better format your shell script by `shfmt` firstly before using this function.
+#It's better format your shell script by `shfmt` firstly before using this function.
 #
-#     **shellScriptFile** the path of shell script file
+#**shellScriptFile** the path of shell script file
 # @EXAMPLES
-#     shellScriptFile="src/bash-base.sh"
-#     docker run -it --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"
-#     doc_lint_script_comment "${shellScriptFile}"
+#shellScriptFile="src/bash-base.sh"
+#docker run -it --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"
+#doc_lint_script_comment "${shellScriptFile}"
 # @SEE_ALSO
-#     doc_comment_to_markdown, doc_markdown_to_manpage
+#doc_comment_to_markdown, doc_markdown_to_manpage
 function doc_lint_script_comment() {
 	local shellScriptFile="$1"
 	local element strAllFunctionsAndTheirTags arrAllFunctionsAndTheirTags manTags strFunctionAndItsTags arrFunctionAndItsTags intersection counter
 
 	# format the comment
-	sed -E -i \
+	sed -E -i'.bk' \
 		-e "s/^#[[:space:]]*/#/g" \
-		-e "s/^#/#     /g" \
-		-e "s/^#[[:space:]]*@/# @/g" \
+		-e "s/^#(\S+)/#     \1/g" \
 		-e "s/^#[[:space:]]*!/#!/g" \
-		-e "s/^#[[:space:]]*-/# -/g" \
-		-e "s/^#[[:space:]]*(#+)/# \1/g" \
+		-e "s/^#[[:space:]]*(@|-|#+)/# \1/g" \
 		"${shellScriptFile}"
+	rm -fr "${shellScriptFile}.bk"
 
 	# valid comment tags by man page convention
 	strAllFunctionsAndTheirTags=$(grep -e '^# @' -e '^function ' "${shellScriptFile}" | string_replace_regex '\(\)|#' '' | string_trim)
@@ -1259,16 +1258,16 @@ function doc_lint_script_comment() {
 }
 
 # @NAME
-#     doc_comment_to_markdown -- convert the shell script man-styled comment to markdown file
+#doc_comment_to_markdown -- convert the shell script man-styled comment to markdown file
 # @SYNOPSIS
-#     doc_comment_to_markdown fromShellFile toMarkdownFile
+#doc_comment_to_markdown fromShellFile toMarkdownFile
 # @DESCRIPTION
-#     **fromShellFile** the path of source shell script file
-#     **toMarkdownFile** the path of destination markdown file
+#**fromShellFile** the path of source shell script file
+#**toMarkdownFile** the path of destination markdown file
 # @EXAMPLES
-#     doc_comment_to_markdown src/bash-base.sh docs/reference.md
+#doc_comment_to_markdown src/bash-base.sh docs/reference.md
 # @SEE_ALSO
-#     doc_markdown_to_manpage, doc_check_script_comment
+#doc_markdown_to_manpage, doc_check_script_comment
 function doc_comment_to_markdown() {
 	local fromShellFile="$1"
 	local toMarkdownFile="$2"
@@ -1288,49 +1287,49 @@ function doc_comment_to_markdown() {
 			string_replace_regex '^(\*\*)' "- \1"
 	)"
 
-	mdComment="[//]: # (This file is generated by bash-base function doc_comment_to_markdown, don't modify this file directly.)"
+	mdComment="[//]: # (Automatically generated by bash-base function doc_comment_to_markdown, don't modify this file directly.)"
 	echo -e "${mdComment}\n\n@NAME\n${md//${NEW_LINE_SED}/\\n}" | #NEW_LINE_SED is not compatible by pandoc
 		string_replace_regex '@' "##### " >"${toMarkdownFile}"
 }
 
 # @NAME
-#     print_header -- print the header value with prefix '\n###' and bold font
+#print_header -- print the header value with prefix '\n###' and bold font
 # @SYNOPSIS
-#     print_header string
+#print_header string
 # @DESCRIPTION
-#     **string** the string of header title
+#**string** the string of header title
 # @EXAMPLES
-#     print_header "My header1"
+#print_header "My header1"
 # @SEE_ALSO
-#     print_error
+#print_error
 function print_header() {
 	echo -e "${COLOR_BOLD_BLACK}\n### $* ${COLOR_END}"
 }
 
 # @NAME
-#     print_error -- print the error message with prefix 'ERROR:' and font color red
+#print_error -- print the error message with prefix 'ERROR:' and font color red
 # @SYNOPSIS
-#     print_error string
+#print_error string
 # @DESCRIPTION
-#     **string** the error message
+#**string** the error message
 # @EXAMPLES
-#     print_error "my error message"
+#print_error "my error message"
 # @SEE_ALSO
-#     print_header
+#print_header
 function print_error() {
 	echo -e "${COLOR_BOLD_RED}ERROR: $* ${COLOR_END}"
 }
 
 # @NAME
-#     stop_if_failed -- stop the execute if last command exit with fail code (no zero)
+#stop_if_failed -- stop the execute if last command exit with fail code (no zero)
 # @SYNOPSIS
-#     stop_if_failed string
+#stop_if_failed string
 # @DESCRIPTION
-#     'trap' or 'set -e' is not recommended
-#     **string** the error message to show
+#'trap' or 'set -e' is not recommended
+#**string** the error message to show
 # @EXAMPLES
-#     rm -fr "${destProjectPath}"
-#     stop_if_failed "ERROR: can't delete the directory '${destProjectPath}' !"
+#rm -fr "${destProjectPath}"
+#stop_if_failed "ERROR: can't delete the directory '${destProjectPath}' !"
 # @SEE_ALSO
 function stop_if_failed() {
 	if [[ $? -ne 0 ]]; then
@@ -1340,18 +1339,18 @@ function stop_if_failed() {
 }
 
 # @NAME
-#     declare_heredoc -- stop the execute if last command exit with fail code (no zero)
+#declare_heredoc -- stop the execute if last command exit with fail code (no zero)
 # @SYNOPSIS
-#     declare_heredoc newVarName <<-EOF
-#     ...
-#     EOF
+#declare_heredoc newVarName <<-EOF
+#...
+#EOF
 # @DESCRIPTION
-#     **newVarName** the variable name, the content of heredoc will be assigned to it
+#**newVarName** the variable name, the content of heredoc will be assigned to it
 # @EXAMPLES
-#     declare_heredoc records <<-EOF
-#     record1
-#     record2
-#     EOF
+#declare_heredoc records <<-EOF
+#record1
+#record2
+#EOF
 # @SEE_ALSO
 function declare_heredoc() {
 	eval "$1='$(cat)'"
