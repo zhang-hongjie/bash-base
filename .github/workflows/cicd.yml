@@ -19,15 +19,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install
+        run: npm ci
 
       - name: shellcheck-shfmt
-        uses: luizm/action-sh-checker@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          sh_checker_comment: true
-          sh_checker_exclude: "^spec/"
+        run: npm run lint
 
   test:
     runs-on: ubuntu-latest
