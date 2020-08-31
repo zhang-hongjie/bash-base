@@ -16,14 +16,14 @@ doc_lint_script_comment "${shellScriptFile}"
 doc_comment_to_markdown "${shellScriptFile}" "${referencesMarkdownFile}"
 
 # Use pandoc to generate man page from markdown, use man section 1
-ddocker run --rm --volume "$(pwd):/data" --user $(id -u):$(id -g) pandoc/core:2.10 \
-    -f markdown \
-    -t man \
-    --standalone \
-    --variable=section:1 \
-    --variable=header:"bash-base functions reference" \
-    "${referencesMarkdownFile}" \
-    -o "${referencesManPageFile}"
+docker run --rm --volume "$(pwd):/data" --user "$(id -u):$(id -g)" pandoc/core:2.10 \
+	-f markdown \
+	-t man \
+	--standalone \
+	--variable=section:1 \
+	--variable=header:"bash-base functions reference" \
+	"${referencesMarkdownFile}" \
+	-o "${referencesManPageFile}"
 
 # print the result of man page
 man "${referencesManPageFile}"

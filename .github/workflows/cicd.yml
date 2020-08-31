@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           sh_checker_comment: true
-          sh_checker_exclude: "^spec/ ^example/"
+          sh_checker_exclude: "^spec/"
 
   test:
     runs-on: ubuntu-latest

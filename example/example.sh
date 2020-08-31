@@ -3,12 +3,10 @@
 ### Import common lib
 source src/bash-base.sh
 
-
 SHORT_DESC='an example shell script to show how to use bash-base '
 
-response=$(curl -sS 'https://restcountries.eu/rest/v2/regionalbloc/eu' --compressed )
+response=$(curl -sS 'https://restcountries.eu/rest/v2/regionalbloc/eu' --compressed)
 string_pick_to_array '{"name":"' '","topLevelDomain' countryNames "$response"
-
 
 print_header collect information
 args_parse $# "$@" firstName lastName age sex country
@@ -21,10 +19,8 @@ args_valid_or_select country countryNames "Which country"
 
 args_confirm firstName lastName age sex country
 
-
 print_header say hello
 cat <<-EOF
-Hello $(string_upper_first "$firstName") $(string_upper "$lastName"),
-nice to meet you.
+	Hello $(string_upper_first "$firstName") $(string_upper "$lastName"),
+	nice to meet you.
 EOF
-
