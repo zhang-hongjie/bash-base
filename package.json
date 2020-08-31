@@ -4,7 +4,9 @@
   "description": "A common lib for creating bash script easily.",
   "private": false,
   "files": [
-    "src/bash-base.sh"
+    "src/bash-base.sh",
+    "docs/references.md",
+    "man/bash-base.1"
   ],
   "bin": {
     "bash-base": "src/bash-base.sh"

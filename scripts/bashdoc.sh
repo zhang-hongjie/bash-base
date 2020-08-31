@@ -7,7 +7,7 @@ referencesMarkdownFile="docs/references.md"
 referencesManPageFile="bash-bash.1"
 
 # format script code
-docker run -it --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"
+docker run --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"
 
 # lint script comment
 doc_lint_script_comment "${shellScriptFile}"
