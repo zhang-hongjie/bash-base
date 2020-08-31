@@ -1254,7 +1254,7 @@ function doc_lint_script_comment() {
 
 	if ((counter > 0)); then
 		echo "there are ${counter} functions has invalid comments in file ${shellScriptFile}"
-		exit 1
+		return 1
 	fi
 }
 

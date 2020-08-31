@@ -11,6 +11,7 @@ docker run -it --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFil
 
 # lint script comment
 doc_lint_script_comment "${shellScriptFile}"
+stop_if_failed 'the comment is not valid'
 
 # generate references markdown from script comment
 doc_comment_to_markdown "${shellScriptFile}" "${referencesMarkdownFile}"
