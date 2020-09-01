@@ -931,7 +931,7 @@ function args_parse() {
 					if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
 						description="${description}, possible values: $(reflect_nth_arg 3 "$validCommand")"
 					elif [[ $validCommand =~ 'args_valid_or_select' ]]; then
-						description="${description}, you can select one using wizard if you don't know which value is valid"
+						description="${description}, you can select one using wizard if you do not know which value is valid"
 					fi
 				fi
 
