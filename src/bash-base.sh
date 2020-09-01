@@ -930,6 +930,8 @@ function args_parse() {
 					)"
 					if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
 						description="${description}, possible values: $(reflect_nth_arg 3 "$validCommand")"
+					elif [[ $validCommand =~ 'args_valid_or_select' ]]; then
+						description="${description}, you can select one using wizard if you don't know which value is valid"
 					fi
 				fi
 
@@ -941,11 +943,13 @@ function args_parse() {
 		    help, print the usage:
 		        ./${THIS_SCRIPT_NAME} -h
 
-		    run with params:
+		    run with all params, if run in quiet mode with -q, be sure all the params are valid:
 		        ./${THIS_SCRIPT_NAME} [-q] "$(array_join 'Value" "' positionalVarNames)Value"
 
 		    run using wizard, input value for params step by step:
 		        ./${THIS_SCRIPT_NAME}
+
+		    or you can run with some params, and input value for other params using wizard.
 	EOF
 
 	if [ "$showUsage" == true ]; then
@@ -1096,7 +1100,7 @@ function args_confirm() {
 		case "${response}" in
 		[yY][eE][sS] | [yY])
 			echo -e "Starting..."
-			sleep 3s
+			sleep 1s
 			;;
 		*)
 			echo -e "Exiting..."
@@ -1356,3 +1360,14 @@ function stop_if_failed() {
 function declare_heredoc() {
 	eval "$1='$(cat)'"
 }
+
+while getopts ":h" option; do
+	case ${option} in
+	h)
+		man -P cat bash-base
+		;;
+	\?)
+		print_error "invalid option: -$OPTARG" >&2
+		;;
+	esac
+done

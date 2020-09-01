@@ -15,7 +15,10 @@
     "bash-base": "src/bash-base.sh"
   },
   "directories": {
-    "man": "man"
+    "man": "man",
+    "doc": "docs",
+    "example": "example",
+    "test": "spec"
   },
   "scripts": {
     "preinstall": "npx npm-force-resolutions",

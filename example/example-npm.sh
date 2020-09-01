@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-### Import common lib
-source src/bash-base.sh
+# install bash-base from npmjs only if not installed:
+bash-base 2>/dev/null || npm install -g bash-base
+
+# verify the installation:
+#bash-base -h
+
+### import it
+source bash-base
 
 SHORT_DESC='an example shell script to show how to use bash-base '
 
@@ -24,3 +30,6 @@ cat <<-EOF
 	Hello $(string_upper_first "$firstName") $(string_upper "$lastName"),
 	nice to meet you.
 EOF
+
+# you can run this script with -h to get the help usage
+#     ./example-npm.sh -h
