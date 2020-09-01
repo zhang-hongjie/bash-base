@@ -4,6 +4,9 @@
   "description": "A common lib for creating bash script easily.",
   "private": false,
   "files": [
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "package-lock.json",
     "src/bash-base.sh",
     "docs/references.md",
     "man/bash-base.1"
