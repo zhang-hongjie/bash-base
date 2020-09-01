@@ -6,12 +6,7 @@ shellScriptFile="src/bash-base.sh"
 referencesMarkdownFile="docs/references.md"
 referencesManPageFile="man/bash-base.1"
 
-# format script code
-docker run --rm -v "$(pwd):/src" -w /src mvdan/shfmt -l -w "${shellScriptFile}"
-
-# lint script comment
-doc_lint_script_comment "${shellScriptFile}"
-stop_if_failed 'the comment is not valid'
+./scripts/lint-comment.sh
 
 # generate references markdown from script comment
 rm -fr "${referencesMarkdownFile}"
