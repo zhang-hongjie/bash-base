@@ -3,6 +3,52 @@
 
 ### Bug Fixes
 
+* generate livedoc when release ([40c9bd6](https://github.com/zhang-hongjie/bash-base/commit/40c9bd68da9930142e4a5dd096efb3d805131b7a))
+* generate livedoc when release ([a0593b4](https://github.com/zhang-hongjie/bash-base/commit/a0593b42c960401b9a4ccf291d0abe30335d1a61))
+* generate livedoc when release ([92b8af0](https://github.com/zhang-hongjie/bash-base/commit/92b8af07e052d68e78c78bf19cc767419dbc1d64))
+* generate livedoc when release ([7bf3623](https://github.com/zhang-hongjie/bash-base/commit/7bf36230690896ebc6dffa2c36fa325fa1247eb3))
+* replace bats to shellspec 4 ([211edaa](https://github.com/zhang-hongjie/bash-base/commit/211edaa77bedae2ae6471785a7784be505f79448))
+* replace bats to shellspec 4 ([afbf921](https://github.com/zhang-hongjie/bash-base/commit/afbf92126e1f3f308b7bdbbdc960a79342c6da90))
+* replace bats to shellspec 4 ([dd154e5](https://github.com/zhang-hongjie/bash-base/commit/dd154e5ed3f5bfa74a21f725caa021eb541535ea))
+* replace bats to shellspec 4 ([4ea234e](https://github.com/zhang-hongjie/bash-base/commit/4ea234e933cf7d96c7399a98141f625f8da1fc75))
+* replace bats to shellspec 4 ([033e952](https://github.com/zhang-hongjie/bash-base/commit/033e952a75d2de4a1b0691eb0297fc729fa1006e))
+* replace bats to shellspec 4 ([6ae1706](https://github.com/zhang-hongjie/bash-base/commit/6ae170699d65f35f9cd0afcd7606b692313a60d2))
+* replace bats to shellspec 4 ([95cda4d](https://github.com/zhang-hongjie/bash-base/commit/95cda4d971b6bcf79cb69c6efad095b712f93c28))
+* replace bats to shellspec 4 ([f3091cd](https://github.com/zhang-hongjie/bash-base/commit/f3091cdd7580cd84ccde0f39e565207948c7a264))
+* replace bats to shellspec 4 ([97b4173](https://github.com/zhang-hongjie/bash-base/commit/97b41730fbe004f30feb07efc83c865f3f4996e0))
+* replace bats to shellspec 4 ([88f909e](https://github.com/zhang-hongjie/bash-base/commit/88f909e462c90e80dccedc1b67dcd45cf07f768d))
+* replace bats to shellspec 4 ([a6e3922](https://github.com/zhang-hongjie/bash-base/commit/a6e3922be2a18d06201833c7b0e55760389fa336))
+* replace bats to shellspec 4 ([b60a134](https://github.com/zhang-hongjie/bash-base/commit/b60a1346e208a3e5a0a1c32b51abeb9966130690))
+* replace bats to shellspec 4 ([b3271df](https://github.com/zhang-hongjie/bash-base/commit/b3271dfc507c1d0f90462baab135caa1dbab6eb3))
+* replace bats to shellspec 4 ([6cabca3](https://github.com/zhang-hongjie/bash-base/commit/6cabca320abb0024966d848ab3de57a2cfa48585))
+* replace bats to shellspec 4 ([caff2d1](https://github.com/zhang-hongjie/bash-base/commit/caff2d15ee8d5052b7097ab14c0937427cce2a51))
+* replace bats to shellspec 4 ([8d5d62b](https://github.com/zhang-hongjie/bash-base/commit/8d5d62b880f1398d97d13d944b8b5821d295407d))
+* replace bats to shellspec 4 ([77e795e](https://github.com/zhang-hongjie/bash-base/commit/77e795e7188d8665fba89eafc26dc70b5d922ed5))
+* replace bats to shellspec 4 ([e624c7a](https://github.com/zhang-hongjie/bash-base/commit/e624c7a38c19ffabe3b8d1be668428757a792297))
+* replace bats to shellspec 4 ([801a1e8](https://github.com/zhang-hongjie/bash-base/commit/801a1e81ef954524f706c3b74f646274cb929027))
+* replace bats to shellspec 4 ([fef35e8](https://github.com/zhang-hongjie/bash-base/commit/fef35e879d46765f125ca42a5e4dc4ce5a845e01))
+* replace bats to shellspec 4 ([a208224](https://github.com/zhang-hongjie/bash-base/commit/a2082245d615ffb888d1f76a264174b27b775772))
+* replace bats to shellspec 4 ([d328595](https://github.com/zhang-hongjie/bash-base/commit/d328595a4693122a1bc061dceccc990837cfe9da))
+* replace bats to shellspec 4 ([141a969](https://github.com/zhang-hongjie/bash-base/commit/141a969425da8431c0f0a61eb4f465e153dcb45c))
+* replace bats to shellspec 4 ([66bb16f](https://github.com/zhang-hongjie/bash-base/commit/66bb16f2b86dd59d313f96860bf0076a040ad0d5))
+* replace bats to shellspec 4 ([edd8875](https://github.com/zhang-hongjie/bash-base/commit/edd887547fc2e397b91a74bef0faed6d795c72ab))
+* replace bats to shellspec 4 ([2d9ad66](https://github.com/zhang-hongjie/bash-base/commit/2d9ad66e2f56e8bd19637a5d0988cdc59e21e474))
+* replace bats to shellspec 4 ([5ab55ad](https://github.com/zhang-hongjie/bash-base/commit/5ab55ad5f3190a1834a33104ae7068041eee6a81))
+* replace bats to shellspec 4 ([0ab6d4e](https://github.com/zhang-hongjie/bash-base/commit/0ab6d4eb722fc8c947c09c22142600cb0720c948))
+* replace bats to shellspec 4 ([49b4ac5](https://github.com/zhang-hongjie/bash-base/commit/49b4ac50afff2b2b3b0d70e73df78a7dc1e30131))
+* replace bats to shellspec 4 ([c8afb97](https://github.com/zhang-hongjie/bash-base/commit/c8afb97274f66fc31e4014ca9037733bd0ff9676))
+* replace bats to shellspec 4 ([9fa1e92](https://github.com/zhang-hongjie/bash-base/commit/9fa1e929d176ef62be20560e51c2f73801ad9a9b))
+
+
+### Features
+
+* generate help usage automatically ([1e2c5db](https://github.com/zhang-hongjie/bash-base/commit/1e2c5db2c66b8f03754a2cd28a6e908323f7cee3))
+
+# [2.3.0](https://github.com/zhang-hongjie/bash-base/compare/v2.2.12...v2.3.0) (2020-09-01)
+
+
+### Bug Fixes
+
 * generate livedoc when release ([92b8af0](https://github.com/zhang-hongjie/bash-base/commit/92b8af07e052d68e78c78bf19cc767419dbc1d64))
 * generate livedoc when release ([7bf3623](https://github.com/zhang-hongjie/bash-base/commit/7bf36230690896ebc6dffa2c36fa325fa1247eb3))
 * replace bats to shellspec 4 ([211edaa](https://github.com/zhang-hongjie/bash-base/commit/211edaa77bedae2ae6471785a7784be505f79448))
