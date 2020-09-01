@@ -198,7 +198,7 @@ function string_match() {
 function escape_sed() {
 	echo "${1}" | sed -e 's/\//\\\//g' -e 's/\&/\\\&/g' -e 's/\./\\\./g' -e 's/\^/\\\^/g' -e 's/\[/\\\[/g' -e 's/\$/\\\$/g'
 }
-export -f escape_sed
+export -f escape_sed >/dev/null
 
 # @NAME
 #     string_replace -- replace literally the token string to new string, not support regular expression

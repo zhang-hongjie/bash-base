@@ -25,23 +25,22 @@ See [CHANGELOG.md](CHANGELOG.md)
 
 ### Get from github
 
- you can let YVM (Yarn Version Manager) manage it for you doing :
+#### Import bash-base directly from github during every execution
 
-- `curl -fsSL https://raw.githubusercontent.com/tophat/yvm/master/scripts/install.sh | bash`
-- `yvm install`
-- `yvm use`
+Simply write in console or script:
 
-Or you can install direct a yarn version using the command :
-
-```bash
-curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version [version]
+If to import latest version:
+```
+source <(curl -fsSL https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/src/bash-base.sh)
+or
+eval "$(curl -fsSL https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/src/bash-base.sh)"
 ```
 
-- install [NVM (Node Version Manager)](https://github.com/creationix/nvm)
-
-```bash
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-curl -o- https://raw.githubusercontent.com/zhang-hongjie/bash-base/v2.2.12/bash-base.sh | bash
+If to import specific version:
+```
+source <(curl -fsSL https://raw.githubusercontent.com/zhang-hongjie/bash-base/v2.3.1/src/bash-base.sh)
+or
+eval "$(curl -fsSL https://raw.githubusercontent.com/zhang-hongjie/bash-base/v2.3.1/src/bash-base.sh)
 ```
 
 ### Install from NPM
@@ -50,7 +49,18 @@ See [npm repackage](https://www.npmjs.com/package/bash-base)
 ```
 npm install -g bash-base
 ```
-Then you can find it in `/usr/local/bin/bash-base`
+verify the installation
+```
+man bash-base
+```
+or simply write in your script:
+```
+# install bash-base from npmjs only if not installed:
+bash-base 2>/dev/null || npm install -g bash-base
+
+# import it
+source bash-base
+```
 
 ### Install from docker
 
@@ -69,7 +79,7 @@ docker run -it zhj2074/bash-base:latest
 See [example](example) folder
 
 ### Reference
-See [reference](docs/reference.md)
+See [reference](docs/references.md)
 
 ## Contributing
 
