@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/zhang-hongjie/bash-base/compare/v2.3.0...v2.3.1) (2020-09-01)
+
+
+### Bug Fixes
+
+* generate livedoc when release ([cccc7ba](https://github.com/zhang-hongjie/bash-base/commit/cccc7ba9f373dc2d3edaccc84597264c29142102))
+
 # [2.3.0](https://github.com/zhang-hongjie/bash-base/compare/v2.2.12...v2.3.0) (2020-09-01)
 
 
