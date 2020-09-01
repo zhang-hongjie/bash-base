@@ -893,6 +893,42 @@ function args_parse() {
 	done
 
 	# Generate default usage response for -h
+  descriptions=''
+  for element in "${positionalVarNames[@]}"; do
+    validCommand="$(
+      grep -E "^\s*args_valid.*\s+${element}\s+" "$0" |
+        awk -F "'" -v OFS="'" '{
+            for (i=2; i<=NF; i+=2) {
+                gsub(/ /, "_SPACE_", $i);
+                gsub(/\$/, "_DOLLAR_", $i);
+                gsub(/\(/, "_PARENTHESES_LEFT_", $i);
+                gsub(/\)/, "_PARENTHESES_RIGHT_", $i);
+            }
+            print
+        }' |
+        sed -e "s/\'//g"
+    )"
+
+    if [[ -z ${validCommand} ]]; then
+      description="a valid value for ${element}"
+    else
+      description="$(
+        reflect_nth_arg 4 "${validCommand}" |
+          string_replace "_SPACE_" " " |
+          string_replace "_DOLLAR_" "$" |
+          string_replace "_PARENTHESES_LEFT_" "(" |
+          string_replace "_PARENTHESES_RIGHT_" ")"
+      )"
+      if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
+        description="${description}, possible values: $(reflect_nth_arg 3 "$validCommand")"
+      elif [[ $validCommand =~ 'args_valid_or_select' ]]; then
+        description="${description}, you can select one using wizard if you do not know which value is valid"
+      fi
+    fi
+
+    descriptions+="$(printf "\n    %-20s%s" "${element} " "${description}")"
+  done
+
 	declare_heredoc defaultUsage <<-EOF
 		${COLOR_BOLD_BLACK}NAME${COLOR_END}
 		    ${THIS_SCRIPT_NAME} -- ${SHORT_DESC:-a bash script using bash-base}
@@ -903,41 +939,7 @@ function args_parse() {
 		${COLOR_BOLD_BLACK}DESCRIPTION${COLOR_END}
 		    [-h]                help, print the usage
 		    [-q]                optional, Run quietly, no confirmation
-		$(
-			local spacePlaceHolder="_SPACE_"
-			local dollarPlaceHolder="_DOLLAR_"
-			local leftParenthesesPlaceHolder="_PARENTHESES_LEFT_"
-			local rightParenthesesPlaceHolder="_PARENTHESES_RIGHT_"
-
-			for element in "${positionalVarNames[@]}"; do
-				validCommand="$(
-					grep -E "^\s*args_valid.*\s+${element}\s+" "$0" |
-						sed -E ":A;s/('[^ ']+) ([^']*')/\1${spacePlaceHolder}\2/;tA" |
-						sed -E ":A;s/('[^\$']+)\$([^']*')/\1${dollarPlaceHolder}\2/;tA" |
-						sed -E ":A;s/('[^\(']+)\(([^']*')/\1${leftParenthesesPlaceHolder}\2/;tA" |
-						sed -E ":A;s/('[^\)']+)\)([^']*')/\1${rightParenthesesPlaceHolder}\2/;tA" |
-						sed -e "s/\'//g"
-				)"
-				if [[ -z ${validCommand} ]]; then
-					description="a valid value for ${element}"
-				else
-					description="$(
-						reflect_nth_arg 4 "${validCommand}" |
-							string_replace "${spacePlaceHolder}" " " |
-							string_replace "${dollarPlaceHolder}" "$" |
-							string_replace "${leftParenthesesPlaceHolder}" "(" |
-							string_replace "${rightParenthesesPlaceHolder}" ")"
-					)"
-					if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
-						description="${description}, possible values: $(reflect_nth_arg 3 "$validCommand")"
-					elif [[ $validCommand =~ 'args_valid_or_select' ]]; then
-						description="${description}, you can select one using wizard if you do not know which value is valid"
-					fi
-				fi
-
-				printf "\n    %-20s%s" "${element} " "${description}"
-			done
-		)
+        ${descriptions}
 
 		${COLOR_BOLD_BLACK}EXAMPLES${COLOR_END}
 		    help, print the usage:
