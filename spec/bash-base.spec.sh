@@ -1003,7 +1003,7 @@ ${COLOR_BOLD_BLACK}DESCRIPTION${COLOR_END}
     myVar3              SIA [lowercase, 3 chars]
     myVar4              SIA \${lowercase, 3 chars}
     myVar5              SIA |lowercase, 3 chars
-    myVar44             The base of merge request (normally its develop or integration)
+    myVar44             The base of merge request (normally its develop or integration), you can select one using wizard if you do not know which value is valid
     fromEnv             Which env of DCP Alpine, possible values: int|qua|sta|rec|ope
     varWithoutValidation a valid value for varWithoutValidation
 
@@ -1011,11 +1011,13 @@ ${COLOR_BOLD_BLACK}EXAMPLES${COLOR_END}
     help, print the usage:
         ./my_script.sh -h
 
-    run with params:
+    run with all params, if run in quiet mode with -q, be sure all the params are valid:
         ./my_script.sh [-q] "myVar1Value" "myVar2Value" "myVar3Value" "myVar4Value" "myVar5Value" "myVar44Value" "fromEnvValue" "varWithoutValidationValue"
 
     run using wizard, input value for params step by step:
         ./my_script.sh
+
+    or you can run with some params, and input value for other params using wizard.
 EOF
 
         When run script my_script.sh -h

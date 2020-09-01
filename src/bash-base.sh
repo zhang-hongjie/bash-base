@@ -893,11 +893,11 @@ function args_parse() {
 	done
 
 	# Generate default usage response for -h
-  descriptions=''
-  for element in "${positionalVarNames[@]}"; do
-    validCommand="$(
-      grep -E "^\s*args_valid.*\s+${element}\s+" "$0" |
-        awk -F "'" -v OFS="'" '{
+	descriptions=''
+	for element in "${positionalVarNames[@]}"; do
+		validCommand="$(
+			grep -E "^\s*args_valid.*\s+${element}\s+" "$0" |
+				awk -F "'" -v OFS="'" '{
             for (i=2; i<=NF; i+=2) {
                 gsub(/ /, "_SPACE_", $i);
                 gsub(/\$/, "_DOLLAR_", $i);
@@ -906,28 +906,28 @@ function args_parse() {
             }
             print
         }' |
-        sed -e "s/\'//g"
-    )"
+				sed -e "s/\'//g"
+		)"
 
-    if [[ -z ${validCommand} ]]; then
-      description="a valid value for ${element}"
-    else
-      description="$(
-        reflect_nth_arg 4 "${validCommand}" |
-          string_replace "_SPACE_" " " |
-          string_replace "_DOLLAR_" "$" |
-          string_replace "_PARENTHESES_LEFT_" "(" |
-          string_replace "_PARENTHESES_RIGHT_" ")"
-      )"
-      if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
-        description="${description}, possible values: $(reflect_nth_arg 3 "$validCommand")"
-      elif [[ $validCommand =~ 'args_valid_or_select' ]]; then
-        description="${description}, you can select one using wizard if you do not know which value is valid"
-      fi
-    fi
+		if [[ -z ${validCommand} ]]; then
+			description="a valid value for ${element}"
+		else
+			description="$(
+				reflect_nth_arg 4 "${validCommand}" |
+					string_replace "_SPACE_" " " |
+					string_replace "_DOLLAR_" "$" |
+					string_replace "_PARENTHESES_LEFT_" "(" |
+					string_replace "_PARENTHESES_RIGHT_" ")"
+			)"
+			if [[ $validCommand =~ 'args_valid_or_select_pipe' ]]; then
+				description="${description}, possible values: $(reflect_nth_arg 3 "$validCommand")"
+			elif [[ $validCommand =~ 'args_valid_or_select' ]]; then
+				description="${description}, you can select one using wizard if you do not know which value is valid"
+			fi
+		fi
 
-    descriptions+="$(printf "\n    %-20s%s" "${element} " "${description}")"
-  done
+		descriptions+="$(printf "\n    %-20s%s" "${element} " "${description}")"
+	done
 
 	declare_heredoc defaultUsage <<-EOF
 		${COLOR_BOLD_BLACK}NAME${COLOR_END}
@@ -939,7 +939,7 @@ function args_parse() {
 		${COLOR_BOLD_BLACK}DESCRIPTION${COLOR_END}
 		    [-h]                help, print the usage
 		    [-q]                optional, Run quietly, no confirmation
-        ${descriptions}
+		${descriptions}
 
 		${COLOR_BOLD_BLACK}EXAMPLES${COLOR_END}
 		    help, print the usage:
