@@ -49,10 +49,12 @@ See [npm repackage](https://www.npmjs.com/package/bash-base)
 ```
 npm install -g bash-base
 ```
+
 verify the installation
 ```
 man bash-base
 ```
+
 or simply write in your script:
 ```
 # install bash-base from npmjs only if not installed:
@@ -75,6 +77,7 @@ Or run directly
 ```
 docker run -it zhj2074/bash-base:latest
 ```
+
 ### Example
 See [example](example) folder
 
@@ -82,12 +85,7 @@ See [example](example) folder
 See [reference](docs/references.md)
 
 ## Contributing
-
 See [How to contribute](CONTRIBUTING.md)
 
-
 ## License
-
 [MIT](https://opensource.org/licenses/MIT).
-
-
