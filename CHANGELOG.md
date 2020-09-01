@@ -1,3 +1,19 @@
+## [2.3.2](https://github.com/zhang-hongjie/bash-base/compare/v2.3.1...v2.3.2) (2020-09-01)
+
+
+### Bug Fixes
+
+* generate livedoc when release ([4c4814b](https://github.com/zhang-hongjie/bash-base/commit/4c4814b012e32eff18669176dc59b2019b53c69a))
+* generate livedoc when release ([3b08cf9](https://github.com/zhang-hongjie/bash-base/commit/3b08cf9a536d63484ef2812d5cb5573c04bf839c))
+* generate livedoc when release ([0a6b5a8](https://github.com/zhang-hongjie/bash-base/commit/0a6b5a8021d240e10cbba7489f5489a86e9987e7))
+* generate livedoc when release ([16632af](https://github.com/zhang-hongjie/bash-base/commit/16632af3a59de3a00ef875ddc051722d1136c13e))
+* generate livedoc when release ([0e75d57](https://github.com/zhang-hongjie/bash-base/commit/0e75d57130e8aad888b8784e106070068d54aa1d))
+* generate livedoc when release ([588d310](https://github.com/zhang-hongjie/bash-base/commit/588d310b2f80f664a45133f804590487d237930b))
+* generate livedoc when release ([d14f445](https://github.com/zhang-hongjie/bash-base/commit/d14f445aed2980f9feed38ad3a3622baf40fb4bc))
+* generate livedoc when release ([a44f297](https://github.com/zhang-hongjie/bash-base/commit/a44f297852e67b96a9544244159c2eded3cba03a))
+* generate livedoc when release ([ea07630](https://github.com/zhang-hongjie/bash-base/commit/ea0763050c997bcb6ed252d1f101c825b3258878))
+* generate livedoc when release ([ec82649](https://github.com/zhang-hongjie/bash-base/commit/ec82649998ad97e97e3eb2ad51a0bd28b0f281f1))
+
 ## [2.3.1](https://github.com/zhang-hongjie/bash-base/compare/v2.3.0...v2.3.1) (2020-09-01)
 
 
