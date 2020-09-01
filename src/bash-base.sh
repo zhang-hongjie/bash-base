@@ -12,17 +12,6 @@ THIS_SCRIPT_NAME="$(basename "$0")" # the main script name
 SHORT_DESC=''                       # redefine it to show your script short description in the 'NAME' field of generated -h response
 USAGE=''                            # redefine it in your script only if the generated -h response is not good for you
 
-while getopts ":h" option; do
-	case ${option} in
-	h)
-		man -P cat bash-base
-		;;
-	\?)
-		print_error "invalid option: -$OPTARG" >&2
-		;;
-	esac
-done
-
 # @NAME
 #     string_trim -- remove the white chars from prefix and suffix
 # @SYNOPSIS

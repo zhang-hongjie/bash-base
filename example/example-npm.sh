@@ -4,7 +4,7 @@
 bash-base 2>/dev/null || npm install -g bash-base
 
 # verify the installation:
-#bash-base -h
+#man -P cat bash-base
 
 ### import it
 source bash-base

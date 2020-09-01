@@ -970,7 +970,7 @@ Describe args_parse
 
     It 'print generated usage with customized SHORT_DESC'
         cat <<-EOF > my_script.sh
-#!/bin/bash
+#!/usr/bin/env bash
 
 source src/bash-base.sh
 
@@ -1297,7 +1297,7 @@ Describe 'doc_lint_script_comment'
 
     It 'invalid script'
         cat <<-EOF > my_script.sh
-#!/bin/bash
+#!/usr/bin/env bash
 
 # @NAME
 #     func_with_invalid_comment -- not good
