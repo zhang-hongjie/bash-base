@@ -77,10 +77,10 @@ See [docker hub](https://hub.docker.com/r/zhj2074/bash-base)
 docker pull zhj2074/bash-base:latest
 ``` 
 
-Or run directly
+Or run a specific version directly
 
 ```
-docker run -it zhj2074/bash-base:latest
+docker run -it zhj2074/bash-base:2.3.2
 ```
 
 ### Example
