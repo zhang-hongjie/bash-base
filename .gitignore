@@ -2,4 +2,3 @@ node_modules/
 coverage/
 .idea
 .DS_Store
-pod2htmd.tmp
