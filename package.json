@@ -7,9 +7,11 @@
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "package-lock.json",
+    "scripts/valid-by-spec.sh",
     "src/",
     "docs/",
-    "man/"
+    "man/",
+    "spec/"
   ],
   "bin": {
     "bash-base": "src/bash-base.sh"
@@ -26,7 +28,7 @@
     "shfmt": "docker run --rm -v \"$(pwd)\":/bash-base -w /bash-base mvdan/shfmt -l -w src/*.sh scripts/*.sh example/*.sh",
     "lint:comment": "./scripts/lint-comment.sh",
     "lint": "npm run shellcheck && npm run shfmt && npm run lint:comment",
-    "test": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash spec/*.sh",
+    "test": "./scripts/valid-by-spec.sh",
     "test:focus": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash --focus spec/*.sh #execute only fIt/fDescribe",
     "test:coverage": "docker run -it --rm -v \"$(pwd)\":/bash-base -w /bash-base shellspec/shellspec:master-kcov --kcov --kcov-options \"--include-path=src\" -f t spec/*.sh",
     "livedoc": "./scripts/bashdoc.sh",
