@@ -7,9 +7,9 @@
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "package-lock.json",
-    "src/bash-base.sh",
-    "docs/references.md",
-    "man/bash-base.1"
+    "src/",
+    "docs/",
+    "man/"
   ],
   "bin": {
     "bash-base": "src/bash-base.sh"
