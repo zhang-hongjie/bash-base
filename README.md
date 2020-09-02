@@ -43,6 +43,11 @@ or
 eval "$(curl -fsSL https://raw.githubusercontent.com/zhang-hongjie/bash-base/v2.3.1/src/bash-base.sh)
 ```
 
+Verify the import in console:
+```
+string_trim ' hello '
+```
+
 ### Install from NPM
 
 See [npm repackage](https://www.npmjs.com/package/bash-base)
