@@ -1346,7 +1346,7 @@ function stop_if_failed() {
 }
 
 # @NAME
-#     declare_heredoc -- stop the execute if last command exit with fail code (no zero)
+#     declare_heredoc -- define a variable and init its value from heredoc
 # @SYNOPSIS
 #     declare_heredoc newVarName <<-EOF
 #     ...
