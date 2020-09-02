@@ -48,6 +48,34 @@ Verify the import in console:
 string_trim ' hello '
 ```
 
+#### Import bash-base using install.sh
+
+The directory installed is `~/.bash-base`.
+
+source or install the specific version in console or shell script:
+```
+source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- v2.3.3
+```
+
+source or install the latest version in console or shell script:
+```
+source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- latest
+or
+source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash
+```
+
+source or install the latest version with verify in console or shell script:
+```
+source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- latest verify
+or
+source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- v2.3.3 verify
+```
+
+uninstall all versions of bash-base
+```
+curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- uninstall
+```
+
 ### Install from NPM
 
 See [npm repackage](https://www.npmjs.com/package/bash-base)
