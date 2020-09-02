@@ -69,6 +69,11 @@ bash-base 2>/dev/null || npm install -g bash-base
 source bash-base
 ```
 
+To uninstall:
+```
+npm uninstall -g bash-base
+```
+
 ### Install from docker
 
 See [docker hub](https://hub.docker.com/r/zhj2074/bash-base)
@@ -82,6 +87,14 @@ Or run a specific version directly
 ```
 docker run -it zhj2074/bash-base:2.3.2
 ```
+
+### Download only
+
+download a specific version:
+
+https://registry.npmjs.org/bash-base/-/bash-base-2.3.2.tgz
+
+
 
 ### Example
 See [example](example) folder
