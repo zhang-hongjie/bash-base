@@ -1,3 +1,14 @@
+## [2.3.3](https://github.com/zhang-hongjie/bash-base/compare/v2.3.2...v2.3.3) (2020-09-02)
+
+
+### Bug Fixes
+
+* generate livedoc when release ([a5441ae](https://github.com/zhang-hongjie/bash-base/commit/a5441ae6c7eebf9ea561cd426a8388e02971791c))
+* generate livedoc when release ([f054f20](https://github.com/zhang-hongjie/bash-base/commit/f054f20c0bc36b5917a0e11c9c86957c2738319f))
+* generate livedoc when release ([acb028b](https://github.com/zhang-hongjie/bash-base/commit/acb028b3001117d43eadf93661af0b93e961f65c))
+* generate livedoc when release ([b6ea5b0](https://github.com/zhang-hongjie/bash-base/commit/b6ea5b03ce8edd09ce89ea5240382c3723ba3a10))
+* generate livedoc when release ([af65122](https://github.com/zhang-hongjie/bash-base/commit/af65122028fc6a1cbecfd4853ea605dcb80eff99))
+
 ## [2.3.2](https://github.com/zhang-hongjie/bash-base/compare/v2.3.1...v2.3.2) (2020-09-01)
 
 
