@@ -1,3 +1,13 @@
+## [2.3.7](https://github.com/zhang-hongjie/bash-base/compare/v2.3.6...v2.3.7) (2020-09-03)
+
+
+### Bug Fixes
+
+* build docker image ([1aab765](https://github.com/zhang-hongjie/bash-base/commit/1aab7650ac6f184edacbbcc4875e0a09a309b1e0))
+* build docker image ([5b831a3](https://github.com/zhang-hongjie/bash-base/commit/5b831a326c8278446545b50623b004992a56d4d6))
+* build docker image ([549b3f4](https://github.com/zhang-hongjie/bash-base/commit/549b3f434cd98d8bf043ae54c4aa939d538a0edd))
+* build docker image ([5f10fbe](https://github.com/zhang-hongjie/bash-base/commit/5f10fbeb55aa13c2fd89cf9612698e4159b96c0b))
+
 ## [2.3.6](https://github.com/zhang-hongjie/bash-base/compare/v2.3.5...v2.3.6) (2020-09-03)
 
 
