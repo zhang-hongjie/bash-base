@@ -14,7 +14,13 @@
 
 ## What's bash-base?
 
-A common lib for creating bash script easily.
+A common lib for creating bash script easily like other program language.
+
+- Rich functions to operate array/list/set/string/arguments/reflect/..., the functions can be used in console or script
+- Just call bash-base function by name in your script, like other programing language, no need anymore to search "how to ... in bash"
+- Parse and validation arguments easily & flexible, automatically generate help usage for your script, focus your script only on the business logical
+- Make your script more compact & readability
+- Available on github/npm/dockerhub
 
 
 ## Latest Update
