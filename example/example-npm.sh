@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 
-# install bash-base from npmjs only if not installed:
-bash-base 2>/dev/null || npm install -g bash-base
-
-# verify the installation:
-#man -P cat bash-base
-
-# import it
-source bash-base
+# import, install only if not existed
+source bash-base 2>/dev/null || npm install -g bash-base
 
 # customize the short description of default help usage
 SHORT_DESC='an example shell script to show how to use bash-base '

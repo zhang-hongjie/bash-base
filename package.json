@@ -23,6 +23,7 @@
     "test": "spec"
   },
   "scripts": {
+    "postinstall": "source bash-base",
     "preinstall": "npx npm-force-resolutions",
     "shellcheck": "docker run --rm -v \"$(pwd)\":/bash-base -w /bash-base koalaman/shellcheck:latest src/*.sh scripts/*.sh example/*.sh",
     "shfmt": "docker run --rm -v \"$(pwd)\":/bash-base -w /bash-base mvdan/shfmt -l -w src/*.sh scripts/*.sh example/*.sh",

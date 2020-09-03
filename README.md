@@ -71,7 +71,7 @@ or
 source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- v2.3.3 verify
 ```
 
-uninstall all versions of bash-base
+To uninstall all versions of bash-base
 ```
 curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- uninstall
 ```
@@ -91,10 +91,7 @@ man bash-base
 or simply write in your script:
 ```
 # install bash-base from npmjs only if not installed:
-bash-base 2>/dev/null || npm install -g bash-base
-
-# import it
-source bash-base
+source bash-base 2>/dev/null || npm install -g bash-base
 ```
 
 To uninstall:
@@ -128,6 +125,9 @@ See [example](example) folder
 
 ### Reference
 See [reference](docs/references.md)
+
+### Specification
+See [spec](spec) folder
 
 ## Contributing
 See [How to contribute](CONTRIBUTING.md)
