@@ -118,13 +118,13 @@ npm uninstall -g bash-base
 See [docker hub](https://hub.docker.com/r/zhj2074/bash-base)
 
 ```
-souce <(docker run --rm zhj2074/bash-base)
+source <(docker run --rm zhj2074/bash-base)
 ``` 
 
 Or specific a fixed version
 
 ```
-souce <(docker run --rm zhj2074/bash-base:2.3.2)
+source <(docker run --rm zhj2074/bash-base:2.3.2)
 ```
 
 ### Download only
