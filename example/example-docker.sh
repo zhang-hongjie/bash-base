@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # import, install only if not existed
-souce <(docker run --rm zhj2074/bash-base)
+source <(docker run --rm zhj2074/bash-base)
 
 # customize the short description of default help usage
 SHORT_DESC='an example shell script to show how to use bash-base '
