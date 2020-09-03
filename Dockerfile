@@ -4,4 +4,4 @@ COPY docs /opt/bash-base/docs
 COPY man /opt/bash-base/man
 COPY spec /opt/bash-base/spec
 COPY src /opt/bash-base/bin
-ENTRYPOINT [ "cat /opt/bash-base/bin/bash-base.sh" ]
+ENTRYPOINT [ "cat", "/opt/bash-base/bin/bash-base.sh" ]
