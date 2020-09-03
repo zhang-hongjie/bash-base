@@ -42,20 +42,20 @@ Describe 'string_split_to_array'
 
     It 'with stdin'
         declare_heredoc lines <<-EOF
-  origin/develop
-  origin/integration
-* origin/feature/52-new-feature
-EOF
+					  origin/develop
+					  origin/integration
+					* origin/feature/52-new-feature
+				EOF
         When call string_split_to_array $'\n' actual "${lines}"
         The variable actual should satisfy array_describe_equals actual "([0]='  origin/develop' [1]='  origin/integration' [2]='* origin/feature/52-new-feature')"
     End
 
     It 'with file'
         cat > temp_file.txt <<-EOF
- 1. A D
- 2. B
- 3. C
-EOF
+					 1. A D
+					 2. B
+					 3. C
+				EOF
         When call eval "string_split_to_array $'\n' actual < temp_file.txt"
         The variable actual should satisfy array_describe_equals actual "([0]=' 1. A D' [1]=' 2. B' [2]=' 3. C')"
 
@@ -79,36 +79,36 @@ Describe 'string_pick_to_array'
 
     It 'with stdin'
         declare_heredoc lines <<-EOF
-[
-  {
-    age:12
-  },
-  {
-    age:15
-  },
-  {
-    age:16
-  }
-]
-EOF
+					[
+					  {
+					    age:12
+					  },
+					  {
+					    age:15
+					  },
+					  {
+					    age:16
+					  }
+					]
+				EOF
         When call string_pick_to_array 'age:' $'\n' actual "${lines}"
         The variable actual should satisfy array_describe_equals actual "([0]='12' [1]='15' [2]='16')"
     End
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-[
-  {
-    age:12
-  },
-  {
-    age:15
-  },
-  {
-    age:16
-  }
-]
-EOF
+					[
+					  {
+					    age:12
+					  },
+					  {
+					    age:15
+					  },
+					  {
+					    age:16
+					  }
+					]
+				EOF
         When call eval "string_pick_to_array 'age:' $'\n' actual < temp_file.txt"
         The variable actual should satisfy array_describe_equals actual "([0]='12' [1]='15' [2]='16')"
 
@@ -225,10 +225,10 @@ Describe 'string_trim'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-  A D
-  B
-  C
-EOF
+					  A D
+					  B
+					  C
+				EOF
         When call eval "string_trim < temp_file.txt"
         The output should eq "A D
 B
@@ -265,10 +265,10 @@ Describe 'string_length'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-  A D
-  B
-  C
-EOF
+					  A D
+					  B
+					  C
+				EOF
         When call eval "string_length < temp_file.txt"
         The output should eq "13"
         rm -fr temp_file.txt
@@ -294,10 +294,10 @@ Describe 'string_is_empty'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-  A D
-  B
-  C
-EOF
+					  A D
+					  B
+					  C
+				EOF
         When call eval "string_is_empty < temp_file.txt"
         The status should eq "1"
         rm -fr temp_file.txt
@@ -323,10 +323,10 @@ Describe 'string_revert'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-  A D
-  B
-  C
-EOF
+					  A D
+					  B
+					  C
+				EOF
         When call eval "string_revert < temp_file.txt"
         The output should eq $'D A  \nB  \nC  '
         rm -fr temp_file.txt
@@ -416,10 +416,10 @@ Describe 'string_sub'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-ABCD
-EFGH
-IJKL
-EOF
+					ABCD
+					EFGH
+					IJKL
+				EOF
         When call eval "string_sub 3 5 < temp_file.txt"
         The output should eq $'D\nEFG'
         rm -fr temp_file.txt
@@ -445,10 +445,10 @@ Describe 'string_before_first'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-ABCD
-EFGH
-IJKL
-EOF
+					ABCD
+					EFGH
+					IJKL
+				EOF
         func() { actual=$(string_before_first 'FGH' < temp_file.txt); }
         When run func
         The variable actual should eq $'ABCD\nE'
@@ -475,10 +475,10 @@ Describe 'string_after_first'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-ABCD
-EFGH
-IJKL
-EOF
+					ABCD
+					EFGH
+					IJKL
+				EOF
         func() { actual=$(string_after_first "FGH" < temp_file.txt); }
         When run func
         The variable actual should eq $'\nIJKL'
@@ -505,8 +505,8 @@ Describe 'string_match'
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-name;name;
-EOF
+					name;name;
+				EOF
         When call eval "string_match 'name;+' < temp_file.txt"
         The status should eq "0"
         rm -fr temp_file.txt
@@ -547,10 +547,10 @@ Describe 'string_index_first'
 
     It 'with heredoc'
         declare_heredoc var <<-EOF
-AB
-CD
-EF
-EOF
+					AB
+					CD
+					EF
+				EOF
 
         When call string_index_first $'\n' "${var}"
         The output should eq "2"
@@ -558,10 +558,10 @@ EOF
 
     It 'with file'
         cat > temp_file.txt <<-EOF
-ABCD
-EFGH
-IJKL
-EOF
+					ABCD
+					EFGH
+					IJKL
+				EOF
         func() { actual=$(string_index_first "FGH" < temp_file.txt); }
         When run func
         The variable actual should eq "6"
@@ -970,55 +970,55 @@ Describe args_parse
 
     It 'print generated usage with customized SHORT_DESC'
         cat <<-EOF > my_script.sh
-#!/usr/bin/env bash
+					#!/usr/bin/env bash
 
-source src/bash-base.sh
+					source src/bash-base.sh
 
-SHORT_DESC='this is a script for test generated help usage'
+					SHORT_DESC='this is a script for test generated help usage'
 
-args_parse \$# "\$@" myVar1 myVar2 myVar3 myVar4 myVar5 myVar44 fromEnv varWithoutValidation
-args_valid_or_read myVar1 '^[0-9a-z ]{3,}$' 'SIA (lowercase, 3 chars)'
-args_valid_or_read myVar2 '^[0-9a-z ]{3,}$' 'SIA <lowercase, 3 chars>'
-args_valid_or_read myVar3 '^[0-9a-z ]{3,}$' 'SIA [lowercase, 3 chars]'
-args_valid_or_read myVar4 '^[0-9a-z ]{3,}$' 'SIA \${lowercase, 3 chars}'
-args_valid_or_read myVar5 '^[0-9a-z ]{3,}$' 'SIA |lowercase, 3 chars'
-args_valid_or_select myVar44 arrBranchesToSelectCleaned "The base of merge request (normally it's develop or integration)"
-args_valid_or_select_pipe fromEnv 'int|qua|sta|rec|ope' "Which env of DCP Alpine" int
-EOF
+					args_parse \$# "\$@" myVar1 myVar2 myVar3 myVar4 myVar5 myVar44 fromEnv varWithoutValidation
+					args_valid_or_read myVar1 '^[0-9a-z ]{3,}$' 'SIA (lowercase, 3 chars)'
+					args_valid_or_read myVar2 '^[0-9a-z ]{3,}$' 'SIA <lowercase, 3 chars>'
+					args_valid_or_read myVar3 '^[0-9a-z ]{3,}$' 'SIA [lowercase, 3 chars]'
+					args_valid_or_read myVar4 '^[0-9a-z ]{3,}$' 'SIA \${lowercase, 3 chars}'
+					args_valid_or_read myVar5 '^[0-9a-z ]{3,}$' 'SIA |lowercase, 3 chars'
+					args_valid_or_select myVar44 arrBranchesToSelectCleaned "The base of merge request (normally it's develop or integration)"
+					args_valid_or_select_pipe fromEnv 'int|qua|sta|rec|ope' "Which env of DCP Alpine" int
+				EOF
         chmod +x my_script.sh
 
         declare_heredoc expected <<-EOF
-${COLOR_BOLD_BLACK}NAME${COLOR_END}
-    my_script.sh -- this is a script for test generated help usage
+					${COLOR_BOLD_BLACK}NAME${COLOR_END}
+					    my_script.sh -- this is a script for test generated help usage
 
-${COLOR_BOLD_BLACK}SYNOPSIS${COLOR_END}
-    ./my_script.sh [-qh] myVar1 myVar2 myVar3 myVar4 myVar5 myVar44 fromEnv varWithoutValidation
+					${COLOR_BOLD_BLACK}SYNOPSIS${COLOR_END}
+					    ./my_script.sh [-qh] myVar1 myVar2 myVar3 myVar4 myVar5 myVar44 fromEnv varWithoutValidation
 
-${COLOR_BOLD_BLACK}DESCRIPTION${COLOR_END}
-    [-h]                help, print the usage
-    [-q]                optional, Run quietly, no confirmation
+					${COLOR_BOLD_BLACK}DESCRIPTION${COLOR_END}
+					    [-h]                help, print the usage
+					    [-q]                optional, Run quietly, no confirmation
 
-    myVar1              SIA (lowercase, 3 chars)
-    myVar2              SIA <lowercase, 3 chars>
-    myVar3              SIA [lowercase, 3 chars]
-    myVar4              SIA \${lowercase, 3 chars}
-    myVar5              SIA |lowercase, 3 chars
-    myVar44             The base of merge request (normally its develop or integration), you can select one using wizard if you do not know which value is valid
-    fromEnv             Which env of DCP Alpine, possible values: int|qua|sta|rec|ope
-    varWithoutValidation a valid value for varWithoutValidation
+					    myVar1              SIA (lowercase, 3 chars)
+					    myVar2              SIA <lowercase, 3 chars>
+					    myVar3              SIA [lowercase, 3 chars]
+					    myVar4              SIA \${lowercase, 3 chars}
+					    myVar5              SIA |lowercase, 3 chars
+					    myVar44             The base of merge request (normally its develop or integration), you can select one using wizard if you do not know which value is valid
+					    fromEnv             Which env of DCP Alpine, possible values: int|qua|sta|rec|ope
+					    varWithoutValidation a valid value for varWithoutValidation
 
-${COLOR_BOLD_BLACK}EXAMPLES${COLOR_END}
-    help, print the usage:
-        ./my_script.sh -h
+					${COLOR_BOLD_BLACK}EXAMPLES${COLOR_END}
+					    help, print the usage:
+					        ./my_script.sh -h
 
-    run with all params, if run in quiet mode with -q, be sure all the params are valid:
-        ./my_script.sh [-q] "myVar1Value" "myVar2Value" "myVar3Value" "myVar4Value" "myVar5Value" "myVar44Value" "fromEnvValue" "varWithoutValidationValue"
+					    run with all params, if run in quiet mode with -q, be sure all the params are valid:
+					        ./my_script.sh [-q] "myVar1Value" "myVar2Value" "myVar3Value" "myVar4Value" "myVar5Value" "myVar44Value" "fromEnvValue" "varWithoutValidationValue"
 
-    run using wizard, input value for params step by step:
-        ./my_script.sh
+					    run using wizard, input value for params step by step:
+					        ./my_script.sh
 
-    or you can run with some params, and input value for other params using wizard.
-EOF
+					    or you can run with some params, and input value for other params using wizard.
+				EOF
 
         When run script my_script.sh -h
         The status should be success
@@ -1085,9 +1085,9 @@ End
 Describe 'declare_heredoc'
     It '-'
         func() { declare_heredoc actual <<-EOF
- A B
- C
-EOF
+					 A B
+					 C
+				EOF
         }
         When run func
         The variable actual should eq $' A B\n C'
@@ -1299,14 +1299,14 @@ Describe 'doc_lint_script_comment'
 
     It 'invalid script'
         cat <<-EOF > my_script.sh
-#!/usr/bin/env bash
+					#!/usr/bin/env bash
 
-# @NAME
-#     func_with_invalid_comment -- not good
-function func_with_invalid_comment() {
-  echo
-}
-EOF
+					# @NAME
+					#     func_with_invalid_comment -- not good
+					function func_with_invalid_comment() {
+					  echo
+					}
+				EOF
         When call doc_lint_script_comment my_script.sh
         The status should eq "1"
         The output should include "the comments is not the same as template for function func_with_invalid_comment"
