@@ -49,8 +49,8 @@ else
 			ln -fs "${installDir}"/man/bash-base.1 ${manDir}/bash-base.1
 			echo "if you want always the latest version, the man page is: 'man bash-base', and import like this:"
 			echo "'source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash"
-			echo "this way, it will access internet and check whether a newer vesion existed during every launch of your script."
-			echo "so specify a version in your script is recommended"
+			echo "this way, your script will access github to check whether a newer version published during every time it launched."
+			echo "if you don't like this behavior, you can specify a fixed version to use in your script"
 		fi
 
 		echo -e "\nInstall successfully."

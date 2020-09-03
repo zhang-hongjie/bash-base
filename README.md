@@ -69,8 +69,8 @@ source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zh
 or
 source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- latest
 ```
-this way, your script will access github to check whether a newer vesion published when every time it launched.
-if you don't like this behavior, you can specify a fixed version to use in your script
+this way, your script will access github to check whether a newer version published during every time it launched.
+if you don't like this behavior, you can specify a fixed version to use in your script.
 
 
 ##### Using param `verify` to check all functions of bash-base is compatible with your environment:
