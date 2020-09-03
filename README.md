@@ -120,9 +120,8 @@ docker run -it zhj2074/bash-base:2.3.2
 
 download a specific version:
 
-https://registry.npmjs.org/bash-base/-/bash-base-2.3.2.tgz
-
-
+- from NPM: https://registry.npmjs.org/bash-base/-/bash-base-2.3.2.tgz
+- from github: https://github.com/zhang-hongjie/bash-base/archive/v2.3.3.tar.gz
 
 ### Example
 See [example](example) folder
