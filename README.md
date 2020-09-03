@@ -88,9 +88,9 @@ verify the installation
 man bash-base
 ```
 
-or simply write in your script:
+or one line in your script:
 ```
-# install bash-base from npmjs only if not installed:
+# import, and install bash-base from npmjs only if not installed:
 source bash-base 2>/dev/null || npm install -g bash-base
 ```
 
