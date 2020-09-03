@@ -52,26 +52,35 @@ string_trim ' hello '
 
 The directory installed is `~/.bash-base`.
 
-source or install the specific version in console or shell script:
+##### source or install the specific version in console or shell script:
+
+- the man page of version v2.3.3:  `man bash-base.${version}`, 
+- you can import this version in one line in your script:
 ```
-source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- v2.3.3
+source bash-base.v2.3.3 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- v2.3.3"
 ```
 
-source or install the latest version in console or shell script:
+
+##### but if you want always the latest version, source or install the latest version in console or shell script:
+- the man page is: `man bash-base`,
+- and import like this:
 ```
-source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- latest
-or
 source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash
+or
+source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- latest
 ```
+this way, your script will access github to check whether a newer vesion published when every time it launched.
+if you don't like this behavior, you can specify a fixed version to use in your script
 
-source or install the latest version with verify in console or shell script:
+
+##### Using param `verify` to check all functions of bash-base is compatible with your environment:
 ```
 source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- latest verify
 or
 source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- v2.3.3 verify
 ```
 
-To uninstall all versions of bash-base
+##### To uninstall all versions of bash-base from your system:
 ```
 curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- uninstall
 ```
