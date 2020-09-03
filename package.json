@@ -23,7 +23,7 @@
     "test": "spec"
   },
   "scripts": {
-    "postinstall": "[[ -d \"$(npm root -g)/bash-base\" ]] && source bash-base",
+    "postinstall": "[ -d \"$(npm root -g)/bash-base\" ] && source bash-base",
     "preinstall": "npx npm-force-resolutions",
     "shellcheck": "docker run --rm -v \"$(pwd)\":/bash-base -w /bash-base koalaman/shellcheck:latest src/*.sh scripts/*.sh example/*.sh",
     "shfmt": "docker run --rm -v \"$(pwd)\":/bash-base -w /bash-base mvdan/shfmt -l -w src/*.sh scripts/*.sh example/*.sh",
@@ -56,7 +56,6 @@
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.2.0",
     "husky": "^4.2.5",
-    "is-installed-globally": "^0.3.2",
     "semantic-release-docker": "^2.2.0"
   },
   "dependencies": {},
