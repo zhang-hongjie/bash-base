@@ -48,6 +48,9 @@ Verify the import in console:
 string_trim ' hello '
 ```
 
+###### Notes
+this way, your script need to access github when each time it launched.
+
 #### Import bash-base using install.sh
 
 The directory installed is `~/.bash-base`.
@@ -69,8 +72,10 @@ source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zh
 or
 source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- latest
 ```
+
+###### Notes:
 this way, your script will access github to check whether a newer version published during every time it launched.
-if you don't like this behavior, you can specify a fixed version to use in your script.
+if you don't like this behavior, you need to specify a fixed version to use in your script.
 
 
 ##### Using param `verify` to check all functions of bash-base is compatible with your environment:
@@ -100,7 +105,7 @@ man bash-base
 or one line in your script:
 ```
 # import, and install bash-base from npmjs only if not installed:
-source bash-base 2>/dev/null || npm install -g bash-base
+source bash-base 2>/dev/null || npm install -g bash-base && source bash-base
 ```
 
 To uninstall:
@@ -113,13 +118,13 @@ npm uninstall -g bash-base
 See [docker hub](https://hub.docker.com/r/zhj2074/bash-base)
 
 ```
-docker pull zhj2074/bash-base:latest
+souce <(docker run --rm zhj2074/bash-base)
 ``` 
 
-Or run a specific version directly
+Or specific a fixed version
 
 ```
-docker run -it zhj2074/bash-base:2.3.2
+souce <(docker run --rm zhj2074/bash-base:2.3.2)
 ```
 
 ### Download only

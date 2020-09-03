@@ -6,9 +6,9 @@ manDir=/usr/local/share/man/man1
 
 if [[ "$1" == "uninstall" ]]; then
 
-	rm -r "${installDir}" && echo "removed ${installDir}"
-	rm ${binDir}/bash-base* && echo "removed ${binDir}/bash-base*"
-	rm ${manDir}/bash-base* && echo "removed ${manDir}/bash-base*"
+	rm -r "${installDir}" && echo "# removed ${installDir}" >&2
+	rm ${binDir}/bash-base* && echo "# removed ${binDir}/bash-base*" >&2
+	rm ${manDir}/bash-base* && echo "# removed ${manDir}/bash-base*" >&2
 
 else
 
@@ -21,41 +21,45 @@ else
 	installDir=${installDir}/${version}
 
 	if [[ ! -f ${installDir}/src/bash-base.sh ]]; then
-		echo "version to install: ${version}"
+		echo "# version to install: ${version}" >&2
 
 		mkdir -p "${installDir}"
 		cd "${installDir}" || exit
 
 		if ! wget --no-check-certificate https://github.com/zhang-hongjie/bash-base/archive/"${version}".tar.gz; then
-			echo "Download the version '${version}' failed"
+			echo "# Download the version '${version}' failed" >&2
 			exit 1
 		fi
 		tar xzf "${version}".tar.gz -C ./ --strip-components 1
 
-		echo -e "\nFiles in $(pwd):$(ls -la)"
-
 		if [[ "$2" == "verify" ]]; then
-			echo -e "\nVerifying the installation (docker required):"
-			docker run -it --rm -v "$(pwd)":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash spec/*.sh
+			echo -e "# Verifying the installation (docker required):" >&2
+			docker run --rm -v "$(pwd)":/bash-base -w /bash-base shellspec/shellspec:master-kcov --shell bash spec/*.sh >&2
 		fi
+
+		cat "${installDir}"/src/bash-base.sh
 
 		ln -fs "${installDir}"/src/bash-base.sh ${binDir}/bash-base."${version}"
 		ln -fs "${installDir}"/man/bash-base.1 ${manDir}/bash-base."${version}".1
-		echo "the man page of this version: 'man bash-base.${version}', and you can import this version in one line in your script:"
-		echo "'source bash-base.${version} 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- ${version}"
+		cat >&2 <<-EOF
+			# the man page of this version: 'man bash-base.${version}', and you can import this version in one line in your script:
+			# source bash-base.v2.3.3 2>/dev/null || source <(curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- ${version})
+
+		EOF
 
 		if [[ -n "${latest}" ]]; then
 			ln -fs "${installDir}"/src/bash-base.sh ${binDir}/bash-base
 			ln -fs "${installDir}"/man/bash-base.1 ${manDir}/bash-base.1
-			echo "if you want always the latest version, the man page is: 'man bash-base', and import like this:"
-			echo "'source bash-base 2>/dev/null || curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash"
-			echo "this way, your script will access github to check whether a newer version published during every time it launched."
-			echo "if you don't like this behavior, you can specify a fixed version to use in your script"
+			cat >&2 <<-EOF
+				# if you want always to use the latest version, the man page is: 'man bash-base', and import like this:
+				# source bash-base 2>/dev/null || source <(curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash)
+				# this way, your script will access github to check whether a newer version published during every time it launched.
+				# if you don't like this behavior, you can specify a fixed version to use in your script.
+
+			EOF
 		fi
 
-		echo -e "\nInstall successfully."
+		echo -e "# Install successfully." >&2
 	fi
-
-	source bash-base."${version}"
 
 fi

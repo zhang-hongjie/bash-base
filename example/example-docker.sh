@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Import specific version of bash-base using
-source bash-base.v2.3.3 2>/dev/null || source <(curl -o- -L https://raw.githubusercontent.com/zhang-hongjie/bash-base/master/scripts/install.sh | bash -s -- v2.3.3)
+# import, install only if not existed
+source bash-base 2>/dev/null || souce <(docker run --rm zhj2074/bash-base)
 
 # customize the short description of default help usage
 SHORT_DESC='an example shell script to show how to use bash-base '
