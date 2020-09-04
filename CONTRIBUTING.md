@@ -13,7 +13,7 @@ For bug report or enhancement suggestion, you can submit a  [GitHub issue](https
 
 Before propose a feature, a good understanding of the requested feature may be crucial for the acceptance of the proposal.
 
-Firstly, search if your idea is not already created by others, then fill the information on the [issues page](https://github.com/atom/atom/issues/new/choose).
+Firstly, search if your idea is not already created by others, then fill the information on the [issues page](https://github.com/zhang-hongjie/bash-base/issues/new/choose).
 
 ## Code Contribution
 
