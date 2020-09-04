@@ -1,8 +1,15 @@
-### Requirements for Adding, Changing, or Removing a Feature
+### Requirements
 
 * Fill out the template below.
 * The pull request must update the test suite.
 * After you create the pull request, all status checks must be pass.
+
+### Type
+
+- [ ] Bug fix 
+- [ ] Feature change
+- [ ] Refactor
+- [ ] Documentation
 
 ### Issue
 
