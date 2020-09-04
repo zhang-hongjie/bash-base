@@ -11,7 +11,7 @@
 - [ ] Refactor
 - [ ] Documentation
 
-### Issue
+### Issue (for type 'bug fix'/'feature change')
 
 <!--
 
@@ -27,6 +27,6 @@ We must be able to understand the design of your change from this description.
 
 -->
 
-### Possible Drawbacks
+### Possible Drawbacks (not for type 'documentation')
 
 <!-- What are the possible side-effects or negative impacts of the code change? -->
