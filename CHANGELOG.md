@@ -1,3 +1,10 @@
+## [2.3.11](https://github.com/zhang-hongjie/bash-base/compare/v2.3.10...v2.3.11) (2020-09-08)
+
+
+### Bug Fixes
+
+* correct the order of semantic release order ([8a11bd5](https://github.com/zhang-hongjie/bash-base/commit/8a11bd57d0725ac1067061bd1b3e0299bc3bd03b))
+
 ## [2.3.10](https://github.com/zhang-hongjie/bash-base/compare/v2.3.9...v2.3.10) (2020-09-08)
 
 
