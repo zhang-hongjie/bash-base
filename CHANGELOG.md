@@ -1,3 +1,10 @@
+## [2.3.9](https://github.com/zhang-hongjie/bash-base/compare/v2.3.8...v2.3.9) (2020-09-08)
+
+
+### Bug Fixes
+
+* enrich package.json, use fix to force new release ([1d9e12c](https://github.com/zhang-hongjie/bash-base/commit/1d9e12c76a12c97f29bc732d876d1c122e3e5b3f))
+
 ## [2.3.8](https://github.com/zhang-hongjie/bash-base/compare/v2.3.7...v2.3.8) (2020-09-04)
 
 
