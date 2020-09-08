@@ -1,3 +1,10 @@
+## [2.3.10](https://github.com/zhang-hongjie/bash-base/compare/v2.3.9...v2.3.10) (2020-09-08)
+
+
+### Bug Fixes
+
+* clean function ref ([119f866](https://github.com/zhang-hongjie/bash-base/commit/119f866b9667b4f3cca0f27f07df423bf273f5e7))
+
 ## [2.3.9](https://github.com/zhang-hongjie/bash-base/compare/v2.3.8...v2.3.9) (2020-09-08)
 
 
