@@ -1,3 +1,5 @@
+# This project has been moved to [renault digital](https://github.com/renault-digital/bash-base). 
+
 # Welcome to [bash-base](https://zhang-hongjie.github.io/bash-base)
 
 [![License](https://img.shields.io/github/license/zhang-hongjie/bash-base.svg)](https://github.com/zhang-hongjie/bash-base/blob/master/LICENSE)
