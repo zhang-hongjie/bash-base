@@ -1,3 +1,10 @@
+## [2.3.12](https://github.com/zhang-hongjie/bash-base/compare/v2.3.11...v2.3.12) (2020-09-16)
+
+
+### Bug Fixes
+
+* move to renault, use fix to forcer a release ([080767b](https://github.com/zhang-hongjie/bash-base/commit/080767b7417a32ff628cc61717a9811c68f6c27a))
+
 ## [2.3.11](https://github.com/zhang-hongjie/bash-base/compare/v2.3.10...v2.3.11) (2020-09-08)
 
 
